@@ -31,6 +31,8 @@ namespace AkzonobelScript.Controllers
             _questionOperator = questionOperator;
             _sendMessage = sendMessage;
         }
+
+        //+
         public ActionResult Index(string ani, int? routerCallKey, int? routerCallKeyDay, string peripheralNumber, string callSubject, string DNIS, string admin, bool isRedirect = false)
         {
             CheckRedir("|Index", isRedirect);
