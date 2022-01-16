@@ -1,0 +1,193 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using telecomExpress.exposystems;
+using telecomExpress.bashtel;
+using telecomExpress.general;
+using telecomExpress.unicreditbank;
+
+public partial class resources_adminPanel : System.Web.UI.UserControl
+{
+    public string sAnswersPath;
+    public string _unicid_gl;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        //if (Request.QueryString["admin"] != "1") { return; }
+
+        btnSearchData.Visible = lbl_AnswersPath.Visible = btnDDL.Visible = lbl_Answers.Visible = true; lbl_AnswersPath.Text = sAnswersPath;
+        
+        if (IsPostBack) { return; }
+               
+            if (new general().sUnicid(Request.QueryString["unicid"]) == "0000000000")
+            {
+                createPath("0");
+                // ddlNumber.SelectedItem.Text = Request.QueryString["ani"].ToString();
+            }
+                
+    }
+
+    public void createPath(string _unicid_)
+    {
+        string s, sPath = "";
+        s = Request.Path;
+
+        DataTable tb = new DataTable();
+
+        if (s.IndexOf("exposystems") > 0)
+        {
+            exposystems fn = new exposystems();
+            fn.contact_info = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ANIBox")).Text;
+            fn.unicid = _unicid_;
+
+            fn.SelectDataGconfig();
+            tb = fn.tb;
+            if (_unicid_ != "0")
+            {
+                fn.createPath();
+                sPath = fn.sPath;
+            }
+        }
+
+        if (s.IndexOf("bashtel") > 0)
+        {
+            bashtel fn = new bashtel();
+            fn.CONTACT_INFO = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ANIBox")).Text;
+            fn.unicid = _unicid_;
+            fn.connid = _unicid_;
+            fn.SelectDataGconfig();
+            tb = fn.tb;
+            if (fn.tb != null)
+            {
+                if (fn.tb.Rows.Count > 0)
+                { _unicid_gl = fn.tb.Rows[0]["unicid"].ToString(); }
+                else
+                { _unicid_gl = "NAN"; }
+            }
+        }
+
+        if (s.IndexOf("unicreditbank") > 0)
+        {
+            unicreditbank fn = new unicreditbank();
+            fn.CONTACT_INFO = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ANIBox")).Text;
+            fn.unicid = _unicid_;
+            fn.connid = _unicid_;
+            fn.SelectDataGconfig();
+            tb = fn.tb;            
+            if (fn.tb.Rows.Count > 0)
+            { _unicid_gl = fn.tb.Rows[0]["unicid"].ToString(); }
+            else
+            { _unicid_gl = "NAN"; }
+        }
+
+        if (Request.QueryString["admin"] != null)
+        {
+            if ((tb == null) || (tb.Rows.Count == 0) || (sPath == "error"))
+            { 
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "reloadFrame", "alert(' Контакт не найден. Попробуйте еще раз !!!');", true); 
+                lbl_error.Text = "Контакт не найден. Попробуйте еще раз !!!"; 
+                lbl_error.Visible = true;
+                ddlNumber.DataSource = tb;
+                ddlNumber.DataBind();
+            }
+            else
+            {
+                ddlNumber.DataTextField = "fio";
+                ddlNumber.DataValueField = "unicid";
+                ddlNumber.DataSource = tb;
+                ddlNumber.DataBind();
+
+                lbl_error.Visible = false;
+            }
+        }
+        else
+        {
+            go_http();
+        }
+
+        if (tb != null)
+        {
+            tb.Dispose();
+        }
+    }
+
+    protected void btnSearchData_Click(object sender, EventArgs e)
+    {
+        createPath("0");
+        UpPanelCall.Update();
+    }
+
+    public void go_http()
+    {
+        string _ani = "", _calluuid = "", _dnis = "";
+        string _connid = "";
+
+
+        if (Request.QueryString["connid"] != null)
+        { _connid = Request.QueryString["connid"].ToString(); }
+
+       //{ if (new general().sUnicid(Request.QueryString["unicid"]) == "0000000000")
+       // { _ani = Request.QueryString["dnis"].ToString(); }
+       // else
+        if (Request.QueryString["ani"] != null)
+        { _ani = Request.QueryString["ani"].ToString(); }
+
+        if (Request.QueryString["dnis"] != null)
+        { _dnis = Request.QueryString["dnis"].ToString(); }
+
+        if (Request.QueryString["calluuid"] != null)
+        { _calluuid = Request.QueryString["calluuid"].ToString(); }
+        else
+        { _calluuid = ""; }
+
+        if (!((_ani == "") & (_dnis == "")))
+        { Response.Redirect(Request.Path + "?connid=" + _connid + "&ani=" + _ani + "&unicid=" + _unicid_gl + "&calluuid=" + _calluuid + "&dnis=" + _dnis); }
+
+    }
+
+
+    protected void btnDDLOnClick(object sender, EventArgs e)
+    {
+
+        if (ddlNumber.SelectedIndex != -1)
+        {
+            unicreditbank u = new unicreditbank(); 
+            u.SessionSelect(ddlNumber.SelectedItem.Value);
+            string _ani = "", _unicid = "", _dnis = "", _connid = "";
+
+            if (u.tb.Rows.Count > 0)
+            {
+                if (rBtn_session.SelectedItem.Value == "0")
+                {
+                    _connid = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ConnIDBox")).Text;
+                    _ani = u.tb.Rows[0]["ani"].ToString();
+                    _unicid = u.tb.Rows[0]["unicid"].ToString();
+                    _dnis = u.tb.Rows[0]["ani"].ToString();
+                }
+                else
+                {
+                    _connid = u.tb.Rows[0]["connid"].ToString();
+                    _ani = u.tb.Rows[0]["ani"].ToString();
+                    _unicid = u.tb.Rows[0]["unicid"].ToString();
+                    _dnis = u.tb.Rows[0]["ani"].ToString();
+                }
+
+                Response.Redirect(Request.Path + "?connid=" + _connid + "&ani=" + _ani + "&unicid=" + _unicid + "&dnis=" + _dnis);
+            }
+            else
+            { 
+                lbl_error.Text = "По данному абоненту нет еще сессий. Попробуйте позже"; lbl_error.Visible = true;
+                _connid = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ConnIDBox")).Text;
+                _ani = ((TextBox)Page.FindControl("ctl00$SidebarCPH$callID1$ConnIDBox")).Text; 
+                _unicid = u.tb.Rows[0]["unicid"].ToString();
+                _dnis = u.tb.Rows[0]["ani"].ToString();
+            }
+        }
+    }
+
+}

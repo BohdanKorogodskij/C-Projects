@@ -1,0 +1,489 @@
+﻿@using Entity;
+@{
+    bool isReception = ViewBag.Reception ?? false;
+    bool isReturn = ViewBag.IsReturn ?? false;
+    bool isAdmin = Session["admin"] != null;
+}
+@if (isReception)
+{
+    <link href="~/Content/Custom/bodyStyle.css" rel="stylesheet" type="text/css" />
+    //$("#bCss").css('width', '90%');
+}
+
+<style>
+
+
+    /*.ui-state-hover,
+    .ui-widget-content .ui-state-hover,
+    .ui-widget-header .ui-state-hover,
+    .ui-state-focus,
+    .ui-widget-content .ui-state-focus,
+    .ui-widget-header .ui-state-focus {
+        border: 1px solid #999999 ;
+        background: #dadada url(../../resources/jquery/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+        font-weight: normal;
+        color: #212121;
+    }*/
+
+   
+
+    .backgroundTable {
+        background: Gainsboro;
+    }
+</style>
+@if (isReception)
+{
+    <div id="ctl00_SheetCPH_survey_Up_MainPanel">
+        <div id="ctl00_SheetCPH_survey_div12">
+            <h2 id="ctl00_SheetCPH_survey_h2_rigth" class="right" style="@(isReturn ? "display:none;" : "display:block;")">
+                <a id="ctl00_SheetCPH_survey_btnRefresh" class="button" href="@Url.Action("Reception", "Home")" style="color:#005391;border-color:Black;text-decoration:none;">[ Обновить ]</a>
+                &nbsp;
+                <a id="ctl00_SheetCPH_survey_hl_edit" class="button" href="javascript:showPopWin(&#39;../resources/general/edit.aspx?kodid=1&amp;session=akzonobel&amp;scheme=orcl&amp;tbl=projects.akzonobel_question&amp;scheme1=ORCL&#39;, 800, 550, null);" style="color:#005391;border-color:Black;text-decoration:none;">
+                    [ Редактировать ]
+                </a>
+                &nbsp;
+                <a id="ctl00_SheetCPH_survey_hl_new_window" class="button" href="@Url.Action("InfoOperator", "Home", new { area = "" })" target="_blank" style="color:#005391;border-color:Black;text-decoration:none;">
+                    [Открыть в новом окне]
+                </a>
+            </h2>
+            @*по нажатию на "Далее"*@
+            <h2 id="NextClick" class="left" style="@(isReturn ? "display:block;" : "display:none;")">
+                Всего доброго, До свидания!
+            </h2>
+        </div>
+    </div>
+}
+<style type="text/css">
+    .zoom {
+        position: relative;
+        cursor: pointer;
+        left: 0;
+        top: 0;
+    }
+
+    #divBtnNextLeft {
+        width: 383px;
+    }
+
+    #div1 {
+        width: 382px;
+    }
+
+    .style1 {
+        width: 197px;
+    }
+</style>
+
+<script language="javascript" type="text/javascript">
+    function goAccordion() {
+        $(".accordion").accordion({
+            collapsible: true,
+            active: false,
+            heightStyle: "content",
+            beforeActivate: function (event, ui) {
+                if (ui.newHeader[0]) {
+                    document.getElementById('ctl00_SheetCPH_survey_stb_accordion').value = document.getElementById('ctl00_SheetCPH_survey_stb_accordion').value + ui.newHeader.text() + "$";
+                }
+            }
+        });
+
+        $(function () {
+            $('.zoom').hover(function () {
+                $(this).stop().animate({ width: "100%", height: "100%", left: "-25px", top: "-25px" }, 400);
+            },
+                function () {
+                    $(this).stop().animate({ width: "20%", height: "20%", left: "0", top: "0" }, 400);
+                });
+
+
+        });
+
+
+        if (document.getElementById('accordion') != null) { $('#accordion').accordion({ heightStyle: 'content', collapsible: true }); }
+        if (document.getElementById('accordion2') != null) { $('#accordion2').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion3') != null) { $('#accordion3').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion4') != null) { $('#accordion4').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion5') != null) { $('#accordion5').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion6') != null) { $('#accordion6').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion7') != null) { $('#accordion7').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion8') != null) { $('#accordion8').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion9') != null) { $('#accordion9').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion10') != null) { $('#accordion10').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+
+        lol();
+    }
+
+    function goQuestion(u, l, t) {
+        document.getElementById('ctl00_SheetCPH_survey_stb_next').value = document.getElementById('ctl00_SheetCPH_survey_under').value;
+        document.getElementById('ctl00_SheetCPH_survey_under').value = u;
+        document.getElementById('ctl00_SheetCPH_survey_tb_count').value = l;
+        document.getElementById('ctl00_SheetCPH_survey_lbl_backlink').value = t;
+        __doPostBack('ctl00$SheetCPH$survey$lbtnBackLink', '')
+    }
+
+    function transferCall(prefix, phone, callBack, callBackParams) {
+        try {
+            document.parentWindow.external.WACMD("TRANSFER", prefix + phone);
+        }
+        catch (e) {
+            alert("Не удается выполнить трансфер.\nНаберите номер " + prefix + (prefix.length ? "-" : "") + phone + " вручную");
+        }
+
+        if (callBack)
+            callBack(prefix, phone, callBackParams);
+    }
+
+    function TransferBarrier() {
+
+        var dtmf = '78543';
+
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk") { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim") { dtmf = "4" + dtmf; }
+        }
+
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = getPar('callsubject');
+        obj.callproject = getPar('callproject');
+        obj.projid = getPar('projid');
+
+        var connid = getPar('connid');
+
+        if (external != null && temp2[0] != null) {
+            external.ctiInitiateTransfer(connid, dtmf, obj);
+        }
+
+    }
+
+    function TransferBarrierMFO(phone) {
+
+        var dtmf = phone;
+        if (dtmf === undefined) { dtmf = "78543"; }
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk") { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim") { dtmf = "4" + dtmf; }
+        }
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = "18601";
+        obj.callproject = "18601";
+        obj.projid = "1861";
+
+        if (external != null && temp2[0] != null) {
+            external.ctiSetCurrentProject(obj.projid, obj.callsubject);
+            external.ctiInitiateTransfer('', temp2[0], obj);
+            alert('НабралИ ' + temp2[0]);
+        }
+
+    }
+
+    function lol() {
+
+        if (external != null) {
+            try {
+                var v = external.ctiGetData("", "__AGENT_ID__");
+
+                if (v != "") {
+                    if (document.getElementById('ctl00_SheetCPH_survey_lbl_slogin') != null) {
+                        document.getElementById('ctl00_SheetCPH_survey_lbl_slogin').value = v.toUpperCase();
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    }
+
+    lol();
+
+    //function lol() {
+
+    //    if (external != null) {
+    //        try {
+    //            var v = external.ctiGetData("", "__AGENT_ID__");
+
+    //            if (v != "") {
+    //                //document.getElementById('ctl00_SheetCPH_survey_questionOperator_lbl_operator_101').innerHTML = v.toUpperCase();
+    //            }
+    //        }
+    //        catch (e) {
+
+    //        }
+    //    }
+    //}
+
+    //window.onload = function lol() {
+
+    //    if (external != null) {
+    //        try {
+    //            var v = external.ctiGetData("", "__AGENT_ID__");
+    //            document.getElementById('ctl00_SidebarCPH_CallID1_UserLoginBox').value = v.toUpperCase();
+    //        }
+    //        catch (e) {
+
+    //        }
+    //    }
+
+    //}
+    ///* Функция считывает параметр по имени */
+    //function getPar(name) {
+    //    paramStr = window.location.search;
+    //    begin = paramStr.indexOf(name) + name.length + 1;
+    //    end = paramStr.indexOf('&', begin);
+    //    if (end == -1) end = paramStr.length;
+    //    return unescape(paramStr.substring(begin, end));
+    //}
+    function normalizeNumber(phone) {
+        if (!phone) return "";
+
+        phone = phone.replace(/\D/g, "").substr(-10);
+
+        if (phone.length == 10) {
+            phone = "7" + phone;
+        }
+
+        return phone;
+    }
+    function Transfer(phone) {
+        phone = phone + '';
+        phone = normalizeNumber(phone);
+        console.log(phone);
+        try {
+            window.external.TransferCall(phone, false);
+        }
+        catch (e) {
+            alert(e.message);
+        }
+        //tel = tel.split('<span class="colortext">').join("");
+        //tel = tel.split('</span>').join("");
+        //is_outb_call = 1;
+        //var dtmf = tel;
+
+        //var temp2 = new Array();
+        //temp2 = dtmf.split(',');
+
+        //obj = new Object();
+        //obj.callsubject = getPar('callsubject');
+        //obj.callproject = getPar('callproject');
+        //obj.projid = getPar('projid');
+
+        //var connid = getPar('connid');
+        ////    ctiBlindTransfer
+        //if (external != null && temp2[0] != null) {
+        //    external.ctiInitiateTransfer(connid, dtmf, obj);
+        //}
+    }
+</script>
+
+<div id="ctl00_SheetCPH_pdiv11">
+    <h2 class="left">
+        Ресепшн
+    </h2>
+
+    @if (isAdmin)
+    {
+        <a id="ctl00_SheetCPH_hl_edit_11" style="color:#005391;text-decoration:none;">
+            <img id="ctl00_SheetCPH_img_edit_11" src="@Url.Content("~/resources/img/Edit.gif")">
+            [ Редактировать ]
+        </a>
+
+        <a id="ctl00_SheetCPH_hl_insert" style="color:#005391;text-decoration:none;">
+            <img id="ctl00_SheetCPH_img_insert" src="@Url.Content("~/resources/img/help_small.png")">
+            [ Добавить новый контакт ]<br><br>
+        </a>
+    }
+
+    <br> <span id="ctl00_SheetCPH_lbl_Question_11">
+        <p>
+            <span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size: 14px;">При переводе звонка на сотрудника обязательно уточнить: фамилию, имя клиента и название компании.</span></strong></span>
+        </p>
+        <p>
+            <span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size: 14px;">Обязательно получить согласие сотрудника на соединение.</span></strong></span>
+        </p>
+        <p>
+            &nbsp;
+        </p>
+        <div id="accordion3" class="ui-accordion ui-widget ui-helper-reset" role="tablist">
+            <div class="answer ui-accordion-header ui-helper-reset ui-state-default ui-corner-all ui-accordion-icons" role="tab" id="ui-accordion-accordion3-header-0" aria-controls="ui-accordion-accordion3-panel-0" aria-selected="false" tabindex="0">
+                <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+                &nbsp;Если номер занят или не отвечает
+            </div>
+            <div class="answer ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" id="ui-accordion-accordion3-panel-0" aria-labelledby="ui-accordion-accordion3-header-0" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                &nbsp;К сожалению, номер занят (не отвечает). Оставить сообщение или Вы перезвоните позже?
+            </div>
+        </div>
+        <p>
+            <span style="font-size:16px;"><strong>Ручной трансфер:&nbsp;&nbsp;</strong></span>мобильный номер
+        </p>
+    </span>
+
+    <span id="ctl00_SheetCPH_lbl_search">Укажите текст для поиска</span>
+    &nbsp;
+
+    <input name="search" type="text" id="search" tabindex="1" class="textboxOnfocus" onkeydown="if (event.keyCode == 13) Load($('#search').val())">
+    <input type="submit" name="Search" value="Найти" id="Search" tabindex="2" class="button" style="width:100px;">
+    <br>
+
+    <span id="ctl00_SheetCPH_lbl_result">Найдено <b id="count"></b> контакт(a)(ов) </span>
+    <br><br>
+
+    <div>
+        <table cellspacing="0" cellpadding="4" rules="all" border="1" id="receptionTable" style="width:100%;border-collapse:collapse;">
+            <tbody>
+                <tr id="topTable" style="color:White;background-color:#005391;font-family:Tahoma;font-size:12px;font-weight:normal;">
+                    <th onclick="SortTable(0)" scope="col"><a style="color:White;text-decoration: underline">Фамилия и Имя</a></th>
+                    <th onclick="SortTable(1)" scope="col"><a style="color:White;text-decoration: underline">Отдел</a></th>
+                    <th onclick="SortTable(2)" scope="col"><a style="color:White;text-decoration: underline">Прямой номер</a></th>
+                    <th onclick="SortTable(3)" scope="col"><a style="color:White;text-decoration: underline">Добавочный номер</a></th>
+                    <th onclick="SortTable(4)" scope="col"><a style="color:White;text-decoration: underline">E-mail</a></th>
+                    <th onclick="SortTable(5)" scope="col"><a style="color:White;text-decoration: underline">Комментарий</a></th>
+                    @if (isAdmin)
+                    {
+                        <th scope="col"><a style="color:White;text-decoration: underline"></a></th>
+                    }
+                </tr>
+            </tbody>
+        </table>
+        @*<label id="NothingItems" style="display:none">Нет информации к данных условиям. Попробуйте еще раз ...</label>*@
+    </div>
+    <br>
+    <br>
+
+    <input type="submit" name="ctl00$SheetCPH$btn_next11" value="ДАЛЕЕ" onclick="@(isReception ? "SaveDialog()" : "RedirectOnReception()")" id="ctl00_SheetCPH_btn_next11" class="button">
+
+</div>
+
+<div id="ReceptionbtnSave" style="@(isReturn ? "display:block;" : "display:none;")">
+
+    <h2 class="left">
+
+        <input type="submit" name="ctl00$SheetCPH$btnSave" value="Сохранить разговор" onclick="window.location.href = '@Url.Action("Result", "Home", new { area="" })'" id="ctl00_SheetCPH_btnSave" class="button">
+
+    </h2>
+
+</div>
+<script>
+    function RedirectOnReception() {
+        window.location.href = '@Url.Action("Reception", "Home", new {area="", isReturn = true })';
+    }
+    function SaveNext() {
+        $.ajax({
+            contentType: 'application/json',
+            type: "GET",
+            url: '@Url.Action("NextSave", "Home")',
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
+    function SaveDialog() {
+        SaveNext();
+        $("#ReceptionbtnSave").show();
+        $("#NextClick").show();
+        $("#ctl00_SheetCPH_survey_h2_rigth").hide();
+    }
+    function UpdateTable(item) {
+        var isBackgroud = $("#receptionTable tr").length % 2 === 0;
+        var searchTxt = $("#search").val();
+        var reg = new RegExp("(?<!</?[^>]*|&[^;]*)(" + searchTxt + ")", "g");
+        @*var item = `<td>
+            &nbsp;<a id="ctl00_SheetCPH_gv_reception_ctl172_hlEditLink" href=""><img src="@Url.Content("~/img/Edit.gif")" alt =""></a>
+            &nbsp;<a id="ctl00_SheetCPH_gv_reception_ctl172_hlDeleteLink" href=""><img src="@Url.Content("~/img/delete.gif")" alt =""></a>
+        </td>`;*@
+        var admin = '@isAdmin.ToString()';
+        var attach = '';
+        if (admin === 'True') {
+            attach = `<td>
+                &nbsp;<a id="ctl00_SheetCPH_gv_reception_ctl172_hlEditLink"><img src="@Url.Content("~/resources/img/Edit.gif")" alt =""></a>
+                &nbsp;<a id="ctl00_SheetCPH_gv_reception_ctl172_hlDeleteLink"><img src="@Url.Content("~/resources/img/delete.gif")" alt =""></a>
+            </td>`;
+        }
+        var formated = `
+            <tr onmouseover="this.style.backgroundColor=&#39;Gainsboro&#39;" ${isBackgroud ? "class='backgroundTable'" : ''} onmouseout="this.style.backgroundColor=&#39;&#39;">
+                            <td>
+                                <span id="ctl00_SheetCPH_gv_reception_ctl02_lblsfio">${item.SFIO === null ? '' : item.SFIO.replace(reg, '<span class="colortext">' + searchTxt + '</span>')}</span>
+                            </td>
+                            <td>
+                                <span id="ctl00_SheetCPH_gv_reception_ctl02_lblsotdel">${item.SOTDEL === null ? '' : item.SOTDEL.replace(reg, '<span class="colortext">' + searchTxt + '</span>')}</span>
+                            </td>
+                            <td>
+                                <a id="ctl00_SheetCPH_gv_reception_ctl02_lblsnumber" ${item.SNUMBER === null ? '' : 'href="javascript:Transfer(' + item.SNUMBER.toString() + ');"'} style="color:#3476A7;font-family:Tahoma;font-size:16px;">${item.SNUMBER === null ? '' : item.SNUMBER}</a>
+                            </td>
+                            <td>
+                                <a id="ctl00_SheetCPH_gv_reception_ctl02_lblsdopnumber" href="javascript:Transfer(&#39;88077009344&#39;);" style="color:#3476A7;font-family:Tahoma;font-size:16px;">${item.SDOPNUMBER === null ? '' : item.SDOPNUMBER}</a>
+                            </td>
+                            <td>
+                                ${item.SEMAIL !== null && item.SEMAIL !== '' ?
+                `<a onclick="return ShowModal('${item.SEMAIL}');" id="ctl00_SheetCPH_gv_reception_ctl02_lblsemail" title="Отправить сообщение" style="color:#3476A7;font-family:Tahoma;font-size:16px;"><img src="@Url.Content("~/img/email.png")")"></a>` : ``}
+                            </td>
+                            <td>
+                                ${item.SCOMMENT === null ? '' : item.SCOMMENT.replace(reg, '<span class="colortext">' + searchTxt + '</span>')}
+                            </td>
+                                ${attach}
+                        </tr>
+            `;
+        $('#receptionTable').append(formated);
+    }
+    function SetNoItem() {
+        var formated = `
+            <tr>
+				<td colspan="7">
+<span id="ctl00_SheetCPH_gv_reception_ctl01_l_nothing">Нет информации к данных условиям. Попробуйте еще раз ...</span>
+            </td>
+			</tr>
+            `;
+        $('#receptionTable').append(formated);
+    }
+    function Load(txtSearch, orderBy, ad) {
+        var list = [];
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: '@Url.Action("SearchReception", "Home")',
+            data: JSON.stringify({
+                search: txtSearch,
+                orderBy: orderBy,
+                ad: ad
+            }),
+            success: function (result) {
+                list = JSON.parse(result);
+                var cou = list.length;
+                $("#count").text(cou);
+                $("#receptionTable").find("tr:gt(0)").remove();
+                if (cou > 0) {
+                    $("#topTable").show();
+                    list.forEach(function (item) {
+                        UpdateTable(item);
+                    });
+                } else {
+                    $("#topTable").hide();
+                    SetNoItem();
+                }
+            }
+        });
+    }
+    var ad = 0; //0 - ASC, 1 - DESC
+    var orderStat = 0;
+    function SortTable(orderBy) {
+        if (orderStat === orderBy) {
+            ad = ad === 0 ? 1 : 0;
+        } else {
+            orderStat = orderBy;
+            ad = 0;
+        }
+        var txtSearch = $("#search").val();
+        Load(txtSearch, orderBy, ad);
+    }
+    $("#Search").click(function () {
+        Load($("#search").val());
+    });
+    $(document).ready(function () {
+        Load();
+    });
+</script>

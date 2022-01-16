@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using telecomExpress.general;
+
+public partial class akzonobel_info : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (this.IsPostBack) { return; }
+               
+        DataTable tb = new DataTable();
+        DataRow row;
+        DataView dv = new DataView();
+
+        tb = (DataTable)Session[Request.Params["session"]];
+        dv.Table = tb;
+        dv.RowFilter = "kodid=" + Convert.ToString(Request.Params["kodid"]);
+        row = dv[0].Row;
+
+        if (row["sQuestion"] != null)
+        { lbl_sQuestion.Text = Convert.ToString(row["sQuestion"]); }
+             
+        dv.Dispose();
+        tb.Dispose();
+
+        ScriptManager.RegisterStartupScript(this, typeof(string), "UpdatePanelkey", "javascript:goAccordion();", true);
+    }
+}

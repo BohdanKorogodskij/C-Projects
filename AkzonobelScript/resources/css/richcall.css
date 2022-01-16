@@ -1,0 +1,120 @@
+body {
+    font-size  : 62.5%;
+    font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", sans-serif;
+}
+
+html, body {
+    height : 100%;
+    margin : 0;
+    padding: 0;
+}
+#page {
+    min-height: 100%;
+
+    vertical-align: top;
+}
+
+* html #page { height: 100%; }  /* IE */
+
+#content {
+    width : 100%;
+    height: 100%;
+}
+
+#dialog-callorder {
+    min-height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.dialog {
+    color: #282828;
+    font-size: 20px;
+
+    margin: 40px;
+}
+
+.filemanager-thumbnail {
+    width : 100%;
+    display: inline;
+}
+
+.filemanager-thumbnail a {
+    margin-left  : auto;
+    margin-right : auto;
+}
+
+.filemanager-description {
+    font-size : 11px;
+}
+
+#filemanager-thumbnail-list {
+    width : 100%;
+}
+
+#filemanager-thumbnail-list-caption {
+    height: 25px;
+}
+
+/* File Manager View */
+
+#filemanager-view {
+    width  : 100%;
+    height : 100%;
+
+    text-align: center;
+    background: #ffffff;
+}
+
+#filemanager-view-frame {
+    width  : 100%;
+    height : 100%;
+
+    border-collapse : collapse;
+
+    border  : 0;
+    padding : 0;
+}
+
+#filemanager-view-frame td {
+    padding : 0;
+}
+
+#filemanager-view-content-iframe {
+    border: 0;
+}
+
+#filemanager-view-image {
+    width  : 570px;
+    height : 483px;
+}
+
+#filemanager-view-image {
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#filemanager-view-text {
+    text-align : left;
+    padding    : 15px;
+    font-size  : 13px;
+    font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", sans-serif;
+}
+
+#dialog-call-order-cancel {
+    padding-top: 10px;
+    padding-left: 35px;
+}
+
+#desktop-control {
+    width  :100%;
+    height :100%;
+}
+
+#video-control, #desktop-control {
+    font-size : 11px;
+}
+
+.progress { position:relative; width:300px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; margin-left: auto; margin-right: auto }
+.bar { background-color: #333333; width:0; height:20px; border-radius: 3px; }
+.percent { position:absolute; display:inline-block; top:3px; left:48%; font-size: 12px; font-family: Arial, serif; font-weight: bold; color: #ffffff; }

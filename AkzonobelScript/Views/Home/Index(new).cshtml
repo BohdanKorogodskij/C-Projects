@@ -1,0 +1,323 @@
+
+
+@section TitleCPH { 
+AkzoNobel Россия 
+}
+
+@section ScriptCPH { 
+<link href="resources/css/pattern.css" rel="stylesheet" type="text/css" />
+    <script src="resources/js/pattern.js" type="text/javascript"></script>
+    <link href="resources/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="resources/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" rel="stylesheet" type="text/css" />
+    <script src="resources/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js" type="text/javascript"></script>
+
+    <link href="resources/jquery/themes/base/jquery.ui.core.css" rel="stylesheet" type="text/css" />
+    <link href="resources/jquery/themes/base/jquery.ui.accordion.css" rel="stylesheet" type="text/css" />
+    <link href="resources/jquery/themes/base/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+
+    <link href="resources/jquery/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css" />
+    <script src="resources/jquery/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <script src="resources/jquery/ui/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="resources/jquery/ui/jquery.ui.core.js" type="text/javascript"></script>
+    <script src="resources/jquery/ui/jquery.ui.accordion.js" type="text/javascript"></script>
+    <script src="resources/jquery/ui/jquery.ui.datepicker.js"></script>
+    <script src="resources/jquery/ui/jquery.ui.datepicker-ru.js"></script>
+
+     <link href="resources/ajax/subModal.css" rel="stylesheet" type="text/css" />
+     <script src="resources/ajax/common.js" type="text/javascript"></script>
+     <script src="resources/ajax/subModal.js" type="text/javascript"></script> 
+
+    <style type="text/css">
+        .style_h
+        {
+            height: 36px;
+            background-color: #66CCFF;
+            text-align: left;
+        }
+        .style_h2
+        {
+            height: 36px;
+            background-color: #66CCFF;
+        }
+        .colortext {
+        background-color: yellow; /* Красный цвет выделения */
+        }		
+        
+        </style> 
+}
+
+@section cphLogo { 
+<div id="divContent3" style="display:none">
+    <asp:Image runat="server" id="imgLogo" ImageUrl="~/akzonobel/img/akzonobel.gif" />
+    <br />
+    <br />  <a id="aBase" href="http://10.77.9.26/akzo/default.aspx" target="_blank" style="color: #000000">База знаний</a>
+    <br />  <a id="aBase2" href="http://www.akzonobel.com/ru/" target="_blank" style="color: #000000">Сайт компания AkzoNobel Россия</a>
+    <br /> <b>E-mail:</b> InfoMoscow@akzonobel.com
+    <br /> <b>Факс:</b> 960 28 82, телефон: (495) 960 28 90 
+    <br /> <b>Адрес компании:</b> 125445, г. Москва, ул.Смольная, д.24Д (коммерческая башня "Меридиан", 4 этаж), м. Речной вокзал 
+</div> 
+}
+
+@section SidebarCPH { 
+<div id="divContent4" style="display:none">
+    <aspUserControl:CallID id="CallID1" runat="server" bRegion="false" NewRecord="false" sCallProject="" />
+</div> 
+}
+
+@section SheetCPH { 
+<script language="javascript" type="text/javascript">
+
+    function topvisible() {
+
+        if (document.getElementById("divContent4").style.display == "none")
+        { document.getElementById("divContent4").style.display = "block"; document.getElementById("divContent3").style.display = "block"; }
+        else
+        { document.getElementById("divContent4").style.display = "none"; document.getElementById("divContent3").style.display = "none"; }
+    }
+
+    function goButtonNumber(t) {
+        document.getElementById("ctl00_SheetCPH_survey_stb_goTop").value = t;
+    }
+
+    /* Функция считывает параметр по имени */
+    function getPar(name) {
+        paramStr = window.location.search;
+        begin = paramStr.indexOf(name) + name.length + 1;
+        end = paramStr.indexOf('&', begin);
+        if (end == -1) end = paramStr.length;
+        return unescape(paramStr.substring(begin, end));
+    }
+
+    function Transfer(tel) {
+        tel = tel.split('<span class="colortext">').join("");
+        tel = tel.split('</span>').join("");
+        is_outb_call = 1;
+        var dtmf = tel;
+
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = getPar('callsubject');
+        obj.callproject = getPar('callproject');
+        obj.projid = getPar('projid');
+
+        var connid = getPar('connid');
+    //    ctiBlindTransfer
+        if (external != null && temp2[0] != null) {
+            external.ctiInitiateTransfer(connid, dtmf, obj);
+        }
+    }
+
+    function visible_div(div) {
+
+        if ((document.getElementById(div).style.display == "none") || (document.getElementById(div).style.display == ""))
+        { document.getElementById(div).style.display = "block"; }
+        else
+        { document.getElementById(div).style.display = "none"; }
+    }
+
+    function color_div(div) {
+        document.getElementById('link_number_01').style.color = '#66CCFF';
+        document.getElementById('link_number_02').style.color = '#66CCFF';
+        document.getElementById('link_number_03').style.color = '#66CCFF';
+        document.getElementById('link_number_04').style.color = '#66CCFF';
+        document.getElementById('link_number_05').style.color = '#66CCFF';
+        document.getElementById('link_number_06').style.color = '#66CCFF';
+        document.getElementById('link_number_07').style.color = '#66CCFF';
+        document.getElementById('link_number_08').style.color = '#66CCFF';
+
+        document.getElementById(div).style.color = '#800000';
+    }
+
+
+</script>
+
+<aspUserControl:updateProgress id="updateProgress" runat="server" />
+
+<asp:UpdatePanel id="Up_panel" runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+
+<h2 class="right">
+  <asp:Button id="btn4" runat="server" Text="Главная" CssClass="button" 
+        CausesValidation="false" 
+        OnClientClick="javascript:goButtonNumber('Главная;0');" 
+        OnClick="btnNextNumberOnClick" TabIndex="5" />
+ &nbsp;
+ <asp:Button id="btn3" 
+        runat="server" 
+        Text="Справка" 
+        CssClass="button" 
+        CausesValidation="false" 
+        OnClientClick="javascript:goButtonNumber('Справка;100');" 
+        OnClick="btnNextNumberOnClick" 
+        TabIndex="3"/>
+ &nbsp; 
+ <asp:Button id="btn1" runat="server" Text="Вопрос оператора" CssClass="button" CausesValidation="false" OnClientClick="javascript:goButtonNumber('Вопрос оператора;101');" OnClick="btnNextNumberOnClick" TabIndex="13"/>
+ &nbsp;
+ <asp:Button id="btn2" runat="server" Text="Ресепшн" CssClass="button" 
+        CausesValidation="false" 
+        OnClientClick="javascript:goButtonNumber('Ресепшн;11');" 
+        OnClick="btnNextNumberOnClick" TabIndex="5" />
+@*&nbsp;
+<asp:Button id="btnRefresh" runat="server" Text="Обновить Ресепшн" CssClass="button" 
+        CausesValidation="false" 
+        OnClick="btnRefreshOnClick" TabIndex="5" />*@
+ &nbsp;
+ <button class="button" role="button" onclick="javascript:topvisible();return false;">
+            <asp:Literal ID="Literal1" runat="server" Text="Убрать\Показать" />
+</button>
+</h2>
+
+<h1> <asp:Literal ID="lbl_mainTop" runat="server" Text="AkzoNobel Россия" /> </h1>
+
+<aspUserControl:survey id="survey" runat="server" sSession="akzonobel" scheme="ORCL" tbl="projects.akzonobel_question" bTema="none" bHistory="none" />
+
+<asp:Panel id="pdiv11" runat="server" Visible="false">
+
+    <h2 class="left">
+    <asp:Literal ID="question01_11" runat="server" />
+    </h2>
+
+<asp:HyperLink id="hl_edit_11" runat="server" Visible="false" Font-Overline="false" ForeColor="#005391">
+<asp:Image id="img_edit_11" runat="server" ImageUrl="~/resources/img/Edit.gif" />
+     [ Редактировать ]
+</asp:HyperLink>
+
+<asp:HyperLink id="hl_insert" runat="server" Font-Overline="false" ForeColor="#005391" NavigateUrl="javascript:showPopWin('edit_reception.aspx?kodid=0', 800, 550, null);">
+<asp:Image id="img_insert" runat="server" ImageUrl="~/resources/img/help_small.png" />
+     [ Добавить новый контакт ]<br /><br /></asp:HyperLink>
+
+<br /> <asp:Label id="lbl_Question_11" runat="server" />
+
+ <asp:Label id="lbl_search" runat="server" Text="Укажите текст для поиска" />
+    &nbsp;
+ <asp:TextBox id="stb_search" runat="server" CssClass="textboxOnfocus" onkeydown="if (event.keyCode == 13) document.getElementById('ctl00_SheetCPH_btnSearch').focus();"
+        TabIndex="1" />
+    &nbsp;<asp:Button id="btnSearch" 
+                      runat="server" 
+                      Text="Найти" 
+                      CssClass="button" 
+                      onclick="btnSearch_Click" TabIndex="2" Width="100px" />
+ <br />
+  <asp:Label id="lbl_result" runat="server" />
+ <br /><br />
+
+<asp:GridView id="gv_reception" 
+              runat="server" 
+              width="100%" 
+              OnRowDataBound="db_reception_RowDataBound" 
+              AllowPaging="false" 
+              AutoGenerateColumns="False" 
+              CellPadding="4" 
+              ShowHeader="true" 
+              AllowSorting="True"
+              OnSorting="db_Sorting">
+            <EditRowStyle BackColor="#2461BF" />
+            <AlternatingRowStyle BackColor="Gainsboro" />
+            <EmptyDataTemplate>
+<asp:label id="l_nothing" runat="server" Text="Нет информации к данных условиям. Попробуйте еще раз ..."></asp:label>
+            </EmptyDataTemplate>
+
+            <Columns>
+
+                <asp:TemplateField HeaderText="Фамилия и Имя" SortExpression="sfio">                
+                    <ItemTemplate>
+@*<asp:Label id="lblkodid" Text='@{ # Eval("kodid")}
+' runat="server" Visible="false" />*@
+@*<asp:Label id="_email_" Text='@{ # Eval("semail")}
+' runat="server" Visible="false" />*@
+@*<asp:Label id="lblsfio" Text='@{ # Eval("sfio")}
+' runat="server" />*@
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField HeaderText="Отдел" SortExpression="sotdel">
+                    <ItemTemplate>
+@*<asp:Label id="lblsotdel" Text='@{ # Eval("sotdel")}
+' runat="server" />*@
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField HeaderText="Прямой номер" SortExpression="snumber">
+                    <ItemTemplate>
+@*<asp:HyperLink id="lblsnumber" Text='@{ # Eval("snumber")}
+' runat="server" Font-Names="Tahoma" Font-Size="16px" ForeColor="#3476A7"/>*@
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField HeaderText="Добавочный номер" SortExpression="sdopnumber">
+                    <ItemTemplate>
+@*<asp:HyperLink id="lblsdopnumber" Text='@{ # Eval("sdopnumber")}
+' runat="server" Font-Names="Tahoma" Font-Size="16px" ForeColor="#3476A7" />*@
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField HeaderText="E-mail" SortExpression="semail">
+                    <ItemTemplate>
+<asp:HyperLink id="lblsemail"  ToolTip="Отправить сообщение" runat="server" Font-Names="Tahoma" Font-Size="16px" ForeColor="#3476A7" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField HeaderText="Комментарий" SortExpression="scomment">
+                    <ItemTemplate>
+@*<asp:Label id="lblscomment" Text='@{ # Eval("scomment")}
+' runat="server" />*@
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField>
+                    <ItemTemplate>
+&nbsp;<asp:HyperLink id="hlEditLink" runat="server" ImageUrl="~/resources/img/Edit.gif"  Visible="false" />
+&nbsp;<asp:HyperLink id="hlDeleteLink" runat="server" ImageUrl="~/resources/img/delete.gif" Visible="false" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+
+            <HeaderStyle BackColor="#005391" Font-Bold="False" Font-Names="Tahoma" 
+                Font-Size="12px" ForeColor="White" />
+
+       <selectedrowstyle 
+         backcolor="LightCyan"
+         forecolor="DarkBlue"
+         font-bold="true"/>  
+
+</asp:GridView>
+
+    <br />
+    <br />
+
+   <asp:Button id="btn_next11" 
+               runat="server" 
+               Text="ДАЛЕЕ" 
+               OnClick="btnNextNumberOnClick" 
+               OnClientClick="javascript:goButtonNumber('Далее;-1');" 
+               CssClass="button" 
+               ValidationGroup="pdiv11"  />
+ 
+
+</asp:Panel>
+
+<asp:Panel id="div_btnSave" runat="server" style="display: none;">
+<h2 class="left">
+
+<asp:Button id="btnSave" 
+            runat="server" 
+            Text="Сохранить разговор" 
+            OnClick="btnSaveData_Click" 
+            CssClass="button"             
+            CausesValidation="False" />
+
+</h2>
+</asp:Panel>
+
+
+</ContentTemplate>
+</asp:UpdatePanel> 
+}
+
+@section cphBottom { 
+<aspUserControl:time_work id="time_work1" runat="server"  /> 
+}
+

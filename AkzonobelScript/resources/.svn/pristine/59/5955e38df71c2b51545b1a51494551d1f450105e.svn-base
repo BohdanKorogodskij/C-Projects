@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class resources_result : System.Web.UI.UserControl
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        bool b;
+        if (Request.Params["error"] == "0")
+        { b = false; }
+        else { b = true; }
+
+        lbl_goodGreen.Visible = b;
+        lbl_errorRed.Visible = (!lbl_goodGreen.Visible);
+    }
+}

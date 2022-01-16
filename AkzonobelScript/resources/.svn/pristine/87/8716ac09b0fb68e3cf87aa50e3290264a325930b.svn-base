@@ -1,0 +1,370 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="survey.ascx.cs" Inherits="resources_survey" %>
+<%@ Register src="~/resources/reCall.ascx" TagName="reCall" TagPrefix="aspUserControl" %>
+<%@ Register src="~/resources/questionOperator.ascx" TagName="questionOperator" TagPrefix="aspUserControl" %>
+<%@ Register src="~/resources/updateProgress.ascx" TagName="updateProgress" TagPrefix="aspUserControl" %>
+
+
+
+<aspUserControl:updateProgress id="updateProgress" runat="server" UpdatePanelID="Up_MainPanel" />
+
+<asp:UpdatePanel id="Up_MainPanel" runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+
+<div runat="server" id="div_tema"><br />Тема звонка:<asp:Literal id="lbl_AnswersPath" runat="server" /><br /><br /></div>
+
+<asp:Panel id="pQuestion" runat="server">
+
+
+    <h2 class="left">
+        <asp:Literal ID="question01" runat="server" Text="«Добро пожаловать»" />
+    </h2>
+
+    <asp:Label ID="lbl_abc" runat="server" />
+
+    <asp:Label ID="lbl_Question" runat="server" />
+    <div ID="divQuestion" runat="server" style="display:block;">
+        <asp:RadioButtonList id="rBtnQuestion" 
+                             runat="server" 
+                             CssClass="tema18" 
+                             ValidationGroup="pQuestion">
+        </asp:RadioButtonList>
+        <br />
+    </div>
+
+    <asp:RequiredFieldValidator ID="rfv_Question" 
+                                runat="server" 
+                                ControlToValidate="rBtnQuestion" 
+                                ErrorMessage="Не выбран не один вариант" 
+                                ForeColor="#CC0000" 
+                                ValidationGroup="pQuestion"></asp:RequiredFieldValidator>
+    <div ID="div_reCall" runat="server" style="display:none;">
+        <aspUserControl:reCall ID="reCall1" 
+                               runat="server" 
+                               bValidator="true" 
+                               pathString="ctl00_SheetCPH_survey_reCall1_calendar1_" 
+                               prefics="613" />
+        <br />
+    </div>
+    <div ID="div_questionOperator" runat="server" style="display:none;">
+        <aspUserControl:questionOperator id="questionOperator" runat="server" />
+        <br />
+    </div>
+    <div ID="div_stb_dopinfo" runat="server" style="display:none;">
+        <asp:Label ID="lbl_dopinfo" runat="server" /><br />
+        <asp:TextBox id="stb_dopinfo" 
+                     runat="server" 
+                     CssClass="textboxOnfocus" 
+                     Height="70px" 
+                     TextMode="MultiLine" 
+                     Width="90%" />
+        <br />
+    </div>
+    <div id="div_dopinfo" style="display:none;">
+        <asp:Label ID="lbl_dopinfo_i" runat="server" />
+        <asp:Label ID="lbl_dopinfo_value" runat="server" />
+        <asp:Label ID="lbl_dopinfo_Question" runat="server" />
+        <asp:Label ID="lbl_dopinfo_type" runat="server" />
+    </div>
+    <asp:Label ID="lbl_comment" runat="server" />
+    <asp:Panel ID="pusersControl" runat="server" />
+
+        <table cellpadding="0" cellspacing="0" class="tblNext" runat="server" id="divBtnNext">
+            <tr>
+                <td class="btnNextLeft">
+
+                <asp:Button id="btnNext" 
+                            runat="server" 
+                            CssClass="button" 
+                            OnClick="btnNextOnClick" 
+                            Text="ДАЛЕЕ" 
+                            ValidationGroup="pQuestion" />
+&nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                <asp:Button id="btnBack" 
+                            runat="server" 
+                            Text="Вернуться на шаг назад" 
+                            OnClick="btnBackOnClick" 
+                            CssClass="button" 
+                            CausesValidation="False" />
+
+                </td>
+                <td class="btnNextRight">
+
+                 <asp:Button id="btnFinish" 
+                            runat="server" 
+                            Text="Завершить разговор" 
+                            OnClick="btnNextNumberOnClick" 
+                            CssClass="button" 
+                            OnClientClick="javascript:document.getElementById('ctl00_SheetCPH_survey_stb_goTop').value = 'Всего доброго, До свидания!;-1';" 
+                            CausesValidation="False" />
+
+                </td>
+            </tr>
+        </table>
+
+</asp:Panel>
+
+<asp:Panel id="pFinish" runat="server" Visible="false">
+
+
+    <h2 class="left">
+        <asp:Literal ID="question99" runat="server" Text="Всего доброго, До свидания!" />
+    </h2>
+
+<asp:Panel id="pFinishComment" runat="server" Visible="false">
+Комментарий<br />
+<asp:TextBox id="stb_FinishComment" runat="server" TextMode="MultiLine" Height="70px" Width="90%" CssClass="textboxOnfocus" />
+</asp:Panel>
+
+
+</asp:Panel>
+
+
+<div id="div12" runat="server" >
+
+<h2 class="right" runat="server" id="h2_rigth">  
+
+    <asp:LinkButton id="btnRefresh" 
+                    runat="server" 
+                    Visible="false" 
+                    OnClick="btnRefreshOnClick" 
+                    Text="[ Обновить ]" 
+                    CausesValidation="false"  
+                    CssClass="button" 
+                    Font-Overline="false" 
+                    ForeColor="#005391" 
+                    BorderColor="Black" />
+&nbsp;
+    <asp:HyperLink id="hl_edit" 
+                   runat="server" 
+                   Visible="False" 
+                   CssClass="button" 
+                   Font-Overline="False" 
+                   ForeColor="#005391" 
+                   BorderColor="Black" >
+    [ Редактировать ]</asp:HyperLink>
+&nbsp;
+    <asp:HyperLink id="hl_new_window" 
+                   runat="server" 
+                   Target="_blank" 
+                   CssClass="button" 
+                   Font-Overline="False" 
+                   ForeColor="#005391" 
+                   BorderColor="Black">    
+    [Открыть в новом окне]</asp:HyperLink>
+&nbsp;
+    <asp:LinkButton id="lbtn_txtBig"
+                    runat="server" 
+                    OnClick="btnAbigOnClick" 
+                    Text="[ A+ ]" 
+                    CausesValidation="false"  
+                    CssClass="button" 
+                    Font-Overline="false" 
+                    ForeColor="#005391" 
+                    BorderColor="Black" />
+&nbsp;
+    <asp:LinkButton id="lbtn_txtSmall" 
+                    runat="server" 
+                    OnClick="btnASmallOnClick" 
+                    Text="[ A- ]" 
+                    CausesValidation="false"  
+                    CssClass="button" 
+                    Font-Overline="false" 
+                    ForeColor="#005391" 
+                    BorderColor="Black" />
+</h2>
+
+</div>
+
+
+<div runat="server" id="div_history">
+<b>История:</b> <asp:Label id="lbl_path" runat="server" Text="" />
+</div>
+<div style="display: none;">
+
+<asp:Label id="lbl_level" runat="server" Text="" /> <br />
+<asp:Label id="lbl_level_txt" runat="server" Text="" /> <br />
+<asp:TextBox id="under" runat="server" Text="0" /> <br />
+<asp:Label id="iunder" runat="server" Text="" Font-Bold="True" /><br />
+<asp:Label id="ilevel" runat="server" Text="" Font-Bold="True" /><br />
+<asp:Label id="idivunder" runat="server" Text="" Font-Bold="True" /><br />
+<asp:TextBox id="tb_count" runat="server" Text="0" /> <br />
+<asp:TextBox id="tb_under_answer" runat="server" Text="0" /> <br />
+<asp:TextBox id="lbl_backlink" runat="server" Text="" /><br />
+<asp:LinkButton ID="lbtnBackLink" runat="server" CausesValidation="False" 
+        Text="Проверка" onclick="lbtnBackLink_Click" /><br />
+<asp:LinkButton ID="lbtnNextClick" runat="server" CausesValidation="False" 
+        Text="Проверка2" onclick="btnNextNumberOnClick" /><br />
+<asp:TextBox id="stb_div" runat="server" /><br />
+<asp:TextBox id="stb_next" runat="server" /><br />
+<asp:TextBox id="stb_type_answer" runat="server" Text="0" /><br />
+<asp:TextBox id="stb_goTop" runat="server" Text="" />
+<asp:TextBox id="stb_arrayQuestion" runat="server" Text="" />
+<asp:TextBox id="stb_formatHello" runat="server" Text="" />
+<asp:Label id="projid" runat="server" /><br />
+
+<asp:TextBox ID="stb_accordion" runat="server" /><br />
+
+<asp:TextBox ID="tb_fio" runat="server" /><br />
+<asp:TextBox ID="tb_server" runat="server" /><br />
+<asp:Label id="lbl_slogin" runat="server" /><br />
+</div>
+
+
+</ContentTemplate>
+</asp:UpdatePanel>
+
+<style type="text/css">
+.zoom{
+position:relative;
+cursor:pointer;
+left:0;
+top:0;
+}
+    #divBtnNextLeft
+    {
+        width: 383px;
+    }
+    #div1
+    {
+        width: 382px;
+    }
+    .style1
+    {
+        width: 197px;
+    }
+</style>
+
+<script language="javascript" type="text/javascript">
+
+
+    function goAccordion() {
+        $(".accordion").accordion({
+            collapsible: true,
+            active: false,
+            heightStyle: "content",
+            beforeActivate: function (event, ui) {
+                if (ui.newHeader[0]) {
+                    document.getElementById('<%= stb_accordion.ClientID %>').value = document.getElementById('<%= stb_accordion.ClientID %>').value + ui.newHeader.text() + "$";
+                }
+            }
+        });
+
+        $(function () {
+            $('.zoom').hover(function () {
+                $(this).stop().animate({ width: "100%", height: "100%", left: "-25px", top: "-25px" }, 400);
+            },
+		function () {
+		    $(this).stop().animate({ width: "20%", height: "20%", left: "0", top: "0" }, 400);
+		});
+
+		
+        });
+        
+
+        if (document.getElementById('accordion') != null) { $('#accordion').accordion({ heightStyle: 'content', collapsible: true }); }
+        if (document.getElementById('accordion2') != null) { $('#accordion2').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion3') != null) { $('#accordion3').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion4') != null) { $('#accordion4').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion5') != null) { $('#accordion5').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion6') != null) { $('#accordion6').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion7') != null) { $('#accordion7').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion8') != null) { $('#accordion8').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion9') != null) { $('#accordion9').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion10') != null) { $('#accordion10').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+
+        lol();
+    }
+
+    function goQuestion(u, l, t) {
+        document.getElementById('<%= stb_next.ClientID %>').value = document.getElementById('<%= under.ClientID %>').value;
+        document.getElementById('<%= under.ClientID %>').value = u;
+        document.getElementById('<%= tb_count.ClientID %>').value = l;
+        document.getElementById('<%= lbl_backlink.ClientID %>').value = t;        
+        __doPostBack('ctl00$SheetCPH$survey$lbtnBackLink', '')
+    }
+        
+    function transferCall(prefix, phone, callBack, callBackParams) {
+        try {
+            document.parentWindow.external.WACMD("TRANSFER", prefix + phone);
+        }
+        catch (e) {
+            alert("Не удается выполнить трансфер.\nНаберите номер " + prefix + (prefix.length ? "-" : "") + phone + " вручную");
+        }
+
+        if (callBack)
+            callBack(prefix, phone, callBackParams);
+    }
+
+    function TransferBarrier() {
+
+        var dtmf = '78543';
+
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk")
+        { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim")
+            { dtmf = "4" + dtmf; }
+        }
+
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = getPar('callsubject');
+        obj.callproject = getPar('callproject');
+        obj.projid = getPar('projid');
+
+        var connid = getPar('connid');
+
+        if (external != null && temp2[0] != null) {
+            external.ctiInitiateTransfer(connid, dtmf, obj);
+        }
+
+    }
+
+    function TransferBarrierMFO(phone) {
+
+        var dtmf = phone;
+        if (dtmf === undefined) { dtmf = "78543"; }
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk")
+        { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim")
+            { dtmf = "4" + dtmf; }
+        }
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = "18601";
+        obj.callproject = "18601";
+        obj.projid = "1861";
+
+        if (external != null && temp2[0] != null) {
+            external.ctiSetCurrentProject(obj.projid, obj.callsubject);
+            external.ctiInitiateTransfer('', temp2[0], obj);
+            alert('НабралИ ' + temp2[0]);
+        }
+
+    }
+
+    function lol() {
+
+        if (external != null) {
+            try {
+                var v = external.ctiGetData("", "__AGENT_ID__");
+
+                if (v != "") {
+                    if (document.getElementById('<%= lbl_slogin.ClientID %>') != null) {
+                        document.getElementById('<%= lbl_slogin.ClientID %>').value = v.toUpperCase();
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    }
+
+</script>

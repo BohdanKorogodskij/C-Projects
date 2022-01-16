@@ -1,0 +1,53 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="calendar.ascx.cs" Inherits="resources_calendar" %>
+
+<asp:Literal ID="lbl_HDL" runat="server" /> 
+
+<%-- <a class="tooltip" href="#">
+ <asp:Image id="imgHelpSmallHDL" runat="server" ImageUrl="~/resources/img/help_small.png" height="16" width="16" />
+ <span class="custom help"><img src="../resources/img/Help.png" alt="Помощь" height="48" width="48" />
+ <em><asp:Literal ID="lbl_Help" runat="server" Text="<%$ Resources: lbl_Help.text %>" /></em><asp:Literal ID="lbl_HelpTime" runat="server" Text="<%$ Resources: lbl_HelpTime.text %>" /></span></a>--%>
+
+ <asp:Panel id="ptimeview" runat="server">
+<br /><asp:DropDownList ID="HDL" runat="server" TabIndex="1" Width="70px">
+    <asp:ListItem>09</asp:ListItem>
+    <asp:ListItem>10</asp:ListItem>
+    <asp:ListItem>11</asp:ListItem>
+    <asp:ListItem>12</asp:ListItem>
+    <asp:ListItem>13</asp:ListItem>
+    <asp:ListItem>14</asp:ListItem>
+    <asp:ListItem>15</asp:ListItem>
+    <asp:ListItem>16</asp:ListItem>
+    <asp:ListItem>17</asp:ListItem>
+    <asp:ListItem>18</asp:ListItem>
+    <asp:ListItem>19</asp:ListItem>
+    <asp:ListItem>20</asp:ListItem>
+    <asp:ListItem>21</asp:ListItem>
+</asp:DropDownList>
+<b>:</b>
+<asp:DropDownList ID="MDL" runat="server" TabIndex="2" Width="70px">
+    <asp:ListItem>00</asp:ListItem>
+    <asp:ListItem>05</asp:ListItem>
+    <asp:ListItem>10</asp:ListItem>
+    <asp:ListItem>15</asp:ListItem>
+    <asp:ListItem>20</asp:ListItem>
+    <asp:ListItem>25</asp:ListItem>
+    <asp:ListItem>30</asp:ListItem>
+    <asp:ListItem>35</asp:ListItem>
+    <asp:ListItem>40</asp:ListItem>
+    <asp:ListItem>45</asp:ListItem>
+    <asp:ListItem>50</asp:ListItem>
+    <asp:ListItem>55</asp:ListItem>
+</asp:DropDownList>
+</asp:Panel>
+<asp:TextBox ID="dDateTime" runat="server" Width="40%" CssClass="textboxOnblur" />
+<asp:Image id="imgDateStart" runat="server" ImageUrl="~/resources/img/calendar.gif" />
+
+<%--<asp:CompareValidator runat="server" 
+                      ID="cvdDateStart" 
+                      ControlToValidate="dDateTime" 
+                      SetFocusOnError="true" 
+                      Display="Dynamic" 
+                      Operator="DataTypeCheck" 
+                      meta:resourcekey="dDateTime"
+                      Type="Date" 
+                      Text="*" />--%>

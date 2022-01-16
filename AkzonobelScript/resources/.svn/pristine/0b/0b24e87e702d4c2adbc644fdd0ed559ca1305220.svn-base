@@ -1,0 +1,113 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="questionOperator.ascx.cs" Inherits="resources_questionOperator" %>
+
+    <link href="css/pattern.css" rel="stylesheet" type="text/css" />
+    <script src="js/pattern.js" type="text/javascript"></script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+
+
+.masterPage
+{
+  width: 100%;
+}
+
+a 
+{
+    border-style: solid;
+    border-color: transparent;
+    bottom: -10px;
+    color: #FFFFFF;
+}
+    .textboxOnfocus
+{
+    border: 1px groove Black;
+    background: #EAE1EA;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+    font-fafamily: Tahoma, Verdana;
+    height: 25px;
+    width: 70%;
+} 
+</style>
+
+    <table cellpadding="0" cellspacing="0" class="masterPage">
+        <tr>
+            <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" 
+                width="30%">
+                Тема:</td>
+            <td height="37px" width="70%">
+<asp:Literal id="lbl_question" runat="server" Text="Вопрос оператора" /></td>
+        </tr>
+        <tr>
+            <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" 
+                width="30%">
+                Оператор:</td>
+            <td height="37px" width="70%">
+<asp:Label id="lbl_operator_101" runat="server" />
+            </td>
+        </tr>
+        <tr>
+            <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" 
+                width="30%">
+                Текст:</td>
+            <td height="37px" width="70%">
+<asp:TextBox id="stb_body" 
+             runat="server" 
+             CssClass="textboxOnfocus" 
+             Height="80px" 
+             TextMode="MultiLine" 
+             ValidationGroup="pQuestion"/>
+            </td>
+        </tr>
+        <tr>
+            <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" 
+                width="30%">
+                &nbsp;</td>
+            <td height="37px" width="70%">
+<asp:Button id="btnSent" 
+            runat="server" 
+            Text="Отправить" 
+            Width="200px" 
+            CssClass="button"             
+            CausesValidation="False" 
+            Visible="false" 
+            onclick="btnSent_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px; width: 100%;" 
+                width="30%" colspan="2">
+                &nbsp;<asp:Literal id="lbl_sProject" runat="server" /> </td>
+        </tr>
+    </table>
+
+<div id="div_dopinfo" style="display:none;">
+    <asp:Label id="lbl_dopinfo_questionOperator" runat="server" Font-Bold="true" Text="0" />
+    <asp:Label id="lbl_ToAddr" runat="server" />
+    <asp:Label id="lbl_sCC" runat="server" />
+    <asp:Label id="lbl_sBCC" runat="server" />
+</div>
+    
+
+<script language="javascript" type="text/javascript">
+
+    lol();
+   
+    function lol() {
+
+        if (external != null) {
+            try {
+                var v = external.ctiGetData("", "__AGENT_ID__");
+
+                if (v != "") {
+                    document.getElementById('<%= lbl_operator_101.ClientID %>').innerHTML = v.toUpperCase();
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    }
+</script>

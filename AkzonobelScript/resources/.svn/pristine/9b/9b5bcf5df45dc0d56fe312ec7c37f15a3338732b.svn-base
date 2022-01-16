@@ -1,0 +1,59 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="adminPanel.ascx.cs" Inherits="resources_adminPanel" %>
+<%@ Register src="~/resources/updateProgress.ascx" TagName="updateProgress" TagPrefix="aspUserControl" %>
+
+
+<asp:UpdateProgress ID="UpdateProgress" runat="server" AssociatedUpdatePanelID="UpPanelCall">
+<ProgressTemplate>
+<DIV align=center style="width: 400px">
+ <blockquote>
+<P><strong>
+<asp:Literal ID="l_title" runat="server" Text="Идет обработка запроса. Подождите пожалуйста" />
+</strong></P>
+<asp:Image ID="Image1" runat="server" ImageUrl="~/resources/img/5-1.gif" />
+</blockquote></DIV>
+</ProgressTemplate>
+</asp:UpdateProgress>
+
+<asp:UpdatePanel ID="UpPanelCall" runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+
+<div id="divX" class="textButton">
+<asp:Literal id="idPanel" runat="server" Text="Панель администратора"/><br />
+<asp:Button ID="btnSearchData" 
+            runat="server" 
+            CssClass="button" 
+            Text="Найти контакт"
+            Visible="false" 
+            onclick="btnSearchData_Click" 
+            CausesValidation="False" 
+            Width="270px" />
+            <br /><br />
+<asp:Literal id="lblNumber" runat="server" Text="На телефонный номер несколько контактов. <br /> Выберите из списка нужный контакт"  /><br />
+<br /><asp:DropDownList id="ddlNumber" runat="server" Width="270px" />
+<br /> <asp:Label id="lbl_error" runat="server" Text="Контакт не найден. Попробуйте еще раз !!!" ForeColor="Red" Visible="false" />
+<br /><asp:RadioButtonList 
+        id="rBtn_session" 
+        runat="server" 
+        RepeatDirection="Horizontal">
+        <asp:ListItem Value="0" Selected="True">Новая сессия</asp:ListItem>
+        <asp:ListItem Value="1">Редактировать последнию сессию</asp:ListItem>
+    </asp:RadioButtonList>
+    &nbsp;<asp:Button ID="btnDDL" 
+            runat="server" 
+            CssClass="button" 
+            Text="Отобразить"
+            Visible="false" 
+            onclick="btnDDLOnClick" 
+            CausesValidation="False" 
+            Width="270px" />
+<br /><br />
+<asp:Literal id="lbl_Answers" runat="server" Text=" Последовательность ответов пользователей: "  /><br />
+<asp:Literal id="lbl_AnswersPath" runat="server" Text=""  />
+
+</div>
+<br />
+
+</ContentTemplate>
+</asp:UpdatePanel>
+
+

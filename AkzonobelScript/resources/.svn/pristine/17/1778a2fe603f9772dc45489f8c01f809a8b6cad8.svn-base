@@ -1,0 +1,13 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="updateProgress.ascx.cs" Inherits="resources_updateProgress" %>
+
+<asp:UpdateProgress ID="UpdateProgress" runat="server">
+<ProgressTemplate>
+<DIV align=center style="width: 400px">
+ <blockquote>
+<P><strong>
+<asp:Literal ID="l_title" runat="server" Text="<%$ Resources:Title.text %>" />
+</strong></P>
+<asp:Image ID="Image1" runat="server" ImageUrl="~/resources/img/5-1.gif" />
+</blockquote></DIV>
+</ProgressTemplate>
+</asp:UpdateProgress>

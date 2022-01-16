@@ -1,0 +1,352 @@
+/**
+ * Use this file for the colors and graphics styles.
+ *
+ */
+
+body,
+.layout-caption,
+.layout-content
+{
+    background-color : #d3d3d3;
+}
+
+.layout-side
+{
+    background-color : #d3d3d3;
+}
+
+.layout-caption
+{
+    color: #282828;
+}
+
+.layout-tools
+{
+    background-color : silver;
+}
+
+.layout-tools-side
+{
+    background-color : #d3d3d3;
+}
+
+.layout-tools-content
+{
+    background  : url("images/background-black-75.png");
+}
+
+.application-logo
+{
+    background: url("images/logo.png") #d3d3d3 no-repeat center center;
+    width: 100px;
+    height: 19px;
+}
+
+.application-user .user-label
+{
+    color: #d3d3d3;
+}
+
+.application-user .user-name
+{
+    color: white;
+}
+
+.stream-video-header
+{
+    background : url("images/background-black-46.png");
+}
+
+.stream-video-control-container, .stream-video-control
+{
+    background : url("images/icon-no-video.png") no-repeat;
+}
+
+.stream-video-control-client-container, .stream-video-control-client
+{
+    background : url("images/video-not-broadcasting.png") no-repeat;
+}
+
+.stream-video-background-none{
+    background-image: none;
+}
+
+.video-no-plug
+{
+    background: none;
+}
+
+
+.icon-user
+{
+    background : url("images/icon-user.png") no-repeat;
+}
+
+.icon-user-own
+{
+    background : url("images/icon-user-own.png") no-repeat;
+}
+
+.icon-video-disabled
+{
+    background : url("images/icon-video-enabled.png") no-repeat;
+}
+
+.icon-video-enabled
+{
+    background : url("images/icon-video-disabled.png") no-repeat;
+}
+
+.bgInner{
+    background: url('images/bgInner.png') repeat-x #d3d3d3;
+}
+.authInput{ 
+    background: url('images/bgInput.png') no-repeat;
+    color: #282828;
+}
+.sessionInput{
+    background: url('images/sessionInput.png') no-repeat;
+    color: #282828;
+}
+.inputLarge{
+    background: url('images/bgInput1.png') no-repeat;
+    color: #282828;
+}
+.inputShort{
+    background: url('images/bgInputShort1.png') no-repeat;
+    color: #282828;
+}
+.logo{
+    background: url('images/logo.png') no-repeat;
+}
+.select-shadow {
+    background:url('images/select-background.png') no-repeat bottom right;
+}
+.bgTopCenter{
+    background: url('images/page_topCenter.png') repeat-x;
+}
+.bgMiddleLeft{
+    background: url('images/page_middleLeft.png') repeat-y right;
+}
+.middleRight{
+    background: url('images/page_middleRight.png') repeat-y;
+}
+.bgBottomCenter{
+    background: url('images/page_bottomCenter.png') repeat-x;
+}
+
+
+
+.bgBottomLeft{
+    background: url('images/page_bottomLeft.png') no-repeat;
+}
+.bgBottomRight{
+    background: url('images/page_bottomRight.png') no-repeat;
+}
+.bgTopLeft{
+    background: url('images/page_topLeft.png') repeat-y;
+    width: 11px;
+}
+.bgTopRight{
+    background: url('images/page_topRight.png') repeat-y;
+    width: 11px;
+}
+
+/*
+ * Messages
+ */
+
+.in-message-border-topleft { background : url("images/history/in-border-topleft.png") no-repeat; }
+.in-message-border-top { background : url("images/history/in-border-topcenter.png") repeat-x bottom; }
+.in-message-border-topright { background : url("images/history/in-border-topright.png") no-repeat; }
+.in-message-border-middleleft { background : url("images/history/in-border-middleleft.png") repeat-y; }
+.in-message-border-middle { background : #e9e9e9; }
+.in-message-border-middleright { background : url("images/history/in-border-middleright.png") repeat-y; }
+.in-message-border-bottomleft { background : url("images/history/in-border-bottomleft.png") no-repeat; }
+.in-message-border-bottom { background : url("images/history/in-border-bottomcenter.png") repeat-x bottom; }
+.in-message-border-bottomright { background : url("images/history/in-border-bottomright.png") no-repeat; }
+
+.in-message-dialog-arrow { background : url("images/history/in-border-dialog-arrow.png") no-repeat; }
+
+.in-message-username { color : #989797; }
+.in-message-text, .in-message-text a { color : #0a0a0a; text-decoration : none; }
+
+/*----------*/
+
+.out-message-border-topleft { background : url("images/history/out-border-topleft.png") no-repeat; }
+.out-message-border-top { background : url("images/history/out-border-topcenter.png") repeat-x bottom; }
+.out-message-border-topright { background : url("images/history/out-border-topright.png") no-repeat; }
+.out-message-border-middleleft { background : url("images/history/out-border-middleleft.png") repeat-y; }
+.out-message-border-middle { background : #fefefe; }
+.out-message-border-middleright { background : url("images/history/out-border-middleright.png") repeat-y; }
+.out-message-border-bottomleft { background : url("images/history/out-border-bottomleft.png") no-repeat; }
+.out-message-border-bottom { background : url("images/history/out-border-bottomcenter.png") repeat-x bottom; }
+.out-message-border-bottomright { background : url("images/history/out-border-bottomright.png") no-repeat; }
+
+.out-message-dialog-arrow { background : url("images/history/out-border-dialog-arrow.png") no-repeat; }
+
+.out-message-username { color : #e57665; }
+.out-message-text, .out-message-text a { color : #c22912; text-decoration : none; }
+
+.image-preview
+{
+    -webkit-box-shadow : 0px 0px 5px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow    : 0px 0px 5px rgba(0, 0, 0, 0.6);
+    box-shadow         : 0px 0px 5px rgba(0, 0, 0, 0.6);
+
+    background : #FEFEFE;
+}
+
+/**
+ * Buttons
+ */
+
+.button-shutdown { background : url("images/buttons/button-shutdown.png") no-repeat; }
+.button-shutdown:hover { background : url("images/buttons/button-shutdown-over.png") no-repeat; }
+.button-shutdown:active { background : url("images/buttons/button-shutdown-click.png") no-repeat; }
+
+.button-upload-file { background : url("images/buttons/button-upload-file.png") no-repeat; }
+.button-upload-file:hover { background : url("images/buttons/button-upload-file-over.png") no-repeat; }
+.button-upload-file:active { background : url("images/buttons/button-upload-file-click.png") no-repeat; }
+
+.button-upload-screenshot { background : url("images/buttons/button-upload-screenshot.png") no-repeat; }
+.button-upload-screenshot:hover { background : url("images/buttons/button-upload-screenshot-over.png") no-repeat; }
+.button-upload-screenshot:active { background : url("images/buttons/button-upload-screenshot-click.png") no-repeat; }
+
+.button-share-screen { background : url("images/buttons/button-share-screen.png") no-repeat; }
+.button-share-screen:hover { background : url("images/buttons/button-share-screen-over.png") no-repeat; }
+.button-share-screen:active { background : url("images/buttons/button-share-screen-click.png") no-repeat; }
+
+.button-share-screen-process { background : url("images/buttons/button-share-screen-process.png") no-repeat; }
+.button-share-screen-process:hover { background : url("images/buttons/button-share-screen-process-over.png") no-repeat; }
+.button-share-screen-process:active { background : url("images/buttons/button-share-screen-process-click.png") no-repeat; }
+
+.button-send { background : url("images/buttons/button-send.png") no-repeat; }
+.button-send:hover { background : url("images/buttons/button-send-over.png") no-repeat; }
+.button-send:active { background : url("images/buttons/button-send-click.png") no-repeat; }
+
+.button-dialog-save { background : url("images/buttons/button-dialog-send.png") no-repeat; }
+.button-dialog-save:hover { background : url("images/buttons/button-dialog-send-over.png") no-repeat; }
+.button-dialog-save:active { background : url("images/buttons/button-dialog-send-click.png") no-repeat; }
+
+.button-dialog-cancel { background : url("images/buttons/button-dialog-cancel.png") no-repeat; }
+.button-dialog-cancel:hover { background : url("images/buttons/button-dialog-cancel-over.png") no-repeat; }
+.button-dialog-cancel:active { background : url("images/buttons/button-dialog-cancel-click.png") no-repeat; }
+
+.button-dialog-ok { background : url("images/buttons/button-dialog-ok.png") no-repeat; }
+.button-dialog-ok:hover { background : url("images/buttons/button-dialog-ok-over.png") no-repeat; }
+.button-dialog-ok:active { background : url("images/buttons/button-dialog-ok-click.png") no-repeat; }
+
+.button-dialog-exit { background : url("images/buttons/button-dialog-exit.png") no-repeat; }
+.button-dialog-exit:hover { background : url("images/buttons/button-dialog-exit-over.png") no-repeat; }
+.button-dialog-exit:active { background : url("images/buttons/button-dialog-exit-click.png") no-repeat; }
+
+.button-phone { background : url("images/buttons/button-call.png") no-repeat; }
+.button-phone:hover { background : url("images/buttons/button-call-over.png") no-repeat; }
+.button-phone:active { background : url("images/buttons/button-call-click.png") no-repeat; }
+
+.button-ok { background : url("images/buttons/button-ok.png") no-repeat; }
+.button-ok:hover { background : url("images/buttons/button-ok-over.png") no-repeat; }
+.button-ok:active { background : url("images/buttons/button-ok-click.png") no-repeat; }
+
+.button-cancel { background : url("images/buttons/button-cancel.png") no-repeat; }
+.button-cancel:hover { background : url("images/buttons/button-cancel-over.png") no-repeat; }
+.button-cancel:active { background : url("images/buttons/button-cancel-click.png") no-repeat; }
+
+.button-start { background : url("images/buttons/button-start.png") no-repeat; }
+.button-start:hover { background : url("images/buttons/button-start-over.png") no-repeat; }
+.button-start:active { background : url("images/buttons/button-start-click.png") no-repeat; }
+
+.button-shutdown-session { background : url("images/buttons/button-shutdown-session.png") no-repeat; }
+.button-shutdown-session:hover { background : url("images/buttons/button-shutdown-session-over.png") no-repeat; }
+.button-shutdown-session:active { background : url("images/buttons/button-shutdown-session-click.png") no-repeat; }
+
+.button-sitecall { background : url("images/buttons/button-sitecall.png") no-repeat; }
+.button-sitecall:hover { background : url("images/buttons/button-sitecall-over.png") no-repeat; }
+.button-sitecall:active { background : url("images/buttons/button-sitecall-click.png") no-repeat; }
+
+.button-callback { background : url("images/buttons/button-callback.png") no-repeat; }
+.button-callback:hover { background : url("images/buttons/button-callback-over.png") no-repeat; }
+.button-callback:active { background : url("images/buttons/button-callback-click.png") no-repeat; }
+
+/* Custom input form */
+
+.form-custom-input-left div
+{
+    background : url("images/form-input-left.png");
+}
+
+.form-custom-input-center
+{
+    background : url("images/form-input-center.png") repeat-x;
+}
+
+.form-custom-input-right div
+{
+    background : url("images/form-input-right.png");
+}
+
+.preview-border-topleft
+{
+    background : url("images/preview/border-topleft.png") no-repeat;
+}
+
+.preview-border-topcenter
+{
+    background : url("images/preview/border-topcenter.png") no-repeat;
+}
+
+.preview-border-top
+{
+    background : url("images/preview/border-top-background.png") repeat-x;
+}
+
+.preview-border-topright
+{
+    background : url("images/preview/border-topright.png") no-repeat;
+}
+
+.preview-border-middleleft
+{
+    background : url("images/preview/border-middleleft-background.png") repeat-y;
+}
+
+.preview-border-middle
+{
+    background : #ffffff;
+}
+
+.preview-border-middleright
+{
+    background : url("images/preview/border-middleright-background.png") repeat-y;
+}
+
+.preview-border-bottomleft
+{
+    background : url("images/preview/border-bottomleft.png") no-repeat;
+}
+
+.preview-border-bottomcenter
+{
+    background : url("images/preview/border-bottomcenter.png") no-repeat;
+}
+
+.preview-border-bottom
+{
+    background : url("images/preview/border-bottom-background.png") repeat-x;
+}
+
+.preview-border-bottomright
+{
+    background : url("images/preview/border-bottomright.png") no-repeat;
+}
+
+.preview-border-middleright-center
+{
+    background : url("images/preview/border-middleright-center.png") no-repeat;
+}
+
+.preview-border-middleleft-center
+{
+    background : url("images/preview/border-middleleft-center.png") no-repeat;
+}

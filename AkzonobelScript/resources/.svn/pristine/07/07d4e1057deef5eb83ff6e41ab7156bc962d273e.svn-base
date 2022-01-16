@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using telecomExpress.general;
+
+public partial class resources_general_info_modal : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (this.IsPostBack) { return; }
+
+        DataTable tb = new DataTable();
+        DataRow row;
+        DataView dv = new DataView();
+
+        tb = (DataTable)Session[Request.Params["session"]];
+        dv.Table = tb;
+        dv.RowFilter = "kodid=" + Convert.ToString(Request.Params["kodid"]);
+        row = dv[0].Row;
+
+        if (row["sQuestion"] != null)
+        { lbl_sQuestion.Text = Convert.ToString(row["sQuestion"]); }
+
+        if (row["SCOMMENT"] != null)
+        { lbl_comment.Text = Convert.ToString(row["SCOMMENT"]); }
+
+        dv.Dispose();
+        tb.Dispose();
+
+        if (Request.Params["admin"] == "1")
+        {
+            hl_edit_198.Visible = true;
+            hl_edit_198.NavigateUrl = "javascript:showPopWin('edit.aspx?kodid=" + Request.Params["kodid"] + "&session=" + Request.Params["session"] + "&scheme=" + Request.Params["scheme"] + "&tbl=" + Request.Params["tbl"] + "', 800, 550, null);";
+        }
+        ScriptManager.RegisterStartupScript(this, typeof(string), "UpdatePanelkey", new general().jQueryAccordion(""), false);
+    }
+}

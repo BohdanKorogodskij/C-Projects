@@ -1,0 +1,23 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="viewSelect.aspx.cs" Inherits="resources_general_viewSelect" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+    <title>Настройка внешнего вида ответов</title>
+    <link href="../jquery/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css" />
+    <script src="../jquery/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../jpicker/jpicker-1.1.6.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+    </div>
+    </form>
+</body>
+</html>

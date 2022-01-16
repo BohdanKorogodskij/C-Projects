@@ -1,0 +1,47 @@
+﻿@using Entity;
+@{
+    IEnumerable<ReceptionBase> reception = ViewBag.Reception;
+}
+
+<br>
+
+<span id="ctl00_SheetCPH_lbl_result">Найдено <b>@reception.Count()</b> контакт(a)(ов) </span>
+<br><br>
+
+<div>
+    <table cellspacing="0" cellpadding="4" rules="all" border="1" id="ctl00_SheetCPH_gv_reception" style="width:100%;border-collapse:collapse;">
+        <tbody>
+            <tr style="color:White;background-color:#005391;font-family:Tahoma;font-size:12px;font-weight:normal;">
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$sfio&#39;)" style="color:White;">Фамилия и Имя</a></th>
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$sotdel&#39;)" style="color:White;">Отдел</a></th>
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$snumber&#39;)" style="color:White;">Прямой номер</a></th>
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$sdopnumber&#39;)" style="color:White;">Добавочный номер</a></th>
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$semail&#39;)" style="color:White;">E-mail</a></th>
+                <th scope="col"><a href="javascript:__doPostBack(&#39;ctl00$SheetCPH$gv_reception&#39;,&#39;Sort$scomment&#39;)" style="color:White;">Комментарий</a></th>
+            </tr>
+            @foreach (ReceptionBase recep in reception)
+            {
+                <tr onmouseover="this.style.backgroundColor=&#39;Gainsboro&#39;" onmouseout="this.style.backgroundColor=&#39;&#39;">
+                    <td>
+                        <span id="ctl00_SheetCPH_gv_reception_ctl02_lblsfio">@recep.SFIO</span>
+                    </td>
+                    <td>
+                        <span id="ctl00_SheetCPH_gv_reception_ctl02_lblsotdel">@recep.SOTDEL</span>
+                    </td>
+                    <td>
+                        <a id="ctl00_SheetCPH_gv_reception_ctl02_lblsnumber" href="javascript:Transfer(&#39;8495&#39;);" style="color:#3476A7;font-family:Tahoma;font-size:16px;">@recep.SNUMBER</a>
+                    </td>
+                    <td>
+                        <a id="ctl00_SheetCPH_gv_reception_ctl02_lblsdopnumber" href="javascript:Transfer(&#39;88077009344&#39;);" style="color:#3476A7;font-family:Tahoma;font-size:16px;">@recep.SDOPNUMBER</a>
+                    </td>
+                    <td>
+                        <a id="ctl00_SheetCPH_gv_reception_ctl02_lblsemail" title="Отправить сообщение" style="color:#3476A7;font-family:Tahoma;font-size:16px;">@recep.SEMAIL</a>
+                    </td>
+                    <td>
+                        @Html.Raw(recep.SCOMMENT)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

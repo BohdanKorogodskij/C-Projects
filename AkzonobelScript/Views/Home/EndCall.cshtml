@@ -1,0 +1,36 @@
+﻿<link href="~/resources/css/style.css" rel="stylesheet" type="text/css" />
+<div id="ctl00_SheetCPH_survey_pFinish">
+    <h2 class="left">
+        Всего доброго, До свидания!
+    </h2>
+</div>
+<style type="text/css">
+    .zoom {
+        position: relative;
+        cursor: pointer;
+        left: 0;
+        top: 0;
+    }
+
+    #divBtnNextLeft {
+        width: 383px;
+    }
+
+    #div1 {
+        width: 382px;
+    }
+
+    .style1 {
+        width: 197px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        console.log('@Url.Action("Result", "Home", new {area=""})');
+    });
+</script>
+<div id="ctl00_SheetCPH_div_btnSave" style="display:block;">
+    <h2 class="left">
+        <input type="submit" name="ctl00$SheetCPH$btnSave" value="Сохранить разговор" onclick="window.location.href = '@Url.Action("Result", "Home", new { area="" })'" id="ctl00_SheetCPH_btnSave" class="button">
+    </h2>
+</div>

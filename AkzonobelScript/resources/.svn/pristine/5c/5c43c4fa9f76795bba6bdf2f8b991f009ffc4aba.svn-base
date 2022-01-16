@@ -1,0 +1,324 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using telecomExpress.NewRecord;
+using System.Data;
+using System.Data.OracleClient;
+using telecomExpress;
+using telecomExpress.exposystems;
+using telecomExpress.general;
+
+
+public partial class resources_callID : System.Web.UI.UserControl
+{
+
+    public bool bRegion, NewRecord = false;
+    public string sCallProject = "";
+    public int iTypeProject = 0;
+
+    public string SearchOperator()
+    {
+        String Oper = Request.QueryString["login"];
+        if ((Oper == "") || (Oper == null))
+        {
+            if (string.IsNullOrEmpty(UserLoginBox.Text))
+            {
+                if (string.IsNullOrEmpty(Request.ServerVariables["LOGON_USER"].ToString()))
+                {
+                    Oper = "amonymous";
+                }
+                else
+                {
+                    Oper = Request.ServerVariables["LOGON_USER"].ToString().ToUpper().Substring(6); // "TEST";
+                }
+            }
+            else
+            {
+                Oper = UserLoginBox.Text;
+            }
+        }
+        return Oper;
+    }
+
+    public string SearchNewID()
+    {
+        string Id;
+        Id = Guid.NewGuid().ToString();
+        ConnIDBox.Text = Id;
+        return Id;
+    }
+
+    public string SearchANI()
+    {
+        string ANI = null;
+
+        switch (iTypeProject)
+        { 
+            case 0:
+                ANI = Request.QueryString["dnis"];
+                break;
+            case 1:
+                ANI = Request.QueryString["ani"];
+                break;
+        }
+        
+        //Преобразование номера
+         if (ANI != null)
+         {
+             if (ANI.IndexOf("+7") == 0) ANI = ANI.Substring(2);
+             if (ANI.Length > 10)
+             {
+                 if (ANI.Length == 16) ANI = ANI.Substring(6, 10);
+                 if (ANI.Length == 14) ANI = ANI.Substring(4, 10);
+                 if (ANI.Length == 13) ANI = ANI.Substring(3, 10);
+                 if (ANI.Length == 12) ANI = ANI.Substring(2, 10);
+                 if (ANI.Length == 11) ANI = ANI.Substring(1, 10);
+             }
+             else ANI = ANI.Substring(0, ANI.Length);
+         }
+
+
+        if ((ANI == "") || (ANI == null))
+        {
+            ANIBox.Enabled = true;
+            if (bRegion)
+                pRegion.Visible = true; //Нужно только при включении функции автоопределения региона
+        }
+        else
+            if (ANI.Length == 10)
+            {
+                if (new general().sUnicid(Request.QueryString["unicid"]) != "0000000000")
+                { ANIBox.Enabled = true; }
+                else
+                { ANIBox.Enabled = false; }
+
+                if (bRegion)
+                {
+                    pRegion.Visible = false;
+                    GetRegion();
+                }
+            }
+            else
+            {
+                ANIBox.Enabled = true;
+                if (bRegion)
+                {
+                    pRegion.Visible = true; //Нужно только при включении функции автоопределения региона
+                }
+            }
+        return ANI;
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        if (!IsPostBack)
+        {
+            #region Чтение параметров и установка доступности кнопок для автономной/неавтономной работы
+            String Id = Request.QueryString["connid"];
+            String CallProject = Request.QueryString["callproject"];
+            String CallSubject = Request.QueryString["callsubject"];
+            bool bCallProject;
+
+            if (CallProject != "" || CallProject != null)
+            { bCallProject = false; }
+            else
+            { bCallProject = true; }
+
+            if ((Id == "") || (Id == null))
+            {
+                Id = SearchNewID();
+                if (bCallProject)
+                    CallProj.Text = sCallProject;
+                if (NewRecord)
+                    NewRecordBtn.Visible = true;
+                //if (((Button)Page.FindControl("ctl00$SheetCPH$SaveBtn2")) != null)
+                //    ((Button)Page.FindControl("ctl00$SheetCPH$SaveBtn2")).Visible = true;
+            }
+            else
+            {
+                ConnIDBox.Text = Id;
+                if (bCallProject)
+                    CallProj.Text = CallProject;
+                if (NewRecord)
+                    NewRecordBtn.Visible = false; //Не отключаем, чтобы иметь возможность создать новую тему
+                //if (((Button)Page.FindControl("ctl00$SheetCPH$SaveBtn2")) != null)
+                //    ((Button)Page.FindControl("ctl00$SheetCPH$SaveBtn2")).Visible = false;
+            }
+            pKodVisible.Visible = bCallProject;
+            UserLoginBox.Text = SearchOperator();
+            ANIBox.Text = SearchANI();
+            lblNameOperator.Text = SelectLogin(UserLoginBox.Text);
+            #endregion
+        }
+
+    }
+
+
+
+    public string GetRegion() //Получить регион по номеру
+    {
+        string s = "";
+
+        if (ANIBox.Text.Length == 10)
+        {
+            AONRegDS.SelectParameters["def"].DefaultValue = ANIBox.Text.Substring(0, 3);
+            AONRegDS.SelectParameters["num"].DefaultValue = ANIBox.Text.Substring(3);
+            IDataReader Regs = (IDataReader)AONRegDS.Select(DataSourceSelectArguments.Empty);
+            while (Regs.Read())
+            {
+                s = Regs[0].ToString();
+            }
+        }
+        return s;
+    }
+
+
+    protected void NewRecordBtn_Click(object sender, EventArgs e)
+    {
+        new newRecord().finde(((ContentPlaceHolder)Page.Master.FindControl("ctl00$SheetCPH")).Controls);
+        SearchNewID();
+    }
+
+    protected void GetRegionBtn_Click(object sender, EventArgs e)
+    {
+        RegionBox.Text = GetRegion();
+    }
+
+    public string GetConnid()
+    {
+        return ConnIDBox.Text;
+    }
+
+    public string GetANIBox()
+    {
+        return ANIBox.Text;
+    }
+
+    public string GetNameLogin()
+    {
+        return lblNameOperator.Text;
+    }
+
+    public string GetUserLoginBox()
+    {
+        return UserLoginBox.Text;
+    }
+
+    public string sSelectLoginSQL()
+    {
+        string sql = "";
+        sql = " select siebel.w_g_user.LOGIN_NAME(:USER_LOGIN) as sName from dual ";
+        return sql;
+    }
+
+    public string SelectLogin(string users)
+    {
+        string s = "";
+
+        using (OracleConnection cn = new OracleConnection(new connectionStrings().cs("ConnectionString2")))
+            try
+            {
+                cn.Open();
+                using (OracleCommand sqlComm = new OracleCommand(sSelectLoginSQL(), cn))
+                    try
+                    {
+                        sqlComm.CommandType = CommandType.Text;
+                        sqlComm.Parameters.Add(new OracleParameter("USER_LOGIN", OracleType.NVarChar, 100)).Value = users;
+                        sqlComm.ExecuteNonQuery();
+
+                        OracleDataAdapter da = new OracleDataAdapter(sqlComm);
+                        DataTable _tb_ = new DataTable();
+                        da.Fill(_tb_);
+                        s = _tb_.Rows[0]["sName"].ToString();
+
+                        da.Dispose();
+                        _tb_.Dispose();
+                        sqlComm.Connection.Close();
+                        sqlComm.Connection.Dispose();
+                        sqlComm.Dispose();
+                    }
+                    catch (Exception err)
+                    {
+
+                    }
+                cn.Close();
+                cn.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        return s;
+    }
+
+    public string SelectLoginFIO(string users, int i)
+    {
+        string s = "";
+
+        using (OracleConnection cn = new OracleConnection(new connectionStrings().cs("ConnectionString2")))
+            try
+            {
+                cn.Open();
+                using (OracleCommand sqlComm = new OracleCommand(sSelectLoginFIOSQL(), cn))
+                    try
+                    {
+                        sqlComm.CommandType = CommandType.Text;
+                        sqlComm.Parameters.Add(new OracleParameter("USER_LOGIN", OracleType.NVarChar, 100)).Value = users;
+                        sqlComm.ExecuteNonQuery();
+
+                        OracleDataAdapter da = new OracleDataAdapter(sqlComm);
+                        DataTable _tb_ = new DataTable();
+                        da.Fill(_tb_);
+
+                        if ((_tb_.Rows.Count > 0) || (_tb_ !=null))
+                        {
+                            switch (i)
+                            {
+                                case 1:
+                                    s = _tb_.Rows[0]["A_LAST_NAME"].ToString(); break;
+                                case 2:
+                                    s = _tb_.Rows[0]["A_FIRST_NAME"].ToString(); break;
+                                case 3:
+                                    s = _tb_.Rows[0]["A_PATRONYMIC"].ToString(); break;
+                                case 4:
+                                    s = _tb_.Rows[0]["A_LAST_NAME"].ToString() + _tb_.Rows[0]["A_FIRST_NAME"].ToString() + _tb_.Rows[0]["A_PATRONYMIC"].ToString(); break;
+                                case 5:
+                                    s = _tb_.Rows[0]["A_LAST_NAME"].ToString() + _tb_.Rows[0]["A_FIRST_NAME"].ToString(); break;
+                                default:
+                                    s = _tb_.Rows[0]["sName"].ToString(); break;
+                            }
+                            _tb_.Dispose();
+                        }
+                        da.Dispose();
+                      
+                        sqlComm.Connection.Close();
+                        sqlComm.Connection.Dispose();
+                        sqlComm.Dispose();
+                    }
+                    catch (Exception err)
+                    {
+
+                    }
+                cn.Close();
+                cn.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        return s;
+    }
+
+    public string sSelectLoginFIOSQL()
+    {
+        string sql = "";
+        sql = " select * from siebel.w_k_ad_users_1@siebel l " +
+              " where upper(name) = upper(:USER_LOGIN) ";
+        return sql;
+    }
+
+}

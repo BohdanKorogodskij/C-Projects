@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class resources_general_viewQuestionOperator : System.Web.UI.Page
+{
+
+    public string Oper_ToAddr = "";
+    public string Oper_sCC = "";
+    public string Oper_sBCC = "";
+    public string Oper_sSubject = "";
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Page.IsPostBack) { return; }
+
+        string[] arrayInfo = Session["sModalQuestionOperator"].ToString().Split(',');
+        bool Oper_btnSentFlag = false;
+        Boolean.TryParse(arrayInfo[0], out Oper_btnSentFlag);
+
+        bool Oper_ModuleOper = false;
+        Boolean.TryParse(arrayInfo[5], out Oper_ModuleOper);
+
+        if (Oper_ModuleOper)
+        {
+            questionOperator.setClientModule();
+        }
+
+        questionOperator.setOperatorMail(Oper_btnSentFlag, arrayInfo[1], arrayInfo[2], arrayInfo[3], arrayInfo[4]);
+        
+    }
+}

@@ -1,0 +1,248 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+using System.Net;
+using System.IO;
+using System.Text;
+using System.Xml.Linq;
+using System.Data;
+using telecomExpress.smsSendSave;
+
+public partial class resources_sendSMS : System.Web.UI.UserControl
+{
+    public bool smsText = false;
+    public string smsNumber = "";
+    public string smsOperator = "";
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (IsPostBack) { return; }
+        divSmsThemes.Visible = smsText;
+        if (smsText) { itb_sms.Text = ((TextBox)Page.FindControl("ctl00$SheetCPH$CallID1$ANIBox")).Text; }
+    }
+
+    protected void btnSendSMS_Click(object sender, EventArgs e)
+    {
+        string s = itb_sms.Text;
+        
+        if (!smsText) { s = smsNumber; }
+
+        String Res = SendSMS_IMMO(s, smsOperator, stb_smsBoby.Text);
+        if (Res.IndexOf("ERROR") < 0)
+        {
+            lbl_smsStatus.Text = "СМС Успешно отправлено!";
+        }
+        else lbl_smsStatus.Text = "При отправке произошла ошибка - сообщите администратору - " + Res;
+
+
+        smsSendSave sms = new smsSendSave();
+        sms.connid = ((TextBox)Page.FindControl("ctl00$SheetCPH$CallID1$ConnIDBox")).Text; 
+        sms.smsNumber = itb_sms.Text;
+        sms.smsBoby = stb_smsBoby.Text;
+        sms.smsStatus = lbl_smsStatus.Text;
+        sms.user_login = ((TextBox)Page.FindControl("ctl00$SheetCPH$CallID1$UserLoginBox")).Text;
+        
+        int i = sms.InsertData();
+
+        lbl_smsStatus.Visible = true;
+        stb_smsBoby.Text = "";
+
+        Up_panel.Update();
+   
+    }
+
+    public string GetSmsNumber()
+    {
+        return itb_sms.Text;
+    }
+
+    public string GetSmsBoby()
+    {
+        return stb_smsBoby.Text;
+    }
+
+    public string GetSmsStatus()
+    {
+        return lbl_smsStatus.Text;
+    }
+             
+
+    #region SMS_IMMO
+
+    public String SendSMS_IMMO(String PhoneNum, String Src, String message)
+    {
+        string GetSessionQuery = "";
+        string Path = Request.PhysicalApplicationPath + "\\resources\\xml"; //Directory.GetCurrentDirectory();
+        //читаем из файла структуры
+        StreamReader sr01 = new StreamReader(Path + "\\GetSessionID.xml");
+        GetSessionQuery = sr01.ReadToEnd();
+        sr01.Close();
+        sr01.Dispose();
+        string SessionId = "";
+        //получить ID Сессии
+        SessionId = ParsSessionQuery(SendSMS("SOAPAction: http://soapsms.amrtelecom.ru/GetSessionID", GetSessionQuery));
+
+        string GetSMSQuery = "";
+        //получаем  структуру SendMessage;
+        StreamReader sr02 = new StreamReader(Path + "\\SendMessage.xml");
+        GetSMSQuery = sr02.ReadToEnd();
+        sr02.Close();
+        sr02.Dispose();
+
+        //Формирует список получателей 
+        ArrayList al = new ArrayList();
+        ArrayList resp = new ArrayList();
+
+        al.Add(PhoneNum);
+
+
+        resp = ParsAnswer(SendSMS("SOAPAction: http://soapsms.amrtelecom.ru/SendMessage", FillSMSXML(GetSMSQuery, SessionId, al, message, Src, "86400")));
+        //получаем структуру проверки статусов
+        /*
+        string GetStatusQuery = "";
+        StreamReader sr03 = new StreamReader(Path + "\\GetMessageState.xml");
+        GetStatusQuery = sr03.ReadToEnd();
+        sr03.Close();
+        sr03.Dispose();
+         
+        string answ = "";
+        for (int i = 0; i < resp.Count; i++)
+        {
+            GetStatusQuery = GetStatusQuery.Replace("$_session", SessionId).Replace("$_results", resp[i].ToString());
+            answ += ParsStatus(SendSMS("SOAPAction: http://soapsms.amrtelecom.ru/GetMessageState", GetStatusQuery));
+        }
+            
+        return answ;*/
+        String TMP = "";
+        for (int i = 0; i < resp.Count; i++)
+        {
+            TMP += resp[i].ToString();
+        }
+        return TMP;
+    }
+    //парсим ответ ищим ошибку или массив IDшников
+    static ArrayList ParsAnswer(string str)
+    {
+        ArrayList codes = new ArrayList();
+        TextReader tr = new StringReader(str);
+        XDocument xd = XDocument.Load(tr);
+        //ищи ошибку 
+        string Err = "";
+        foreach (var elem in xd.Root.Elements().Elements().Elements("faultstring"))
+        {
+            Err = elem.Value;
+        }
+        //если ошибки нет то заполняем массив
+        if (Err.Length == 0)
+        {
+            foreach (var elem in xd.Root.Elements().Elements().Elements().Elements())
+            {
+                codes.Add(elem.Value);
+            }
+        }
+        else codes.Add("ERROR:" + Err);
+        return codes;
+    }
+    //парсим статусы  
+    static string ParsStatus(string str)
+    {
+        TextReader tr = new StringReader(str);
+        XDocument xd = XDocument.Load(tr);
+        String answ = "";
+        foreach (var elem in xd.Root.Elements().Elements().Elements().Elements())
+        {
+            if (elem.Name == "{http://soapsms.amrtelecom.ru}StateDescription")
+            {
+                answ = elem.Value;
+            }
+        }
+        return answ;
+    }
+
+    //Востинну статис ибо мы отсылаем XML как есть
+    static string ParsSessionQuery(string str)
+    {
+        string GetSessionId = "";
+
+        TextReader tr = new StringReader(str);
+        XDocument xd = XDocument.Load(tr);
+        foreach (var elem in xd.Root.Elements().Elements().Elements())
+        {
+            GetSessionId = elem.Value;
+        }
+        return GetSessionId;
+    }
+
+    static string SendSMS(string Head, string Msg)
+    {
+        WebResponse result = null;
+        WebRequest req = null;
+        Stream newStream = null;
+        Stream ReceiveStream = null;
+        StreamReader sr2 = null;
+
+        req = WebRequest.Create("http://soapsms.amrtelecom.ru");
+
+        req.Method = "POST";
+        req.Timeout = 1200000;
+        req.Proxy = null;
+
+        req.Headers.Add(Head);
+
+        req.ContentType = "text/xml";
+
+        byte[] SomeBytes = null;
+
+        SomeBytes = Encoding.GetEncoding("utf-8").GetBytes(Msg); //, Encoding.GetEncoding(1251)));
+        req.ContentLength = SomeBytes.Length;
+
+        newStream = req.GetRequestStream();
+        newStream.Write(SomeBytes, 0, SomeBytes.Length);
+        newStream.Close();
+
+        result = req.GetResponse();
+
+        ReceiveStream = result.GetResponseStream();
+
+        Encoding encode = Encoding.GetEncoding("utf-8");
+        sr2 = new StreamReader(ReceiveStream, encode);
+
+        Char[] read = new Char[256];
+        int count = sr2.Read(read, 0, 256);
+
+        string strOut = "";
+        while (count > 0)
+        {
+            String str = new String(read, 0, count);
+            strOut += str;
+
+            count = sr2.Read(read, 0, 256);
+        }
+        return strOut;
+    }
+
+    static string FillSMSXML(string SMS, string Sess, ArrayList phones, string Subject, string Source, string TTL)
+    {
+        SMS = SMS.Replace("$_sessionid", Sess);
+        SMS = SMS.Replace("$_data", Subject);
+
+        SMS = SMS.Replace("$_delay", ""); //<DelayUntilUtc></DelayUntilUtc>
+        string Temp = "";
+        for (int i = 0; i < phones.Count; i++)
+        {
+            Temp += "<string>" + phones[i].ToString() + "</string>";
+        }
+        SMS = SMS.Replace("$_DestArray", Temp);
+        SMS = SMS.Replace("$_sourceaddress", Source);
+        SMS = SMS.Replace("$_boolean", "true");
+        SMS = SMS.Replace("$_int", TTL);
+
+        return SMS;
+    }
+
+    #endregion
+}

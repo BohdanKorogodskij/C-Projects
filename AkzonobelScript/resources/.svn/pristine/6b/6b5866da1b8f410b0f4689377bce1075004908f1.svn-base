@@ -1,0 +1,1110 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using telecomExpress;
+using telecomExpress.general;
+using telecomExpress.akzonobel;
+
+public partial class resources_survey : System.Web.UI.UserControl
+{
+
+    string sLink = "javascript:showPopWin('../resources/general/edit.aspx?kodid={0}&session={1}&scheme={2}&tbl={3}&scheme1={4}', 800, 550, null);";
+    string href = "<a style='color:Red' href=\"javascript:goQuestion('{0}','{1}','{2}');\">{3}</a>";
+    string href_open = "~/resources/general/info.aspx?kodid={0}&session={1}";
+
+    List<AnswerQuestion> listAnswerQuestion = new List<AnswerQuestion>();
+
+    string globalQuestion; //, globalOldQuestion;
+    //  переменная для создания Тема Звонка
+    string globalQuestionCall;
+
+    string[] arrayQuestion;
+    int iUnderAnswer = 0;
+
+    string sMain;
+    string sMain_txt;
+    string sPanelGo = "";
+
+    public string scheme;
+    public string tbl;
+    public string sSession;
+    public string bTema = "block";
+    public string bHistory = "block";
+    public string bNewWindow = "block";
+
+    public string userControl;
+    public bool finishComment = false;
+    public string mainJavaScript = "";
+    public string prefics = "";
+    public string scheme_second = "";
+    public bool startMenu = true;
+    
+    public bool Oper_btnSentFlag = false;
+    public string Oper_ToAddr = "";
+    public string Oper_sCC = "";
+    public string Oper_sBCC = "";
+    public string Oper_sSubject = "";
+    public bool Oper_ModuleOper = false;
+
+    public bool ButtonNext = true;
+
+    void AddListAnswerQuestion(int ikey, string svalue, string sDop)
+    {
+        for (int iList = 0; iList < listAnswerQuestion.Count; iList++)
+        {
+            if (listAnswerQuestion[iList].id == ikey)
+            {
+                listAnswerQuestion[iList].sValue = svalue;
+                listAnswerQuestion[iList].sDop = sDop;
+                return;
+            }
+        }
+
+        AnswerQuestion aq = new AnswerQuestion();
+        aq.id = ikey;
+        aq.sValue = svalue;
+        aq.sDop = sDop;
+
+        listAnswerQuestion.Add(aq);
+    }
+
+    protected void startPage()
+    {
+        sMain = "|" + string.Format(href, "0", "0", "Главная", "Главная");
+        sMain_txt = "Добрый день";
+        arrayQuestion = new string[11];
+        div_tema.Style.Add("display", bTema);
+        div_history.Style.Add("display", bHistory);
+        reCall1.prefics = prefics;
+
+        if (bNewWindow != "block")
+        {
+            hl_new_window.Style.Add("display", bNewWindow);
+        }
+        questionOperator.setOperatorMail(Oper_btnSentFlag, Oper_ToAddr, Oper_sCC, Oper_sBCC, Oper_sSubject);
+        Session.Add("sModalQuestionOperator", Oper_btnSentFlag.ToString() + ", " + Oper_ToAddr + ", " + Oper_sCC + ", " + Oper_sBCC + ", " + Oper_sSubject + ", " + Oper_ModuleOper.ToString());
+
+        pFinishComment.Visible = finishComment;
+
+        Session.Add("startMenu", startMenu);
+    }
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+ //  Session.Add(sSession, null); 
+
+        startPage();
+
+        if (IsPostBack) { return; }
+        
+        stb_formatHello.Text = new general().getLoginFIO(new general().SearchOperator(Request.QueryString["login"], Request.ServerVariables["LOGON_USER"].ToString()), 2);
+        stb_formatHello.Text = stb_formatHello.Text + ";" + stb_formatHello.Text;
+
+        SelectQuestion();
+
+        lbl_AnswersPath.Text = sMain;
+        lbl_level_txt.Text = "|Главная";
+
+        if (Request.Cookies["CookieSurvey" + Request.ServerVariables["LOGON_USER"].ToString()] != null)
+            rBtnQuestion.Font.Size = Convert.ToInt32(Request.Cookies["CookieSurvey" + Request.ServerVariables["LOGON_USER"].ToString()].Value);
+
+    }
+
+    public string getformatHello(List<string> formatHello, int i)
+    {
+        string s = "";
+        try
+        {
+            s = formatHello[i];
+        }
+        catch (Exception err)
+        {
+            s = "";
+        }
+        return s;
+    }
+
+    public string updateUrl(string txt)
+    {
+        string serverIIS = new general().GetServer(2);
+
+        if (txt.IndexOf(serverIIS) == -1)
+        {
+            txt = txt.Replace("http://mskinfiiscln01:8079", "");
+            txt = txt.Replace("http://10.40.11.41:8079", "");
+            txt = txt.Replace("http://klfappiis01:8079", "");
+
+            txt = txt.Replace("mskinfiiscln01:8079", "");
+            txt = txt.Replace("10.40.11.41:8079", "");
+            txt = txt.Replace("klfappiis01:8079", "");
+
+            if (txt.IndexOf("/documents/img/docum/") > -1)
+            {
+                txt = txt.Replace("/documents/img/docum/", "http://" + serverIIS + "/documents/img/docum/");
+            }
+
+            if (txt.IndexOf("href=\"img/") > -1)
+            {
+                txt = txt.Replace("href=\"img/", "href=\"http://" + serverIIS + "/documents/img/docum/");
+            }
+        }
+
+        return txt;
+
+    }
+
+    public void fn_formatHello(ref List<string> formatHello)
+    {
+
+        if (stb_formatHello.Text != "")
+        { formatHello.AddRange(stb_formatHello.Text.Split(';')); }
+        else
+        {
+            formatHello.Add(" ");
+            formatHello.Add(" ");
+            formatHello.Add(" ");
+        }
+
+        TextBox tb = (TextBox)Page.Master.FindControl("SheetCPH").FindControl("stb_fio");
+        if (tb != null)
+        {
+            if (tb.Text != "")
+            {
+                formatHello.Clear();
+                formatHello.AddRange(tb.Text.Split(';'));
+                for (int iformatHello = 1; iformatHello < formatHello.Count; iformatHello++)
+                {
+                    formatHello[iformatHello] = formatHello[iformatHello];
+                }
+            }
+        }
+    }
+
+    // автозамена тэгов с информации
+    public string updateHtmlBD(string _info)
+    {
+        string html = _info.Replace("&#39;", "'");
+        string html2 = "";
+        int i = 0;
+        ddl:
+        int indexOf = html.IndexOf("{ddl;");
+
+        if (indexOf > -1)
+        {
+            i = html.IndexOf("}", indexOf);
+            string[] st = (html.Substring(indexOf, i - indexOf)).Split(';');
+
+            int ifields = html.IndexOf(";", indexOf + 5);
+            string sql = st[1];
+            string fields = st[2];
+            string orderby;     
+            if (st.Length>4)
+                 { orderby = (st[4]);}
+            else { orderby = fields; }
+            string onchange ="";
+
+            if (!string.IsNullOrEmpty(st[3]))
+            {
+                if (st[3].IndexOf("this") > -1)
+                {
+                    onchange = "onchange=\"javascript:" + st[3] + ";\"";
+                }
+                else
+                {
+                    onchange = "onchange=\"javascript:" + st[3] + "(this);\"";
+                }
+            }
+
+            DataView dv = new DataView(new general().RunSqlSelect(new general()._get_scheme(Page), sql, scheme));
+            if (dv.Count != 0)
+            {
+                if (!string.IsNullOrEmpty(orderby))
+                { dv.Sort = orderby + " asc "; }
+                else { dv.Sort = fields + " asc "; }
+            }
+            
+            html2 = "<select class='textboxOnfocus'  " + onchange + " id='ddl" + fields + "'>";
+            html2 += "<option selected value=''>Выбрать вариант";
+
+            for (int y = 0; y < dv.Count; y++)
+            {
+                html2 += "<option value='" + dv[y][fields].ToString() + "'>" + dv[y][fields].ToString();
+            }
+            
+            dv.Dispose();
+
+            html2 += "</select>";
+            html = html.Remove(indexOf, i - indexOf + 1).Insert(indexOf, html2);
+        }
+
+        if (html.IndexOf("{ddl;", i) > -1) { goto ddl; }
+        return html;
+    }
+
+    // автозамена тэгов с информации
+    public string updatedtSession(string _info)
+    {
+        string html = "";
+        string sField = "";
+
+        int iRows = _info.IndexOf("{db_");
+
+        if (iRows > -1)
+        {
+            iRows = iRows + 4;
+
+            DataTable dt = (DataTable)Session["dtSession"];
+
+            if (dt != null)
+            {
+            GodbSession:
+                sField = _info.Substring(iRows, _info.IndexOf("}", iRows) - iRows);
+
+                if (dt.Columns.IndexOf(sField) > -1)
+                {
+                    _info = _info.Replace("{db_" + sField + "}", dt.Rows[0][sField].ToString());
+                }
+
+                if (_info.IndexOf("{db_") > -1)
+                { iRows = _info.IndexOf("{db_"); goto GodbSession; }
+
+            }
+        }
+
+        html = _info;
+
+        return html;
+    }
+
+    // запрос к базе данных
+    public void SelectQuestion()
+    {
+        List<string> formatHello = new List<string>();
+        string panel_name = "";
+        string s = under.Text;
+        DataView dv = new DataView();
+        Int32 underid;
+        string[] p = s.Split(';');
+        string sModalQuestionOperator = "";
+
+        bool startMenuTemp = true;
+        bool.TryParse(Session["startMenu"].ToString(), out startMenuTemp);
+
+        if (lbl_dopinfo_type.Text == "fio")
+        {
+            SetFIO();
+        }
+
+        fn_formatHello(ref formatHello);
+
+        _session_db();
+
+        if (s.LastIndexOf(";") > 0)
+        { underid = kodid_igo(p[Convert.ToInt32(tb_count.Text)]); }
+        else { underid = 0; }
+
+        Session.Add("userData", underid);
+
+        dv.Table = (DataTable)Session[sSession];
+
+        int projid = 0;
+
+        if (Int32.TryParse(Request.QueryString["projid"], out projid))
+        { projid = Convert.ToInt32(Request.QueryString["projid"]); }
+
+        dv.RowFilter = string.Format("underid = {0} and iActive = 1 and (projid like '%{1}%' or projid is null) ", underid, projid);//
+        
+        if (dv.Count != 0) 
+        {
+            dv.Sort = "orderby asc";
+        }
+
+        // фиксируем значение для истории хождения по скрипту
+        if (!(string.IsNullOrEmpty(globalQuestion)))
+        {
+            lbl_path.Text = lbl_path.Text + "|" + globalQuestion;
+            lbl_level.Text = lbl_level.Text + "|" + globalQuestion;
+            lbl_level_txt.Text = lbl_level_txt.Text + "|" + globalQuestion;
+            iunder.Text = iunder.Text + "|" + under.Text.Substring(2, under.Text.IndexOf(';'));
+            ilevel.Text = ilevel.Text + "|" + tb_count.Text;
+            idivunder.Text = idivunder.Text + "|" + underid;
+            lbl_AnswersPath.Text = lbl_AnswersPath.Text + "|" + string.Format(href, under.Text, tb_count.Text, globalQuestion, globalQuestionCall);
+        }
+
+        // добавляем признак сервера запроса
+        tb_server.Text = new general()._get_server_(Page);
+        // добавляем ФИО обращения
+        tb_fio.Text = getformatHello(formatHello, 1);
+
+        // если данных для выбора больше одного
+        if (dv.Count > 1)
+        {
+            lbtn_txtBig.Visible = true;
+            lbtn_txtSmall.Visible = true;
+        }
+        else
+        {
+            lbtn_txtBig.Visible = false;
+            lbtn_txtSmall.Visible = false;
+        }
+
+        if (dv.Count != 0) //(visible_panel(dv.Count, underid.ToString()))
+        {
+            DataRowView row = dv[0];
+
+            hl_new_window.NavigateUrl = string.Format(href_open, row["kodid"].ToString(), sSession);
+
+            if (row["iabc"].ToString() != "0")
+            { lbl_abc.Text = updateUrl(new survey().GetInfoFromABC(new general()._get_scheme(Page), Convert.ToInt32(row["iabc"].ToString()))); }
+            else { lbl_abc.Text = ""; }
+
+            lbl_Question.Text = row["sQuestion"].ToString().Replace("{operator}", getformatHello(formatHello, 0)).Replace("{fio}", getformatHello(formatHello, 1)).Replace("{dop1}", getformatHello(formatHello, 2));//
+
+            // если есть тэги для автозамены
+            lbl_Question.Text = updateHtmlBD(lbl_Question.Text);
+
+// если есть надо добавить информацию из базы данных
+            lbl_Question.Text = updatedtSession(lbl_Question.Text);
+
+            if (lbl_Question.Text != "") { lbl_Question.Text += "<br /><br />"; }
+
+            lbl_comment.Text = row["sbottom"].ToString().Replace("{operator}", getformatHello(formatHello, 0)).Replace("{fio}", getformatHello(formatHello, 1)).Replace("{dop1}", getformatHello(formatHello, 2));//
+
+            if (lbl_comment.Text != "")
+            { lbl_comment.Text = "<br />" + lbl_comment.Text + "<br /><br />"; }
+
+            if (string.IsNullOrEmpty(row["sComment"].ToString()))
+            { question01.Text = globalQuestion; }
+            else
+            { question01.Text = row["sComment"].ToString().Replace("{operator}", getformatHello(formatHello, 0)).Replace("{fio}", getformatHello(formatHello, 1)).Replace("{dop1}", getformatHello(formatHello, 2)); }
+
+            // если админ в параметрой строке то даем возможность редактирования
+            if (Request.Params["admin"] == "1")
+            {
+                hl_edit.Visible = true;
+                hl_edit.NavigateUrl = string.Format(sLink, row["kodid"].ToString(), sSession, new general()._get_scheme(Page), tbl, scheme);
+                btnRefresh.Visible = true;
+            }
+
+            rBtnQuestion.DataSource = null;
+            rBtnQuestion.DataBind();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(row["js"].ToString()))
+                {
+                    rBtnQuestion.Attributes.Add("onclick", "javascript:" + row["js"].ToString());
+                }
+                else
+                {
+                    rBtnQuestion.Attributes.Clear();
+                }
+            }
+            catch (Exception err)
+            {
+            }
+
+
+            // js на кнопку Next
+            try
+            {
+                if (!string.IsNullOrEmpty(row["js_next"].ToString()))
+                {
+                    btnNext.Attributes.Add("onclick", "javascript:" + row["js_next"].ToString());
+                }
+                else
+                {
+                    btnNext.Attributes.Clear();
+                }
+            }
+            catch (Exception err)
+            {
+            }
+
+
+            rBtnQuestion.DataTextField = "sName";
+            rBtnQuestion.DataValueField = "kodid";
+            rBtnQuestion.DataSource = dv;
+            rBtnQuestion.DataBind();
+
+            // если один ответ то скрываем его от глаз оператора
+            if (dv.Count == 1 && !Request.Url.AbsoluteUri.EndsWith("ufs.aspx"))
+            {
+                rBtnQuestion.SelectedIndex = 0;
+                divQuestion.Style.Add("display", "none");
+            }
+            else
+            {
+                divQuestion.Style.Add("display", "block");
+
+                if (iUnderAnswer != 0)
+                {
+                    for (int iU = 0; iU < dv.Count; iU++)
+                    {
+                        if (rBtnQuestion.Items[iU].Value == iUnderAnswer.ToString())
+                        { rBtnQuestion.SelectedValue = iUnderAnswer.ToString(); }
+                    }
+                }
+            }
+
+            // приравниваем если была нажата кнопка назад
+            tb_under_answer.Text = under.Text;
+
+            // в таблице поле div
+            // формат если в данной строке находиться 
+            // -1 если это перезвон
+            // -3; то это означает что это вопрос, который нужно сохранить
+            // -2; - говорит нам о том что необходимо отобразить поле для комментариев
+            // после -2; находятся два значения: номер вопроса и kodid элемента если нам нужно сохранять комментарий, иначе 0
+            // -4 -  вопрос оператора
+
+            // по умолчанию скрываем поле для комментариев
+            div_stb_dopinfo.Style.Add("display", "none");
+
+            // если нужно сформировать перезвон
+            if (row["div"].ToString() == "-1")
+            { div_reCall.Style.Add("display", "block"); reCall1.setReCall(row["kodid"].ToString()); }
+            else
+            { div_reCall.Style.Add("display", "none"); }
+
+
+            // если нужно сформировать вопрос оператора
+            if (row["div"].ToString() == "-4")
+            {
+                if (!Oper_ModuleOper)
+                {
+                    div_questionOperator.Style.Add("display", "block"); questionOperator.setQO(row["kodid"].ToString()); sModalQuestionOperator = "";
+                }
+                else
+                {
+                    div_questionOperator.Style.Add("display", "none"); sModalQuestionOperator = "";
+                }
+            }
+            else
+            { div_questionOperator.Style.Add("display", "none"); sModalQuestionOperator = ""; }
+
+
+            // если это вопрос
+            int _div = row["div"].ToString().IndexOf("-3;");
+            if (_div != -1) { lbl_dopinfo_Question.Text = "1"; } else { lbl_dopinfo_Question.Text = "0"; }
+
+            // если нужно показать комментарий
+            if (row["div"].ToString().IndexOf("-2;") > 0)
+            {
+                string[] ai = row["div"].ToString().Split(';');
+                lbl_dopinfo_i.Text = ai[2];
+                lbl_dopinfo_value.Text = ai[3];
+                lbl_dopinfo.Text = ai[4];
+                lbl_dopinfo_type.Text = ai[5];
+
+                if (lbl_dopinfo_value.Text != "0")
+                {
+                    div_stb_dopinfo.Style.Add("display", "block");
+
+                    if (iUnderAnswer != 0)
+                    {
+                        string[] sua = stb_arrayQuestion.Text.Split(';');
+                        stb_dopinfo.Text = sua[Convert.ToInt32(ai[2])];
+                    }
+                    else
+                    {
+                        stb_dopinfo.Text = "";
+                    }
+                }
+            }
+
+            pQuestion.Visible = true;
+            pFinish.Visible = false;
+
+            Panel panel = Page.Master.FindControl("SheetCPH").FindControl("div_btnSave") as Panel;
+            if (panel != null)
+            {
+                panel.Style.Add("display", "none");
+                UpdatePanel pl = Page.Master.FindControl("SheetCPH").FindControl("Up_panel") as UpdatePanel;
+                if (pl != null)
+                {
+                    pl.Update();
+                }
+            }
+
+            div12.Visible = true;
+
+            // если все кнопки не видны то прячем h2
+            if ((!btnRefresh.Visible) && (!hl_edit.Visible) && (!lbtn_txtBig.Visible) && (!lbtn_txtSmall.Visible))
+            { h2_rigth.Style.Add("display", "none"); }
+            else
+            { h2_rigth.Style.Add("display", "block"); }
+
+        }
+        else
+        {
+            panel_name = visible_panel(underid.ToString());
+        }
+
+        dv.Dispose();
+
+        // отображаем или прячем при первой загрузки 
+        if ((!startMenu) && (under.Text=="0"))
+        {
+            divQuestion.Style.Add("display", "none");
+            divBtnNext.Style.Add("display", "none");
+        }
+        else
+        {
+            divBtnNext.Style.Add("display", "block");
+        }
+
+
+        if (!ButtonNext)
+        {
+            divBtnNext.Style.Add("display", "none");
+        }
+
+        // если есть настройки по запустить javascript 
+        if (mainJavaScript != "")
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(string), "UpdatePanelkey", "javascript:goAccordion();" + string.Format(mainJavaScript, underid) + sModalQuestionOperator, true);
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(string), "UpdatePanelkey", "javascript:goAccordion();" + sModalQuestionOperator, true);
+        }
+    }
+    
+    
+
+    // загружаем из БД в сессию 
+    public void _session_db()
+    {
+        // если сессия 'умерла' восстанавливаем
+        if (Session[sSession] == null)
+        {
+            survey fn = new survey();
+            fn.select_Question(new general()._get_scheme(Page), tbl, scheme);
+            Session.Add(sSession, fn.tb);
+        }
+    }
+        
+    // определяем код ссылки перехода
+    public int kodid_igo(string kodid)
+    {
+        int igo = Convert.ToInt32(kodid);
+        DataView dv = new DataView();
+        dv.Table = (DataTable)Session[sSession];
+        dv.RowFilter = string.Format("kodid = {0} and iActive = 1", kodid);
+
+        if (dv.Count != 0)
+        {
+            DataRowView row = dv[0];
+            if (row["gounder"] is System.DBNull)
+            { igo = Convert.ToInt32(kodid); }
+            else
+            { igo = Convert.ToInt32(row["gounder"].ToString()); }
+
+        }
+
+        dv.Dispose();
+        return igo;
+    }
+    
+    // если панель то ...
+    public string visible_panel(string div)
+    {
+        bool b = true;
+        string pControl = "pdiv" + div;
+
+        Panel p = Page.Master.FindControl("SheetCPH").FindControl(pControl) as Panel;
+        // если находим панель с нужным названием
+        // отображаем ее
+        if (p != null)
+        {
+            sPanelGo = "";// new general().jQueryLinkGo("ctl00_SheetCPH_" + pControl);
+            p.Visible = true;  
+
+            pQuestion.Visible = false;
+            pFinish.Visible = false;
+
+            Panel panel = Page.Master.FindControl("SheetCPH").FindControl("div_btnSave") as Panel;
+            if (panel != null)
+            {
+                panel.Style.Add("display", "none");               
+            }
+
+            Literal l = Page.Master.FindControl("SheetCPH").FindControl("question01_" + div) as Literal;
+            if (l != null)
+            {
+                l.Text = globalQuestion;
+            }
+
+            // если есть информация в базе по данной панели то попытаемся ее отобразить
+            loadinfofroDiv(div);
+            
+            //stb_div.Text = pControl;
+           // parentPanel.Controls.Add(p);
+            b = false;
+        }
+        else
+        {
+            pQuestion.Visible = false;
+
+            Panel panel = Page.Master.FindControl("SheetCPH").FindControl("pdivFinish") as Panel;
+            if (panel != null)
+            {
+                panel.Visible = true;
+                loadinfofroDiv("102");
+            }
+            else
+            { pFinish.Visible = true; }
+            
+            panel = Page.Master.FindControl("SheetCPH").FindControl("div_btnSave") as Panel;
+            if (panel != null)
+            {
+                panel.Style.Add("display", "block");                
+            }
+
+            div12.Visible = false;
+        }
+
+        UpdatePanel pl = Page.Master.FindControl("SheetCPH").FindControl("Up_panel") as UpdatePanel;
+        if (pl != null)
+        {
+            pl.Update();
+        }
+
+        string r="";
+
+        if (!(b))
+        {
+            r = p.UniqueID.Replace("$", "_");
+        }
+        return r;
+    }
+
+    public void loadinfofroDiv(string div)
+    {
+        // если есть информация в базе по данной панели то попытаемся ее отобразить
+
+        DataView dv = new DataView();
+        _session_db();
+        dv.Table = (DataTable)Session[sSession];
+        dv.RowFilter = string.Format("kodid = {0} and iActive = 1", div);
+        if (dv.Count != 0)
+        {
+            List<string> formatHello = new List<string>();
+            fn_formatHello(ref formatHello);
+
+            DataRowView row = dv[0];
+            Label lbl = Page.Master.FindControl("SheetCPH").FindControl("lbl_Question_" + div) as Label;
+            if (lbl != null)
+            {
+                lbl.Text = row["sQuestion"].ToString().Replace("{operator}", getformatHello(formatHello, 0)).Replace("{fio}", getformatHello(formatHello, 1)).Replace("{dop1}", getformatHello(formatHello, 2)); 
+
+                Literal li = Page.Master.FindControl("SheetCPH").FindControl("question01_" + div) as Literal;
+                if (li != null)
+                {
+                    li.Text = row["scomment"].ToString().Replace("{operator}", getformatHello(formatHello, 0)).Replace("{fio}", getformatHello(formatHello, 1)).Replace("{dop1}", getformatHello(formatHello, 2)); 
+                }
+
+                lbl = Page.Master.FindControl("SheetCPH").FindControl("lbl_comment_" + div) as Label;
+                if (lbl != null)
+                {
+                    lbl.Text = row["sBottom"].ToString();
+                }
+
+                HyperLink hl = Page.Master.FindControl("SheetCPH").FindControl("hl_edit_" + div) as HyperLink;
+                if (hl != null)
+                {
+                    if (Request.Params["admin"] == "1")
+                    {
+                        hl.Visible = true;
+                        hl.NavigateUrl = string.Format(sLink, row["kodid"].ToString(), sSession, new general()._get_scheme(Page), tbl, scheme);
+                    }
+                }
+
+                // кнопка в новом окне
+                if (bNewWindow == "block")
+                {
+                    hl = Page.Master.FindControl("SheetCPH").FindControl("hl_new_window_" + div) as HyperLink;
+                    if (hl != null)
+                    {
+                        if (Request.Params["admin"] == "1")
+                        {
+                            hl.Visible = true;
+                            hl.NavigateUrl = string.Format(href_open, div, sSession);
+                        }
+                    }
+                }
+                else 
+                { 
+                     hl = Page.Master.FindControl("SheetCPH").FindControl("hl_new_window_" + div) as HyperLink;
+                     if (hl != null)
+                     {
+                         hl.Style.Add("display", bNewWindow);
+                     }
+                }
+
+                Button btn = Page.Master.FindControl("SheetCPH").FindControl("btn_next" + div) as Button;
+                if (btn != null)
+                {
+                    //btn_dalee = row["div"].ToString(); 
+                    string[] p = under.Text.Split(';');
+                    string id = p[Convert.ToInt32(tb_count.Text)];
+                    string btn_dalee;
+
+                    dv.Table = (DataTable)Session[sSession];
+                    dv.RowFilter = string.Format("kodid = {0} and iActive = 1 ", id);
+
+                    if (string.IsNullOrEmpty(dv[0]["div"].ToString()))
+                    { btn_dalee = "-1"; }
+                    else
+                    { btn_dalee = dv[0]["div"].ToString(); }
+                    dv.Dispose();
+
+                    Panel panel = Page.Master.FindControl("SheetCPH").FindControl("pdiv" + div) as Panel;
+                    if (panel != null)
+                    {
+                        btn.OnClientClick = "goButtonNumber('Далее;" + btn_dalee + "');";
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void NextGo(string sValue, string sText)
+    {
+
+        iUnderAnswer = 0;
+        int i = Convert.ToInt32(tb_count.Text);
+        i++;
+
+
+        if (sValue != null)
+        {
+            globalQuestion = sText;
+            under.Text = under.Text + ";" + sValue;
+            tb_count.Text = i.ToString();
+            tb_under_answer.Text = tb_under_answer.Text + ";" + sValue;
+
+            if (lbl_dopinfo_Question.Text == "1")
+            {
+                if (!(string.IsNullOrEmpty(stb_arrayQuestion.Text)))
+                { arrayQuestion = stb_arrayQuestion.Text.Split(';'); }
+
+                arrayQuestion[Convert.ToInt32(lbl_dopinfo_i.Text)] = sText;
+
+                AddListAnswerQuestion(Convert.ToInt32(lbl_dopinfo_i.Text), sText,"");
+                // если есть возможность добавить комментарий
+                if (stb_dopinfo.Visible)
+                {
+                    // если выбран ответ тот который доп.информацию
+                    if (sValue == lbl_dopinfo_value.Text)
+                    {
+                        arrayQuestion[Convert.ToInt32(lbl_dopinfo_i.Text)] = stb_dopinfo.Text;
+
+                        AddListAnswerQuestion(Convert.ToInt32(lbl_dopinfo_i.Text), stb_dopinfo.Text, sText);
+                    }
+                }
+                stb_arrayQuestion.Text = string.Join(";", arrayQuestion);
+            }
+        }
+
+        btnBack.Enabled = true;
+
+        SelectQuestion();
+
+        Up_MainPanel.Update();
+
+    }
+    
+    protected void btnFinishOnClick(object sender, EventArgs e)
+    {
+        string[] s = under.Text.Split(';');
+        int y = Convert.ToInt32(tb_count.Text);
+
+        Panel p = Page.Master.FindControl("SheetCPH").FindControl("survey").FindControl("pdiv" + s[y]) as Panel;
+        if (p != null)
+        { p.Visible = false; stb_next.Text = ""; }
+
+        int i = Convert.ToInt32(tb_count.Text);
+        i++;
+        tb_count.Text = i.ToString();
+        under.Text = under.Text + ";-1";
+
+        btnBack.Enabled = true;
+
+        pQuestion.Visible = false;
+        pFinish.Visible = true;
+
+        Panel panel = Page.Master.FindControl("SheetCPH").FindControl("div_btnSave") as Panel;
+        if (panel != null)
+        { 
+            panel.Style.Add("display", "block");
+            UpdatePanel pl = Page.Master.FindControl("SheetCPH").FindControl("Up_panel") as UpdatePanel;
+            if (pl != null)
+            {
+                pl.Update();
+            }
+        }
+
+        div12.Visible = false;
+        Up_MainPanel.Update();
+
+    }
+    
+    // формируем "Тему звонка"
+    public void BackLink()
+    {
+        string s = under.Text;
+        int y = under.Text.ToString().IndexOf(';');
+
+        if (y != -1)
+        {
+            under.Text = s.Substring(0, s.LastIndexOf(';'));
+            tb_count.Text = (Convert.ToInt32(tb_count.Text) - 1).ToString();
+            globalQuestion = (lbl_level.Text.Split('|') as string[])[Convert.ToInt32(tb_count.Text)];
+
+            string dopinfo_reCall = s.Replace(under.Text + ";", "");
+            iUnderAnswer = Convert.ToInt32(dopinfo_reCall);
+            if (dopinfo_reCall == reCall1.getStringReCall())
+            { reCall1.setReCall("0"); }
+
+            hl_edit.Visible = false;
+
+            y = Convert.ToInt32(tb_count.Text);
+            y = y + 1;
+
+            string st = lbl_AnswersPath.Text;
+            string path = "";
+            string path_txt = "";
+            string question = "";
+
+            string[] p = st.Split('|');
+            string[] p_t = lbl_level_txt.Text.Split('|');
+
+            for (int i = 1; i <= y; i++)
+            {
+                path = path + "|" + p[i];
+                path_txt = path_txt + "|" + p_t[i];
+                question = p_t[i];
+
+            }
+
+            if (path != "")
+            {
+                lbl_AnswersPath.Text = path; lbl_level_txt.Text = path_txt;
+                if (question != "Главная") { question01.Text = question; } else { question01.Text = sMain_txt; }
+            }
+            else
+            { lbl_AnswersPath.Text = sMain; lbl_level_txt.Text = "|Главная"; }
+
+
+        }
+        else
+        { btnBack.Enabled = false; lbl_AnswersPath.Text = sMain; lbl_level_txt.Text = "|Главная"; }
+
+        SelectQuestion();
+
+        Up_MainPanel.Update();
+    }
+
+    // нажали на кнопку Вернуться на шаг назад
+    protected void btnBackOnClick(object sender, EventArgs e)
+    {
+        BackLink();
+    }
+    
+    // нажали на кнопку Далее
+    protected void btnNextOnClick(object sender, EventArgs e)
+    {
+        globalQuestionCall = question01.Text;
+        NextGo(rBtnQuestion.SelectedValue, rBtnQuestion.SelectedItem.Text);
+    }
+
+    // если нам нужно перейти к любой части сценария
+    // базе в поле underid указываем уникальный код перехода
+    public void NextNumber()
+    {
+        string[] p = stb_goTop.Text.Split(';');
+
+        if (!(string.IsNullOrEmpty(p[0])))
+        {
+            NextGo(p[1], p[0]);
+        }
+    }
+
+    // переход к нужной функции
+    protected void btnNextNumberOnClick(object sender, EventArgs e)
+    {
+        NextNumber();
+    }
+
+
+    public void BackNumber()
+    {    
+        BackLink();
+    }
+
+    protected void lbtnBackLink_Click(object sender, EventArgs e)
+    {
+        BackNumber();
+    }
+
+    protected void CookieFiles()
+    {
+        HttpCookie MyGreatCookie = new HttpCookie("CookieSurvey" + Request.ServerVariables["LOGON_USER"].ToString());
+        MyGreatCookie.Value = rBtnQuestion.Font.Size.Unit.Value.ToString();
+        MyGreatCookie.Expires = DateTime.Now.AddDays(100);
+        Response.Cookies.Add(MyGreatCookie);
+    }
+
+    protected void btnAbigOnClick(object sender, EventArgs e)
+    {
+        if ((Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) == null) || ((Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) == 0))){ rBtnQuestion.Font.Size = 12; }
+        if (Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) > 50) { rBtnQuestion.Font.Size = 50; }
+        rBtnQuestion.Font.Size = Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) + 2;
+        CookieFiles();
+        Up_MainPanel.Update();
+    }
+
+    protected void btnASmallOnClick(object sender, EventArgs e)
+    {
+        if ((Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) == null) || ((Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) == 0))) { rBtnQuestion.Font.Size = 10; }
+        if (Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) < 8) { rBtnQuestion.Font.Size = 8; }
+        rBtnQuestion.Font.Size = Convert.ToInt32(rBtnQuestion.Font.Size.Unit.Value) - 2;
+        CookieFiles();
+        Up_MainPanel.Update();
+    }
+
+    public string GetDataInfo(string info)
+    {
+        string r = "";
+        switch (info)
+        {
+            case "ufs_callhistory":
+                r = lbl_path.Text;
+                break;
+            case "ufs_temp_under":
+                r = under.Text;
+                break;
+            case "ufs_temp_count":
+                r = tb_count.Text;
+                break;
+            case "ufs_temp_arrayquestion":
+                r = stb_arrayQuestion.Text;
+                break;
+            case "ufs_temp_answerspath":
+                r = tb_under_answer.Text;
+                break;
+            case "ufs_temp_level_txt":
+                r = lbl_level_txt.Text;
+                break;
+            case "iunder":
+                r = iunder.Text;
+                break;
+            case "lbl_level":
+                r = lbl_level.Text;
+                break;
+            case "ilevel":
+                r = ilevel.Text;
+                break;
+            default: r = ""; break;
+        }
+        return r;
+    }
+
+    protected void btnRefreshOnClick(object sender, EventArgs e)
+    {
+        Session[sSession] = null;
+        SelectQuestion();
+        Up_MainPanel.Update();
+    }
+
+    public string GetReCallNumber()
+    {
+        return reCall1.GetReCallNumber();
+    }
+
+    public DateTime GetReCallDateTime()
+    {
+        return reCall1.GetReCallDateTime();
+    }
+
+    public string GetReCallComment()
+    {
+        return reCall1.GetReCallComment();
+    }
+
+    public string GetReCallCONTACT_INFO()
+    {
+        return reCall1.GetReCallCONTACT_INFO();
+    }
+
+    public bool GetReCall_bool()
+    {
+        return reCall1.getReCall();
+    }
+
+    public string GetAccordion()
+    {
+        return stb_accordion.Text;
+    }
+
+    public void SetFIO()
+    {
+        string[] st = stb_formatHello.Text.Split(';');
+        stb_formatHello.Text = st[0] + ";" + stb_dopinfo.Text;
+    }
+
+    public string Getlbl_path()
+    {
+        return lbl_path.Text;
+    }
+
+    public string GetUnder()
+    {
+        return under.Text;
+    }
+
+    public int Gettb_count()
+    {
+        return Convert.ToInt32(tb_count.Text);
+    }
+
+    public string Getstb_arrayQuestion()
+    {
+        return stb_arrayQuestion.Text;
+    }
+
+    public string Getlbl_AnswersPath()
+    {
+        return lbl_AnswersPath.Text;
+    }
+
+    public string Getlbl_level_txt()
+    {
+        return lbl_level_txt.Text;
+    }
+
+    public string GetFIO()
+    {
+        return tb_fio.Text;
+    }
+
+    public string GetQuestionOperator()
+    {
+        return questionOperator.GetBoby();
+    }
+
+    public List<AnswerQuestion> GetAnswerQuestion()
+    {        
+        return listAnswerQuestion;
+    }
+
+}

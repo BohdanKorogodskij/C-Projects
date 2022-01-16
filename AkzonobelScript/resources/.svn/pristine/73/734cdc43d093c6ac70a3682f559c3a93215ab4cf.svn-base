@@ -1,0 +1,96 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="edit.aspx.cs" Inherits="telemarket_edit" ValidateRequest="false"  %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+    <title></title>
+      
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <script src="../js/pattern.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        .style1
+        {
+            width: 100%;
+            height: 343px;
+        }
+        .style2
+        {
+            height: 299px;
+        }
+        .style3
+        {
+            height: 64px;
+        }
+        .style4
+        {
+            height: 49px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+        <table cellpadding="0" cellspacing="0" class="style1">
+            <tr>
+                <td class="style3">
+<br /> Заголовок вопроса<br />
+<asp:TextBox id="stb_sComment" runat="server" CssClass="textboxOnfocus" />
+                </td>
+            </tr>
+            <tr>
+                <td class="style2">
+<br /> Описание вопроса <br />
+<ckeditor:ckeditorcontrol id="stb_sTxt" 
+                          runat="server" 
+                          Language="ru" 
+                          Width="98%">
+                          </ckeditor:ckeditorcontrol>   
+                </td>
+            </tr>
+            <tr>
+                <td class="style2">
+                <br /> Нижняя часть информации<br />
+<ckeditor:ckeditorcontrol id="stb_sTxt_bottom" 
+                          runat="server" 
+                          Language="ru" 
+                          Width="98%">
+                          </ckeditor:ckeditorcontrol>   
+                </td>
+            </tr>
+            <tr>
+                <td class="style4">
+                <br /> Ссылка на базу знаний<br />
+<asp:TextBox id="stb_iabc" runat="server" CssClass="textboxOnfocus" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+<br /> <br /> 
+<asp:Button id="btnSave" 
+            runat="server" 
+            Text="Сохранить"  
+            CssClass="button"            
+            OnClick="btnSaveOnClick" 
+            OnClientClick="javascript:window.top.hidePopWin();" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<asp:Button id="btnCancel" 
+            runat="server" 
+            Text="Отмена" 
+            CssClass="button"
+            OnClientClick="javascript:window.top.hidePopWin();" 
+            CausesValidation="false" />
+                </td>
+            </tr>
+        </table>
+    
+    </div>
+    </form>
+</body>
+</html>

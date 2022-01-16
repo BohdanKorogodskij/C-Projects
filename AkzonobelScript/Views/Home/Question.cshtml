@@ -1,0 +1,513 @@
+﻿@{ 
+    bool isReception = ViewBag.Reception ?? false;
+    bool isRedirectToRecep = Session["AlreadyReception"] != null && !isReception;
+    bool isAdmin = Session["admin"] != null;
+}
+<div id="ctl00_SheetCPH_survey_Up_MainPanel">
+
+
+    <div id="ctl00_SheetCPH_survey_div_tema" style="display:none;"><br>Тема звонка:|<a style="color:Red" href="javascript:goQuestion(&#39;0&#39;,&#39;0&#39;,&#39;Главная&#39;);">Главная</a>|<a style="color:Red" href="javascript:goQuestion(&#39;0;101&#39;,&#39;1&#39;,&#39;Вопрос оператора&#39;);"></a><br><br></div>
+
+    <div id="ctl00_SheetCPH_survey_pQuestion">
+
+
+
+        <h2 class="left">
+            Вопрос оператора
+        </h2>
+
+        <span id="ctl00_SheetCPH_survey_lbl_abc"></span>
+
+        <span id="ctl00_SheetCPH_survey_lbl_Question"></span>
+        <div id="ctl00_SheetCPH_survey_divQuestion" style="display:none;">
+            <table id="ctl00_SheetCPH_survey_rBtnQuestion" class="tema18" style="font-size:12pt;">
+                <tbody>
+                    <tr>
+                        <td><input id="ctl00_SheetCPH_survey_rBtnQuestion_0" type="radio" name="ctl00$SheetCPH$survey$rBtnQuestion" value="13" checked="checked"><label for="ctl00_SheetCPH_survey_rBtnQuestion_0">Вопрос оператора</label></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
+        <span id="ctl00_SheetCPH_survey_rfv_Question" style="color:#CC0000;visibility:hidden;">Не выбран не один вариант</span>
+        <div id="ctl00_SheetCPH_survey_div_reCall" style="display:none;">
+
+
+
+            <script language="javascript" type="text/javascript">
+                function copyNumber() {
+                    var s = "ctl00_SidebarCPH_CallID1_ANIBox";
+                    var s2 = "ctl00_SheetCPH_reCall_itb_RECALLNUM";
+                    var t = document.getElementById(s);
+                    var t2 = document.getElementById(s2);
+                    t2.value = t.value;
+                }
+            </script>
+
+            <br>
+            Укажите номер телефона для перезвона
+
+
+            <br> <input name="ctl00$SheetCPH$survey$reCall1$itb_RECALLNUM" type="text" maxlength="10" id="ctl00_SheetCPH_survey_reCall1_itb_RECALLNUM" class="textboxOnblur" placeholder="Укажите номер">
+            <div style="display:none;">
+                <input id="btn_copy" class="button" type="button" onclick="javascript:copyNumber();return false;" value="Скопировать номер">
+            </div>
+            <br> <div style="color: #CC0000">Формат ввода 10 цифр без 8</div>
+            <br> <span id="ctl00_SheetCPH_survey_reCall1_rev_RECALLNUM" style="color:#CC0000;display:none;">Номер для перезвона указан не верно</span>
+
+            <br> Укажите дату перезвона
+
+
+
+            <div id="ctl00_SheetCPH_survey_reCall1_calendar1_ptimeview">
+
+                <br><select name="ctl00$SheetCPH$survey$reCall1$calendar1$HDL" id="ctl00_SheetCPH_survey_reCall1_calendar1_HDL" tabindex="1" style="width:70px;">
+                    <option selected="selected" value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+
+                </select>
+                <b>:</b>
+                <select name="ctl00$SheetCPH$survey$reCall1$calendar1$MDL" id="ctl00_SheetCPH_survey_reCall1_calendar1_MDL" tabindex="2" style="width:70px;">
+                    <option selected="selected" value="00">00</option>
+                    <option value="05">05</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="30">30</option>
+                    <option value="35">35</option>
+                    <option value="40">40</option>
+                    <option value="45">45</option>
+                    <option value="50">50</option>
+                    <option value="55">55</option>
+
+                </select>
+
+            </div>
+            <input name="ctl00$SheetCPH$survey$reCall1$calendar1$dDateTime" type="text" value="02.05.2020" id="ctl00_SheetCPH_survey_reCall1_calendar1_dDateTime" class="textboxOnblur" style="width:40%;">
+            <img id="ctl00_SheetCPH_survey_reCall1_calendar1_imgDateStart" onclick="displayCalendar(document.getElementById(&#39;ctl00_SheetCPH_survey_reCall1_calendar1_dDateTime&#39;),&#39;dd.mm.yyyy&#39;, this, &#39;../resources/dhtmlgoodies_calendar/images/&#39;)" src="~/img/calendar.gif">
+
+
+
+            <br><br> Укажите комментарий или дополнительную информацию
+
+
+
+            <br> <textarea name="ctl00$SheetCPH$survey$reCall1$tb_RECALLCOMMENT" rows="2" cols="20" id="ctl00_SheetCPH_survey_reCall1_tb_RECALLCOMMENT" class="textboxOnfocus" placeholder="Укажите комментарий" style="height:50px;"></textarea>
+            <br>
+
+            <div id="div_dopinfo" style="display:none;">
+                <span id="ctl00_SheetCPH_survey_reCall1_lbl_dopinfo_reCall" style="font-weight:bold;">0</span>
+            </div>
+            <br>
+        </div>
+        <div id="ctl00_SheetCPH_survey_div_questionOperator" style="display:block;">
+
+
+            <link href="~/resources/css/pattern.css" rel="stylesheet" type="text/css">
+            <script src="~/resources/js/pattern.js" type="text/javascript"></script>
+            <link href="~/Content/Custom/style.css" rel="stylesheet" type="text/css">
+
+            <style type="text/css">
+
+
+                .masterPage {
+                    width: 100%;
+                }
+
+                a {
+                    border-style: solid;
+                    border-color: transparent;
+                    bottom: -10px;
+                }
+
+                .textboxOnfocus {
+                    border: 1px groove Black;
+                    background: #EAE1EA;
+                    color: black;
+                    font-weight: bold;
+                    font-size: 14px;
+                    font-fafamily: Tahoma, Verdana;
+                    height: 25px;
+                    width: 70%;
+                }
+            </style>
+
+            <table cellpadding="0" cellspacing="0" class="masterPage">
+                <tbody>
+                    <tr>
+                        <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" width="30%">
+                            Тема:
+                        </td>
+                        <td height="37px" width="70%">
+                            Вопрос оператора
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" width="30%">
+                            Оператор:
+                        </td>
+                        <td height="37px" width="70%">
+                            <span id="ctl00_SheetCPH_survey_questionOperator_lbl_operator_101">@Session["operator"]</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" width="30%">
+                            Текст:
+                        </td>
+                        <td height="37px" width="70%">
+<textarea name="ctl00$SheetCPH$survey$questionOperator$stb_body" rows="2" cols="20" id="ctl00_SheetCPH_survey_questionOperator_stb_body" class="textboxOnfocus" style="height:80px;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px" width="30%">
+                            &nbsp;
+                        </td>
+                        <td height="37px" width="70%"></td>
+                    </tr>
+                    <tr>
+                        <td height="37px" style="font-family: tahoma; color: #000000; font-size: 14px; width: 100%;" width="30%" colspan="2">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="div_dopinfo" style="display:none;">
+                <span id="ctl00_SheetCPH_survey_questionOperator_lbl_dopinfo_questionOperator" style="font-weight:bold;">13</span>
+                <span id="ctl00_SheetCPH_survey_questionOperator_lbl_ToAddr"></span>
+                <span id="ctl00_SheetCPH_survey_questionOperator_lbl_sCC"></span>
+                <span id="ctl00_SheetCPH_survey_questionOperator_lbl_sBCC"></span>
+            </div>
+
+
+            <script language="javascript" type="text/javascript">
+
+                lol();
+
+                function lol() {
+
+                    if (external != null) {
+                        try {
+                            var v = external.ctiGetData("", "__AGENT_ID__");
+
+                            if (v != "") {
+                                document.getElementById('ctl00_SheetCPH_survey_questionOperator_lbl_operator_101').innerHTML = v.toUpperCase();
+                            }
+                        }
+                        catch (e) {
+
+                        }
+                    }
+                }
+                function RedirQuestion() {
+                    var isRedirectRecep = '@isRedirectToRecep' === 'True';
+                    if (isRedirectRecep) {
+                        window.location.href = '@Url.Action("Reception", "Home", new {area="", isReturn = true })';
+                    } else {
+                        window.location.href = '@Url.Action("EndCall", "Home")';
+                    }
+                }
+                function FinishSettingsReceptionQuestion() {
+                    window.location.href = '@Url.Action("Reception", "Home", new {area="", isReturn = true })';
+                }
+                function FinishSettingsQuestion() {
+                    window.location.href = '@Url.Action("EndCall", "Home", new {area=""})';
+                }
+            </script>
+            <br>
+        </div>
+        <div id="ctl00_SheetCPH_survey_div_stb_dopinfo" style="display:none;">
+            <span id="ctl00_SheetCPH_survey_lbl_dopinfo"></span><br>
+            <textarea name="ctl00$SheetCPH$survey$stb_dopinfo" rows="2" cols="20" id="ctl00_SheetCPH_survey_stb_dopinfo" class="textboxOnfocus" style="height:70px;width:90%;"></textarea>
+            <br>
+        </div>
+        <div id="div_dopinfo" style="display:none;">
+            <span id="ctl00_SheetCPH_survey_lbl_dopinfo_i"></span>
+            <span id="ctl00_SheetCPH_survey_lbl_dopinfo_value"></span>
+            <span id="ctl00_SheetCPH_survey_lbl_dopinfo_Question">0</span>
+            <span id="ctl00_SheetCPH_survey_lbl_dopinfo_type"></span>
+        </div>
+        <span id="ctl00_SheetCPH_survey_lbl_comment"></span>
+        <div id="ctl00_SheetCPH_survey_pusersControl">
+
+        </div>
+
+        <table id="ctl00_SheetCPH_survey_divBtnNext" cellpadding="0" cellspacing="0" class="tblNext" style="display:block;">
+            <tbody>
+                <tr>
+                    <td class="btnNextLeft">
+
+                        <input type="submit" name="ctl00$SheetCPH$survey$btnNext" value="ДАЛЕЕ" onclick="RedirQuestion()" id="ctl00_SheetCPH_survey_btnNext" class="button">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <input type="submit" name="ctl00$SheetCPH$survey$btnBack" value="Вернуться на шаг назад" onclick="CheckBackRoute()" id="ctl00_SheetCPH_survey_btnBack" class="button">
+
+                    </td>
+                    <td class="btnNextRight">
+
+                        <input type="submit" name="ctl00$SheetCPH$survey$btnFinish" value="Завершить разговор" onclick="@(Session["AlreadyReception"] != null ? "FinishSettingsReceptionQuestion()" : "FinishSettingsQuestion()")" id="ctl00_SheetCPH_survey_btnFinish" class="button">
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+    @if (isAdmin)
+    {
+        <div id="ctl00_SheetCPH_survey_div12">
+
+            <h2 id="ctl00_SheetCPH_survey_h2_rigth" class="right" style="display:block;">
+
+                <a id="ctl00_SheetCPH_survey_btnRefresh" class="button" href="@Url.Action("Question", "Home", new {area=""})" style="color:#005391;border-color:Black;text-decoration:none;">[ Обновить ]</a>
+                &nbsp;
+                <a id="ctl00_SheetCPH_survey_hl_edit" class="button" href="javascript:showPopWin(&#39;../resources/general/edit.aspx?kodid=12&amp;session=akzonobel&amp;scheme=orcl&amp;tbl=projects.akzonobel_question&amp;scheme1=ORCL&#39;, 800, 550, null);" style="color:#005391;border-color:Black;text-decoration:none;">
+                    [ Редактировать ]
+                </a>
+                &nbsp;
+                <a id="ctl00_SheetCPH_survey_hl_new_window" class="button" href="http://klfappiiscl01.te-ex.ru:89/resources/general/info.aspx?kodid=12&amp;session=akzonobel" target="_blank" style="color:#005391;border-color:Black;text-decoration:none;">
+                    [Открыть в новом окне]
+                </a>
+                &nbsp;
+
+                &nbsp;
+
+            </h2>
+
+        </div>
+    }
+
+
+
+    <div id="ctl00_SheetCPH_survey_div12">
+
+        <h2 id="ctl00_SheetCPH_survey_h2_rigth" class="right" style="display:none;">
+
+
+            &nbsp;
+
+            &nbsp;
+            <a id="ctl00_SheetCPH_survey_hl_new_window" class="button" href="@Url.Action("InfoOperator", "Home", new { area=""})" target="_blank" style="color:#005391;border-color:Black;text-decoration:none;">
+                [Открыть в новом окне]
+            </a>
+            &nbsp;
+
+            &nbsp;
+
+        </h2>
+
+    </div>
+
+
+    <div id="ctl00_SheetCPH_survey_div_history" style="display:none;">
+        <b>История:</b> <span id="ctl00_SheetCPH_survey_lbl_path">|Вопрос оператора</span>
+    </div>
+    <div style="display: none;">
+
+        <span id="ctl00_SheetCPH_survey_lbl_level">|Вопрос оператора</span> <br>
+        <span id="ctl00_SheetCPH_survey_lbl_level_txt">|Главная|Вопрос оператора</span> <br>
+        <input name="ctl00$SheetCPH$survey$under" type="text" value="0;101" id="ctl00_SheetCPH_survey_under"> <br>
+        <span id="ctl00_SheetCPH_survey_iunder" style="font-weight:bold;">|1</span><br>
+        <span id="ctl00_SheetCPH_survey_ilevel" style="font-weight:bold;">|1</span><br>
+        <span id="ctl00_SheetCPH_survey_idivunder" style="font-weight:bold;">|101</span><br>
+        <input name="ctl00$SheetCPH$survey$tb_count" type="text" value="1" id="ctl00_SheetCPH_survey_tb_count"> <br>
+        <input name="ctl00$SheetCPH$survey$tb_under_answer" type="text" value="0;101" id="ctl00_SheetCPH_survey_tb_under_answer"> <br>
+        <input name="ctl00$SheetCPH$survey$lbl_backlink" type="text" id="ctl00_SheetCPH_survey_lbl_backlink"><br>
+        <a id="ctl00_SheetCPH_survey_lbtnBackLink" href="javascript:__doPostBack(&#39;ctl00$SheetCPH$survey$lbtnBackLink&#39;,&#39;&#39;)">Проверка</a><br>
+        <a id="ctl00_SheetCPH_survey_lbtnNextClick" href="javascript:__doPostBack(&#39;ctl00$SheetCPH$survey$lbtnNextClick&#39;,&#39;&#39;)">Проверка2</a><br>
+        <input name="ctl00$SheetCPH$survey$stb_div" type="text" id="ctl00_SheetCPH_survey_stb_div"><br>
+        <input name="ctl00$SheetCPH$survey$stb_next" type="text" id="ctl00_SheetCPH_survey_stb_next"><br>
+        <input name="ctl00$SheetCPH$survey$stb_type_answer" type="text" value="0" id="ctl00_SheetCPH_survey_stb_type_answer"><br>
+        <input name="ctl00$SheetCPH$survey$stb_goTop" type="text" value="Вопрос оператора;101" id="ctl00_SheetCPH_survey_stb_goTop">
+        <input name="ctl00$SheetCPH$survey$stb_arrayQuestion" type="text" id="ctl00_SheetCPH_survey_stb_arrayQuestion">
+        <input name="ctl00$SheetCPH$survey$stb_formatHello" type="text" value=";" id="ctl00_SheetCPH_survey_stb_formatHello">
+        <span id="ctl00_SheetCPH_survey_projid"></span><br>
+
+        <input name="ctl00$SheetCPH$survey$stb_accordion" type="text" id="ctl00_SheetCPH_survey_stb_accordion"><br>
+
+        <input name="ctl00$SheetCPH$survey$tb_fio" type="text" id="ctl00_SheetCPH_survey_tb_fio"><br>
+        <input name="ctl00$SheetCPH$survey$tb_server" type="text" value="orcl" id="ctl00_SheetCPH_survey_tb_server"><br>
+        <span id="ctl00_SheetCPH_survey_lbl_slogin"></span><br>
+    </div>
+
+
+
+</div>
+
+<style type="text/css">
+    .zoom {
+        position: relative;
+        cursor: pointer;
+        left: 0;
+        top: 0;
+    }
+
+    #divBtnNextLeft {
+        width: 383px;
+    }
+
+    #div1 {
+        width: 382px;
+    }
+
+    .style1 {
+        width: 197px;
+    }
+</style>
+
+<script language="javascript" type="text/javascript">
+
+
+    function goAccordion() {
+        $(".accordion").accordion({
+            collapsible: true,
+            active: false,
+            heightStyle: "content",
+            beforeActivate: function (event, ui) {
+                if (ui.newHeader[0]) {
+                    document.getElementById('ctl00_SheetCPH_survey_stb_accordion').value = document.getElementById('ctl00_SheetCPH_survey_stb_accordion').value + ui.newHeader.text() + "$";
+                }
+            }
+        });
+
+        $(function () {
+            $('.zoom').hover(function () {
+                $(this).stop().animate({ width: "100%", height: "100%", left: "-25px", top: "-25px" }, 400);
+            },
+                function () {
+                    $(this).stop().animate({ width: "20%", height: "20%", left: "0", top: "0" }, 400);
+                });
+
+
+        });
+
+
+        if (document.getElementById('accordion') != null) { $('#accordion').accordion({ heightStyle: 'content', collapsible: true }); }
+        if (document.getElementById('accordion2') != null) { $('#accordion2').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion3') != null) { $('#accordion3').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion4') != null) { $('#accordion4').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion5') != null) { $('#accordion5').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion6') != null) { $('#accordion6').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion7') != null) { $('#accordion7').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion8') != null) { $('#accordion8').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion9') != null) { $('#accordion9').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        if (document.getElementById('accordion10') != null) { $('#accordion10').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+
+        lol();
+    }
+
+    function goQuestion(u, l, t) {
+        document.getElementById('ctl00_SheetCPH_survey_stb_next').value = document.getElementById('ctl00_SheetCPH_survey_under').value;
+        document.getElementById('ctl00_SheetCPH_survey_under').value = u;
+        document.getElementById('ctl00_SheetCPH_survey_tb_count').value = l;
+        document.getElementById('ctl00_SheetCPH_survey_lbl_backlink').value = t;
+        __doPostBack('ctl00$SheetCPH$survey$lbtnBackLink', '')
+    }
+
+    function transferCall(prefix, phone, callBack, callBackParams) {
+        try {
+            document.parentWindow.external.WACMD("TRANSFER", prefix + phone);
+        }
+        catch (e) {
+            alert("Не удается выполнить трансфер.\nНаберите номер " + prefix + (prefix.length ? "-" : "") + phone + " вручную");
+        }
+
+        if (callBack)
+            callBack(prefix, phone, callBackParams);
+    }
+
+    function TransferBarrier() {
+
+        var dtmf = '78543';
+
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk") { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim") { dtmf = "4" + dtmf; }
+        }
+
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = getPar('callsubject');
+        obj.callproject = getPar('callproject');
+        obj.projid = getPar('projid');
+
+        var connid = getPar('connid');
+
+        if (external != null && temp2[0] != null) {
+            external.ctiInitiateTransfer(connid, dtmf, obj);
+        }
+
+    }
+
+    function TransferBarrierMFO(phone) {
+
+        var dtmf = phone;
+        if (dtmf === undefined) { dtmf = "78543"; }
+        if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "msk") { dtmf = "4" + dtmf; }
+        else {
+            if (document.getElementById('ctl00_SheetCPH_survey_tb_server').value == "krim") { dtmf = "4" + dtmf; }
+        }
+        var temp2 = new Array();
+        temp2 = dtmf.split(',');
+
+        obj = new Object();
+        obj.callsubject = "18601";
+        obj.callproject = "18601";
+        obj.projid = "1861";
+
+        if (external != null && temp2[0] != null) {
+            external.ctiSetCurrentProject(obj.projid, obj.callsubject);
+            external.ctiInitiateTransfer('', temp2[0], obj);
+            alert('НабралИ ' + temp2[0]);
+        }
+
+    }
+
+    function lol() {
+
+        if (external != null) {
+            try {
+                var v = external.ctiGetData("", "__AGENT_ID__");
+
+                if (v != "") {
+                    if (document.getElementById('ctl00_SheetCPH_survey_lbl_slogin') != null) {
+                        document.getElementById('ctl00_SheetCPH_survey_lbl_slogin').value = v.toUpperCase();
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    }
+
+</script>
+
+
+
+<div id="ctl00_SheetCPH_div_btnSave" style="display:none;">
+
+    <h2 class="left">
+
+        <input type="submit" name="ctl00$SheetCPH$btnSave" value="Сохранить разговор" id="ctl00_SheetCPH_btnSave" class="button">
+
+    </h2>
+
+</div>

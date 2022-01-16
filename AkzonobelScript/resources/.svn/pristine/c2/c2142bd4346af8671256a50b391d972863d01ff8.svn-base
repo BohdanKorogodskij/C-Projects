@@ -1,0 +1,410 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OracleClient;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
+using telecomExpress;
+using Telerik.Web.UI;
+using System.Drawing;
+
+public partial class ascx_interview : System.Web.UI.UserControl
+{
+
+    // тип сервера базы данных 
+    public string serverSQL = "oracle";
+    // сервер базы данных
+    public string scheme = "BI";
+    // схема обращения
+    public string tbl = "local";
+    // Флаг загрузки данных из базы или xml файла
+    public bool xml = false;
+    // Название файла(опроса)
+    public string xmlFiles = "";
+    // Если данный параметр указал то игнарируется считываения данных из строки запроса 
+    public string RequestParams = "";
+    // уникальность код записи
+    public string keyMain;
+    // тип сервера для записи опроса
+    public string saveServerSQLType = "oracle";
+    // серверная площадка для записи опроса
+    public string savePlatform = "rovproj";
+    // Схема базы данных для записи опроса
+    public string saveScheme = "projects";
+    // таблица для записи опроса
+    public string saveDataTable = "upload_hr_interview_session";
+    // параметры для автоматически записи в базу
+    public string saveRequestParams = "";
+    // Текст при удачной попытки сохранить опрос
+    public string resultTextOk = "";
+    // Текст при НЕ удачной попытки сохранить опрос
+    public string resultTextError = "";
+    // Отправка почты если все хорошо
+    public string mailSendOk = "";   
+    // Отправка почты если произошла ошибка
+    public string mailSendError = "";
+    // Отображаем кнопку сохранить
+    public bool btnSaveView = true; 
+    // Отображаем результат после сохранения
+    public bool resultView = true; 
+
+
+
+    string sSkin = "Default";
+    bool br_true = false;
+    int counter = 0;
+
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        getInterview();
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Page.IsPostBack) { return; }       
+    }
+
+    public void getInterview()
+    {
+        string sIV = "";
+        string q1 = "";
+        string q1_1 = "";
+        string filepath = Request.PhysicalApplicationPath;
+        string kodid = Request.QueryString["kodid"];
+
+        // Отображаем кнопку сохранить
+        btnSave.Visible = btnSaveView;
+    
+        if (RequestParams != "")
+        { kodid = RequestParams; }
+
+        Panel p = getMainDiv();
+
+        if (!string.IsNullOrEmpty(kodid))
+        {
+            pInterviewContral.Visible = true;
+
+            if (kodid != "0")
+            {
+                int i = 0;
+                Int32.TryParse(kodid, out i);
+
+                DataTable tb = new DataTable();
+
+                if (!xml) { tb = new interview().select_hr_interview(scheme, tbl, i); } else { tb = new interview().select_hr_interview_xml(0, string.Format(filepath + xmlFiles, i.ToString())); }
+
+                if (tb.Rows[0]["captcha"].ToString() != "1")
+                { RadCaptcha1.Visible = false; }
+
+                // цикл по вопросам опроса
+                foreach (DataRowView row in tb.DefaultView)
+                {
+                    if (row["q1"] != null) { q1 = row["q1"].ToString(); }
+                    if (row["q1_1"] != null) { q1_1 = row["q1_1"].ToString(); }
+
+                    p.Controls.Add(getH3(q1));
+
+                    Panel html = geth3Div(q1_1);
+
+                    if (br_true)
+                    { 
+                        html.Controls.Add(new interview_control().getBR());                       
+                        br_true = false;
+                    }
+
+                    int y = 0;
+                    Int32.TryParse(row["kodid"].ToString(), out y);
+                    
+                    DataTable tb2 =  new DataTable();
+
+                    if (!xml) { tb2 = new interview().select_hr_interview_question_m(scheme, tbl, i, y); } else { tb2 = new interview().select_hr_interview_xml(1, string.Format(filepath + xmlFiles, i.ToString())); tb2.DefaultView.RowFilter = " ANSWERID = " + y.ToString(); tb2.DefaultView.Sort = "orderby"; }
+
+                     // цикл  в каком порядке отображать объекты
+                    foreach (DataRowView row2 in tb2.DefaultView)
+                    {
+                        switch (row2["sname"].ToString())
+                        {
+                            case "textbox":
+                                new interview_control().getInterviewTB(scheme, tbl, y, ref html, row, xml, 2, string.Format(filepath + xmlFiles, i.ToString()));
+                                break;
+                            case "radiobutton":
+                                new interview_control().getInterviewRadio(scheme, tbl, y, ref html, xml, 3, string.Format(filepath + xmlFiles, i.ToString()));
+                                break;
+                            case "ddl":
+                                new interview_control().getInterviewddl(scheme, tbl, y, ref html, row, xml, 4, string.Format(filepath + xmlFiles, i.ToString()));
+                                break;
+                            case "checklist":
+                                new interview_control().getInterviewcb(scheme, tbl, y, ref html, xml, 5, string.Format(filepath + xmlFiles, i.ToString()));
+                                break;
+                        }
+                        
+                        p.Controls.Add(html);
+                    }
+                    
+                }
+
+            }
+        }
+
+        pInterView.Controls.Add(p);
+
+    }
+
+    public Panel getMainDiv()
+    {
+        Panel p = new Panel();
+        p.CssClass = "accordion";
+        p.ID = "accordion" + counter.ToString();
+        counter++;
+        return p;
+    }
+
+    public Panel geth3Div(string q1_1)
+    {
+        Panel p = new Panel();
+        p.CssClass = "answer";
+        p.Controls.Add(getP(q1_1));
+        return p;
+    }
+
+    public HtmlGenericControl getH3(string q1)
+    {
+        HtmlGenericControl h3 = new HtmlGenericControl("h3");
+        h3.InnerHtml = q1;
+        return h3;
+    }
+
+    public HtmlGenericControl getP(string q1_1)
+    {
+        HtmlGenericControl h3 = new HtmlGenericControl("p");
+        h3.Style.Value = "width: 95%";
+        h3.InnerHtml = q1_1;
+        if (!string.IsNullOrEmpty(q1_1)) 
+        {
+            br_true = true;
+        }
+        return h3;
+    }
+
+
+
+
+
+
+
+    // guid или ключевое поле
+    protected string getKeyMain(string localKeyMain = "")
+    {
+        Guid g = Guid.NewGuid();
+        
+        string skey = g.ToString();
+
+        if (!string.IsNullOrEmpty(localKeyMain)) { skey = localKeyMain; }
+        else
+        {
+            if (!string.IsNullOrEmpty(Request.QueryString[keyMain]))
+            {
+                skey = Request.QueryString[keyMain];
+            }
+        }
+        return skey;
+    }
+    
+    public void saveAnketa(string localKeyMain = "")
+    {
+        interview iv = new interview();
+
+        try
+        {
+
+            int b = 0;
+            if (RequestParams != "")
+            { Int32.TryParse(RequestParams, out b); }
+            else
+            {
+                Int32.TryParse(Request.QueryString["kodid"].ToString(), out b);
+            }
+
+            iv.interviewid = b;
+            iv.keyMain = getKeyMain(localKeyMain);
+            iv.delete_hr_interview(saveServerSQLType, savePlatform, saveDataTable, saveScheme + "." + saveDataTable);
+
+            string[] st = saveRequestParams.Split(';');
+
+            for (int ist = 0; ist < st.Length; ist++)
+            {
+                iv.stype = st[ist];
+                if (st[ist] == "ip") { iv.svalue = Page.Request.UserHostAddress; }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString[st[ist]]))
+                    {
+                        iv.svalue = Request.QueryString[st[ist]];
+                    }
+                    else { iv.svalue = ""; }
+                }
+                iv.save_hr_interview(saveServerSQLType, savePlatform, saveScheme, saveDataTable);
+            }
+
+            iv.svalue = "";
+
+            foreach (Control conrl in Page.Master.FindControl("SheetCPH").FindControl("interview1").Controls)
+            {
+                iv.svalue = conrl.GetType().ToString();
+
+                if (conrl.GetType().ToString() == "System.Web.UI.WebControls.Panel")
+                {
+                    getPanelControl(conrl.Controls, iv);
+                }
+
+            }
+
+            if (resultView)
+            {
+                lbl_result.ForeColor = Color.Green;
+                lbl_result.Text = resultTextOk;
+            }
+        }
+        catch (Exception ex)
+        {           
+            if (resultView)
+            {
+                lbl_result.ForeColor = Color.Red;
+                lbl_result.Text = resultTextError;
+            }
+        }
+
+        pInterviewContral.Visible = false;
+        lbl_result.Visible = true;
+    }
+    
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        if (RadCaptcha1.IsValid)
+        {
+            saveAnketa();
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(string), "UpdatePanelkey", "javascript:goAccordion();", true);
+        }
+    }
+
+    public void getPanelControl(ControlCollection conrl, interview iv)
+    {
+        string svalue="";
+
+        foreach (Control cl in conrl)
+        {
+
+            // если это контейнеры
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.Panel")
+            {
+                getPanelControl((cl as Panel).Controls, iv);
+            }
+
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.Table")
+            {
+                getPanelControl((cl as Table).Controls, iv);
+            }
+
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.TableRow")
+            {
+                getPanelControl((cl as TableRow).Controls, iv);
+            }
+
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.TableCell")
+            {
+                getPanelControl((cl as TableCell).Controls, iv);
+            }
+
+            // -- если это контейнеры
+                        
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.TextBox")
+            {
+                string[] st = (cl as TextBox).ID.Split('_');
+
+                iv.questionid = Convert.ToInt32(st[2]);
+                iv.stype = "textbox";
+                iv.answerid = Convert.ToInt32(st[1]);
+                iv.svalue = (cl as TextBox).Text;
+                iv.save_hr_interview(saveServerSQLType, savePlatform, saveScheme, saveDataTable);
+            }
+
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.RadioButtonList")
+            {
+                if ((cl as RadioButtonList).SelectedIndex != -1)
+                {
+                    iv.svalue = (cl as RadioButtonList).SelectedValue.ToString();
+                }
+                else
+                {
+                    iv.svalue = "Не выбран";
+                }
+                string[] st = (cl as RadioButtonList).ID.Split('_');
+
+                iv.questionid = Convert.ToInt32(st[2]);
+                iv.stype = "radiobutton";
+                iv.answerid = Convert.ToInt32(st[1]);
+                iv.save_hr_interview(saveServerSQLType, savePlatform, saveScheme, saveDataTable);
+
+            }
+
+            if (cl.GetType().ToString() == "Telerik.Web.UI.RadDropDownList")
+            {
+                if ((cl as RadDropDownList).SelectedIndex != -1)
+                {
+                    iv.svalue = (cl as RadDropDownList).SelectedValue.ToString();
+                }
+                else
+                {
+                    iv.svalue = "Не выбран";
+                }
+                
+                string[] st = (cl as RadDropDownList).ID.Split('_');
+
+                iv.questionid = Convert.ToInt32(st[2]);
+                iv.stype = "ddl";
+                iv.answerid = Convert.ToInt32(st[1]);
+                iv.save_hr_interview(saveServerSQLType, savePlatform, saveScheme, saveDataTable);
+
+            }
+
+
+            if (cl.GetType().ToString() == "System.Web.UI.WebControls.CheckBoxList")
+            {
+                iv.svalue = "";
+                for (int iCheckBoxList = 0; iCheckBoxList < (cl as CheckBoxList).Items.Count; iCheckBoxList++)
+                {
+
+                    if ((cl as CheckBoxList).Items[iCheckBoxList].Selected)
+                    {
+                        if (iv.svalue != "") { iv.svalue += "; "; }
+                        iv.svalue += (cl as CheckBoxList).Items[iCheckBoxList].Value;
+                    }
+                }
+                if (iv.svalue == "")
+                {
+                    iv.svalue = "Не выбран";
+                }
+
+                string[] st = (cl as CheckBoxList).ID.Split('_');
+
+                iv.questionid = Convert.ToInt32(st[2]);
+                iv.stype = "checklist";
+                iv.answerid = Convert.ToInt32(st[1]);
+                iv.save_hr_interview(saveServerSQLType, savePlatform, saveScheme, saveDataTable);
+
+            }
+
+        }
+
+    }
+
+    
+
+
+}

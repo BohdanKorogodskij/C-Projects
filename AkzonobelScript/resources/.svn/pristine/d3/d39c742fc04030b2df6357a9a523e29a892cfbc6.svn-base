@@ -1,0 +1,146 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="callID.ascx.cs" Inherits="resources_callID" %>
+
+<%@ Register src="~/resources/updateProgress.ascx" TagName="updateProgress" TagPrefix="aspUserControl" %>
+
+
+<style type="text/css">
+    .style1
+    {
+        text-align: right;
+    }
+    .style2
+    {
+        text-align: left;
+    }
+    .masterPagecenter2
+    {}
+    .masterPageright
+    {}
+    .tb
+    {}
+</style>
+
+<script type="text/javascript">
+
+    window.onload = function lol() {
+
+        if (external != null) {
+            try {
+                var v = external.ctiGetData("", "__AGENT_ID__");
+                document.getElementById('<%= UserLoginBox.ClientID %>').value = v.toUpperCase();                
+            }
+            catch (e) {
+
+            }
+        }
+
+    }
+
+  
+</script>
+
+
+<table class="masterPage">
+    <tr>
+        <td class="masterPageleft">
+            &nbsp;</td>
+        <td class="style1">
+<asp:Literal ID="lbl_callID" runat="server" Text="<%$ Resources: lbl_callID.text %>" />
+        </td>
+        <td class="style2">
+            <asp:TextBox ID="ConnIDBox" runat="server" Enabled="False" Width="270px" />
+        </td>
+    </tr>
+    <tr>
+        <td class="masterPageleft">
+            &nbsp;</td>
+        <td  class="style1">            
+<asp:Literal ID="lbl_loginOperator" runat="server" Text="<%$ Resources: lbl_loginOperator.text %>" />
+<br /><asp:Label id="lblNameOperator" runat="server" /> 
+        </td>
+        <td class="style2">
+<asp:TextBox ID="UserLoginBox" runat="server" Enabled="False"  CssClass="callID tb"  Width="270px" />
+        </td>
+    </tr>
+    <tr>
+        <td class="masterPageleft">
+            &nbsp;</td>
+        <td class="style1">
+            
+<asp:Literal ID="lbl_telephon" runat="server" Text="<%$ Resources: lbl_telephon.text %>" />
+        </td>
+        <td class="style2">
+<asp:TextBox ID="ANIBox" runat="server" Enabled="False" CssClass="callID tb" MaxLength="10" Width="270px"/>&nbsp;&nbsp;
+        </td>
+    </tr>
+</table>
+
+<asp:Panel id="pRegion" runat="server" Visible="false">
+
+<aspUserControl:updateProgress id="updateProgress1" runat="server" />
+
+<asp:UpdatePanel ID="Up_panel" runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+<table class="masterPage">
+    <tr>
+        <td class="masterPageleft">
+            &nbsp;</td>
+        <td class="masterPagecenter2">
+<asp:Literal ID="lbl_Region" runat="server" Text="<%$ Resources: lbl_Region.text %>" />
+        </td>
+        <td class="masterPageright">
+ <strong>
+ <asp:TextBox ID="RegionBox" runat="server" CssClass="callID tb" MaxLength="10" Enabled="False" />
+ </strong>
+ <br />
+  <asp:Button ID="GetRegionBtn" runat="server" CssClass="button" meta:resourcekey="GetRegionBtn" />
+        </td>
+    </tr>
+</table>
+</ContentTemplate>
+</asp:UpdatePanel>
+
+</asp:Panel>
+
+<asp:Panel id="pKodVisible" runat="server" Visible="false">
+<table class="masterPage">
+    <tr>
+        <td class="masterPageleft">
+            &nbsp;</td>
+        <td class="masterPagecenter2">
+<asp:Literal ID="lbl_KodVisible" runat="server" Text="<%$ Resources: lbl_KodVisible.text %>" />
+        </td>
+        <td class="masterPageright">
+ <strong>
+ <asp:TextBox ID="CallProj" runat="server" CssClass="callID tb" MaxLength="10" Enabled="False" />
+ </strong>
+        </td>
+    </tr>
+</table>
+
+</asp:Panel>
+
+<asp:Panel id="pButton" runat="server">
+<table class="masterPage">
+    <tr>
+        <td class="masterPageleft"> &nbsp;</td>
+        <td class="masterPagecenter2">
+<asp:Button ID="NewRecordBtn" runat="server" meta:resourcekey="NewRecordBtn" Visible="False" OnClick="NewRecordBtn_Click" />        
+        </td>
+        <td class="masterPageright">
+&nbsp;
+        </td>
+    </tr>
+</table>
+
+</asp:Panel>
+<asp:SqlDataSource ID="AONRegDS" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
+    DataSourceMode="DataReader" 
+    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+    SelectCommand="select replace(region,'|',',') from siebel.w_m_def_codes_new where def=:def and numfrom&lt;=:num and numto&gt;=:num">
+    <SelectParameters>
+        <asp:Parameter Name="def" />
+        <asp:Parameter Name="num" />
+    </SelectParameters>
+</asp:SqlDataSource>

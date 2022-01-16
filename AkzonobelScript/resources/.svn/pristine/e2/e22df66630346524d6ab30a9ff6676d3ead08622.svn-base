@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class resources_time_work : System.Web.UI.UserControl
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    public int GetTimeInt()
+    {
+        string t = wlbl_tm_time_work.Text;
+        return Convert.ToInt32(t.Substring(0, t.IndexOf('.')));
+    }
+}

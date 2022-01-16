@@ -1,0 +1,1036 @@
+/**
+ * Use this file for the layout styles.
+ *
+ * @author Victor Smirnykh
+ */
+
+html
+{
+    height : 100%;
+}
+
+body
+{
+    margin : 0;
+    font-family: 'Arial';
+}
+
+img
+{
+    border : 0;
+    margin: 0;
+}
+
+input, textarea { outline:none; }
+input:active, textarea:active { outline:none; }
+:focus { outline:none; } 
+
+.mainTable{
+    margin: auto;
+}
+
+.main{
+    min-width: 762px;
+    min-height: 462px;
+    position: relative;
+}
+
+.mainFixed{
+    width: 762px;
+    height: 500px;
+}
+
+.logo{
+    margin-left: 5px;
+    margin-top: 45px;
+    width: 231px;
+    height: 40px;
+    display:inline-block;
+    position: relative;
+}
+
+.copyright{
+    text-align: left; margin-left: 30px; margin-top: 0; font-size: 11px; color: #666666;
+}
+.div14{
+    font-size: 20px;
+    color: #282828;
+
+    margin-bottom: 20px;
+}
+.divVideoTitle{
+    display: inline; font-size: 33px; font-weight: bold; color: #ffffff; position: absolute; top: 36px; left: 245px;
+}
+.centerSession{
+    width: 340px;
+}
+.table2{
+    margin-top: 33px; margin-left: 40px;
+}
+.logout-block{
+    left: 330px;
+    position: absolute;
+    top: 70px;
+}
+.logout-block a{
+    border-bottom: 1px dotted #323232;
+    text-decoration: none;
+    font-size: 20px; line-height: 40px; color: #282828; font-weight: bold;
+}
+.logout-block a:hover{
+    border-bottom: 1px dotted white;
+    text-decoration: none;
+    font-size: 20px; line-height: 40px; color: white; font-weight: bold;
+}
+.trBtns{
+    color: #313131;
+    font-size: 14px;
+    font-family: 'Calibri';
+    font-weight: bold;
+}
+
+.bgInner{
+    text-align: left;
+    width:100%; 
+    position: relative;
+    height: 100%;
+}
+.authInput{ 
+    text-align: center; 
+    width: 375px; height: 55px;
+    border: 0;
+    padding: 0 15px;
+    font-size: 30px;
+    margin-top: 4px;
+}
+.sessionInput{
+    width: 250px; height: 54px;
+    border: 0;
+    padding: 0 15px;
+    font-size: 30px;
+    margin-top: 14px;
+}
+.inputLarge{
+    width: 445px; 
+    height: 54px;
+    font-size: 30px;
+    border: 0;
+    padding: 0 15px;
+    line-height:50px;
+}
+.inputShort{
+    width: 255px; height: 54px;
+    font-size: 30px;
+    border: 0;
+    padding: 0 15px;
+    line-height:50px;
+}
+ 
+.select-shadow {
+    display:none;
+    width:448px;
+    height:245px;
+    position:absolute;
+}
+
+.layout-body
+{
+    position: absolute;
+    z-index: 50;
+    width: 100%;
+    background-color: #d3d3d3;
+}
+
+.layout-side
+{
+    position : fixed;
+    top      : 0;
+    left     : 0;
+    width    : 216px;
+    bottom   : 0
+}
+
+.layout-caption
+{
+    display  : block;
+
+    padding  : 20px 20px 0;
+    position : fixed;
+    top      : 0;
+    left     : 216px;
+    width    : 100%;
+
+    margin-top    : 0;
+    margin-bottom : 17px;
+
+    white-space : nowrap;
+}
+
+.layout-content
+{
+    margin-left : 200px;
+    margin-top  : 80px;
+    padding     : 0 20px 75px;
+}
+
+.layout-tools
+{
+    position : fixed;
+    z-index  : 90;
+
+    bottom   : 0;
+    left     : 0;
+
+    width    : 100%;
+    height   : 75px;
+}
+
+.layout-tools-side
+{
+    height : 75px;
+    width  : 216px;
+
+    float : left;
+
+    text-align : center;
+}
+
+.layout-tools-content
+{
+    position: relative;
+
+    height : 75px;
+
+    margin-left : 216px;
+}
+
+.layout-tools-content-buttonbar
+{
+    padding-left  : 10px;
+    padding-right : 10px;
+
+    height : 75px;
+
+    float : left;
+}
+
+.layout-tools-content-form
+{
+    height : 75px;
+
+    margin-left  : 200px;/*200px;*/
+    margin-right : 162px;
+    padding-top  : 14px;
+}
+
+.layout-tools-content-form-button
+{
+    position: absolute;
+
+    height : 75px;
+
+    right : 0;
+    top   : 0;
+}
+
+/* Application */
+
+.application-logo
+{
+    width  : 216px;
+    height : 83px;
+	display: block;
+	overflow:visible;
+}
+
+.application-user
+{
+    line-height : 14px;
+    margin-left : 15px;
+}
+
+.application-user .user-label {}
+.application-user .user-name
+{
+    width   : 170px;/*148px;*/
+
+    display : inline-block;
+
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+}
+
+.stream-video-header
+{
+    position     : relative;
+    padding-top  : 5px;
+    padding-left : 5px;
+
+    height       : 41px; /*46px*/
+}
+
+.stream-video-control, .stream-video-control-container, .stream-video-control-client-container, .stream-video-control-client
+{
+    text-align : center;
+
+    width      : 216px;
+    height     : 162px;
+    background: #F3D325;
+}
+
+.stream-video-control div {
+    padding: 40px 20px 10px 20px;
+}
+
+.icon-user,
+.icon-user-own
+{
+    position : absolute;
+    left     : 5px;
+
+    display  : inline-block;
+
+    width    : 11px;
+    height   : 14px;
+}
+
+.icon-user
+{
+    top : 5px;
+}
+
+.icon-user-own
+{
+    top : 8px;
+}
+
+.icon-video-disabled,
+.icon-video-enabled
+{
+    position : absolute;
+    top      : 12px;
+    right    : 2px;
+
+    display  : inline-block;
+
+    width    : 28px;
+    height   : 25px;
+
+    cursor: pointer;
+}
+
+/*
+ * Messages
+ */
+
+.in-message, .out-message
+{
+    border-collapse : collapse;
+
+    border  : 0;
+    padding : 0;
+
+    margin-bottom : 4px;
+
+    width : 92%;
+}
+
+.in-message
+{
+    float : left;
+    margin-left: 20px;
+}
+
+.out-message
+{
+    float : right;
+}
+
+.first-message
+{
+    margin-bottom : 90px;
+}
+
+.in-message td, .out-message td
+{
+    padding : 0;
+}
+
+.in-message-border-row, .out-message-border-row
+{
+    line-height : 2px;
+}
+
+.in-message-border-topleft, .in-message-border-top, .in-message-border-topright,
+.in-message-border-bottomleft, .in-message-border-bottom, .in-message-border-bottomright,
+.out-message-border-topleft, .out-message-border-top, .out-message-border-topright,
+.out-message-border-bottomleft, .out-message-border-bottom, .out-message-border-bottomright
+{
+    height : 6px;
+}
+
+.in-message-border-topleft, .in-message-border-middleleft, .in-message-border-bottomleft,
+.in-message-dialog-arrow,
+.out-message-border-topright, .out-message-border-middleright, .out-message-border-bottomright,
+.out-message-dialog-arrow
+{
+    width  : 14px;
+}
+
+.out-message-border-topleft, .out-message-border-middleleft, .out-message-border-bottomleft,
+.in-message-border-topright, .in-message-border-middleright, .in-message-border-bottomright
+{
+    width  : 7px;
+}
+
+.in-message-border-middleleft, .in-message-border-middle, .out-message-border-middleright, .out-message-border-middle
+{
+    vertical-align : top;
+}
+
+.in-message-dialog-arrow, .out-message-dialog-arrow
+{
+    height : 31px;
+}
+
+.in-message-content, .out-message-content
+{
+    margin : 6px 20px;
+}
+
+.in-message-content-preview, .out-message-content-preview
+{
+    margin  : 0 10px;
+    display : inline-block;
+
+    vertical-align : top;
+}
+
+.image-preview
+{
+    padding : 2px;
+
+    -webkit-border-radius : 0px;
+    -moz-border-radius    : 0px;
+    border-radius         : 0;
+
+    display : inline-block;
+}
+
+/**
+ * Buttons
+ */
+
+.button-shutdown
+{
+    display : inline-block;
+
+    width  : 171px;
+    height : 57px;
+
+    margin-top : 12px;
+}
+
+.button-upload-file, .button-upload-screenshot, .button-share-screen, .button-share-screen-process
+{
+    display : inline-block;
+
+    width   : 43px;
+    height  : 43px;
+
+    margin-left  : 7px;
+    margin-right : 7px;
+}
+
+.button-upload-file
+{
+    margin-top    : 16px;
+    margin-bottom : 16px;
+}
+
+.button-upload-screenshot
+{
+    margin-top    : 19px;
+    margin-bottom : 13px;
+}
+
+.button-share-screen
+{
+    margin-top    : 21px;
+    margin-bottom : 11px;
+}
+
+.button-share-screen-process
+{
+    margin-top    : 18px;
+    margin-bottom : 14px;
+    margin-left: 3px;
+}
+
+.button-send
+{
+    display : inline-block;
+    width   : 117px;
+    height  : 49px;
+
+    margin : 13px 15px;
+}
+
+.button-dialog-save, .button-dialog-cancel, .button-dialog-ok, .button-dialog-exit
+{
+    display : inline-block;
+    width   : 93px;
+    margin  : 0 2px;
+}
+
+.button-dialog-save
+{
+    height  : 38px;
+}
+.button-dialog-cancel
+{
+    height  : 38px;
+}
+.button-dialog-ok
+{
+    height  : 38px;
+}
+.button-dialog-exit
+{
+    height  : 38px;   
+}
+
+.button-start-session
+{
+    display : inline-block;
+    width   : 129px;
+    height  : 56px;   
+    margin  : 2px;
+}
+
+.button-shutdown-session
+{
+    display : inline-block;
+    width   : 176px;
+    height  : 60px;   
+    margin  : 2px;
+}
+
+.button-ok
+{
+    display : inline-block;
+    height  : 105px;   
+    width   : 101px;
+    margin  : 2px;
+    margin-top:-20px;
+}
+
+.button-phone
+{
+    display : inline-block;
+    height  : 59px;   
+    width   : 171px;
+    margin  : 0 2px;
+}
+
+.button-cancel
+{
+    display : inline-block;
+    height  : 56px;   
+    width   : 174px;
+    margin  : 0 2px;
+}
+
+.button-start
+{
+    display : inline-block;
+    height  : 56px;   
+    width   : 129px;
+    margin  : 0 2px;
+}
+
+.button-shutdown-session
+{
+    display : inline-block;
+    height  : 57px;   
+    width   : 170px;
+    margin  : 0 2px;
+}
+
+.button-sitecall, .button-callback
+{
+    display : inline-block;
+    height  : 61px;   
+    width   : 65px;
+    margin  : 0 2px;
+}
+
+/* Custom input form */
+
+.form-custom-input
+{
+    border-collapse : collapse;
+
+    border  : 0;
+    padding : 0;
+    width   : 100%;
+}
+
+.form-custom-input td
+{
+    padding : 0;
+}
+
+.form-custom-input-left div
+{
+    width  : 8px;
+    height : 45px;
+}
+
+.form-custom-input-center
+{
+    width : 100%;
+}
+
+.form-custom-input-right div
+{
+    width  : 8px;
+    height : 45px;
+}
+
+.form-custom-input input
+{
+    border : 0;
+    width  : 100%;
+}
+
+/**
+ * Dialog
+ */
+
+.layout-dialog
+{
+    position : absolute;
+    display  : none;
+
+    z-index : 9999;
+}
+
+.layout-dialog-upload
+{
+    height : 258px;
+    width  : 418px;
+
+    background : url('images/dialog-upload-background.png');
+}
+
+.layout-dialog-message-info
+{
+    height : 258px;
+    width  : 418px;
+    background : url('images/dialog-upload-background.png');
+}
+
+.layout-dialog-message-error
+{
+    height : 258px;
+    width  : 418px;
+    background : url('images/dialog-message-box-error.png');
+}
+
+#message-box{
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+#mask {
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:9000;
+    background-color:#000;
+    display:none;
+}
+
+.dialog-header-drag
+{
+    position : absolute;
+
+    left   : 29px;
+    top    : 32px;
+    width  : 330px;
+    height : 43px;
+}
+
+.dialog-header
+{
+    border-collapse : collapse;
+
+    border  : 0;
+    padding : 0;
+
+    width : 80%;
+
+    margin-top : 40px;
+}
+
+.dialog-header td
+{
+    padding : 0;
+
+    vertical-align : middle;
+    font-size: 16px;
+
+    color: white;
+}
+
+
+
+/* TODO: divide layout and content */
+
+/*custom upload elements*/
+.customfile-input
+{
+    position     : absolute;
+    height       : 100px;
+    cursor       : pointer;
+    background   : transparent;
+    border       : 0;
+    opacity      : 0;
+    -moz-opacity : 0;
+    filter       : progid:DXImageTransform.Microsoft.Alpha(opacity = 0);
+    z-index      : 999;
+}
+
+.customfile
+{
+    height     : 54px;
+    cursor     : pointer;
+    overflow   : hidden;
+    padding    : 2px;
+    position   : relative;
+    background : url("images/form-input-file.png") no-repeat;
+}
+
+.customfile-disabled
+{
+    opacity : .5;
+    filter  : progid:DXImageTransform.Microsoft.Alpha(opacity = 0);
+    cursor  : default;
+}
+
+.customfile-feedback
+{
+    display       : block;
+    margin        : 1px 1px 1px 5px;
+    font-size     : 1.2em;
+    color         : #333;
+    font-style    : italic;
+    padding       : .6em 10px;
+
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+
+    width         : 220px;
+
+}
+
+.customfile-feedback-populated
+{
+    color        : #333;
+    font-style   : normal;
+    font-weight  : bold;
+    padding-left : 10px;
+}
+
+.customfile-button
+{
+    display : none;
+}
+
+.customfile-focus .customfile-button
+{
+    outline : 1px dotted #ccc;
+}
+
+/*file type icons*/
+.customfile-ext-jpg, .customfile-ext-gif, .customfile-ext-png, .customfile-ext-jpeg, .customfile-ext-bmp
+{
+    /*background-image : url(../images/icon-image.gif);*/
+}
+
+.customfile-ext-mp3, .customfile-ext-mp4, .customfile-ext-mov, .customfile-ext-swf, .customfile-ext-wav, .customfile-ext-m4v
+{
+    /*background-image : url(../images/icon-media.gif);*/
+}
+
+.customfile-ext-zip, .customfile-ext-tar, .customfile-ext-sit
+{
+    /*background-image : url(../images/icon-zip.gif);*/
+}
+
+#filemanager-close-btn
+{
+    position   : fixed;
+
+    right      : 21px;
+
+    width      : 48px;
+    height     : 15px;
+
+    z-index    : 200;
+
+    top        : 0;
+
+    color : #000000;
+
+    font-weight : bold;
+
+    background-color : #ffffff;
+    /*background : url('images/button-close.png');*/
+    cursor     : pointer;
+
+    text-align : center;
+    border     : 1px solid white;
+    border-bottom : 0 !important;
+    margin-top : 2px;
+}
+
+.filemanager-preview
+{
+    position : fixed;
+
+    top  : 15px;
+    left : 224px;
+
+    width      : 100%;
+    height     : 100%;
+
+    border  : 0;
+    padding : 0;
+    /*border     : 4px solid white;*/
+    /*background : #ffffff;*/
+}
+
+.preview-border
+{
+    width      : 100%;
+    height     : 100%;
+
+    border-collapse : collapse;
+
+    border  : 0;
+    padding : 0;
+}
+
+.preview-border td
+{
+    padding : 0;
+}
+
+.preview-border-row
+{
+    line-height : 2px;
+}
+
+.preview-border-topleft
+{
+    width  : 3px;
+    height : 3px;
+}
+
+.preview-border-topcenter
+{
+    width  : 17px;
+    height : 3px;
+}
+
+.preview-border-top
+{
+    height : 3px;
+}
+
+.preview-border-topright
+{
+    width  : 11px;
+    height : 3px;
+}
+
+.preview-border-middleleft
+{
+    width : 3px;
+}
+
+.preview-border-middle
+{
+}
+
+.preview-border-middleright
+{
+    width : 11px;
+
+    vertical-align : top;
+}
+
+.preview-border-bottomleft
+{
+    width  : 3px;
+    height : 13px;
+}
+
+.preview-border-bottomcenter
+{
+    width  : 17px;
+    height : 13px;
+}
+
+.preview-border-bottom
+{
+    height : 13px;
+}
+
+.preview-border-bottomright
+{
+    width  : 11px;
+    height : 13px;
+}
+
+.preview-border-middleright-center
+{
+    width  : 11px;
+    height : 17px;
+}
+
+.preview-border-middleleft-center
+{
+    width  : 3px;
+    height : 17px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------
+ *
+ *  L O G I N   V I E W
+ *
+ *--------------------------------------------------------------------------------------------------------------------*/
+
+.login-view
+{
+    margin          : auto;
+    padding         : 0;
+    border          : 0;
+    border-collapse : collapse;
+}
+
+.login-view td {
+   padding : 0;
+}
+
+.login-view-border-top, .login-view-border-bottom
+{
+    line-height: 2px;
+}
+
+.login-view-corner-tl, .login-view-corner-tr, .login-view-corner-bl, .login-view-corner-br
+{
+    width  : 11px;
+    height : 7px;
+}
+
+.login-view-corner-tl
+{
+    background : url("images/views/login/top-left.png") no-repeat right;
+}
+
+.login-view-corner-tr
+{
+    background : url("images/views/login/top-right.png") no-repeat;
+}
+
+.login-view-corner-bl
+{
+    background : url("images/views/login/bottom-left.png") no-repeat right;
+}
+
+.login-view-corner-br
+{
+    background : url("images/views/login/bottom-right.png") no-repeat;
+}
+
+.login-view-border-t {
+    height     : 7px;
+    background : url("images/views/login/top.png") repeat-x;
+}
+
+.login-view-border-b {
+    height     : 7px;
+    background : url("images/views/login/bottom.png") repeat-x;
+}
+
+.login-view-border-l {
+    vertical-align : top;
+    background     : url("images/views/login/middle-left.png") repeat-y right;
+}
+
+.login-view-border-r {
+    vertical-align : top;
+    background     : url("images/views/login/middle-right.png") repeat-y;
+}
+
+.login-view-border {
+    vertical-align   : top;
+    background-color : #ffcc00;
+}
+
+.login-view-content-holder
+{
+    width  : 762px;
+    height : 500px;
+}
+
+.login-view-content
+{
+    background : url("images/views/login/background.png") repeat-x;
+    text-align : left;
+    position   : relative;
+    width      : 100%;
+    height     : 100%;
+}
+
+.login-view .logo
+{
+    display : inline-block;
+
+    width  : 190px;
+    height : 35px;
+
+    margin-left : 38px;
+    margin-top  : 35px;
+
+    background : url("images/views/login/logo.png") no-repeat;
+}
+
+
+.login-view .title
+{
+    display     : inline;
+    font-size   : 33px;
+    font-weight : bold;
+    color       : #ffffff;
+    position    : absolute;
+    top         : 36px;
+    left        : 265px;
+}
+
+.login-view .copyright
+{
+    text-align  : left;
+    margin-left : 30px;
+    margin-top  : 0;
+    font-size   : 11px;
+    color       : #666666;
+}
+

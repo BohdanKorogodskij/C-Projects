@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using CKEditor.NET;
+using telecomExpress;
+using telecomExpress.akzonobel; 
+
+public partial class telemarket_edit : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (this.IsPostBack) { return; }
+
+        //stb_sTxt.config.toolbar = new object[]
+        //    {
+        //        new object[] { "Bold", "Italic", "Underline", "Strike", "-", "Subscript", "Superscript" },
+        //        new object[] { "NumberedList", "BulletedList", "-", "Outdent", "Indent", "Blockquote", "CreateDiv" },
+        //        new object[] { "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock" },
+        //        new object[] { "BidiLtr", "BidiRtl" },
+        //        new object[] { "Link", "Unlink", "Anchor" },
+        //        new object[] { "Image", "Flash", "Table", "HorizontalRule", "Smiley", "SpecialChar", "PageBreak" },
+        //        "/",
+        //        new object[] { "Styles", "Format", "Font", "FontSize" },
+        //        new object[] { "TextColor", "BGColor" },
+        //        new object[] { "Maximize", "ShowBlocks" }
+        //    };
+        stb_sTxt.Height = 250;
+
+        stb_iabc.Attributes.Add("onkeydown", "javascript:EnsureInt(event);");
+
+        if (Request.QueryString["kodid"].ToString() != "0")
+        {
+            DataTable tb = new DataTable();
+            DataRow row;
+            DataView dv = new DataView();
+
+            tb = (DataTable)Session[Request.Params["session"]];
+            dv.Table = tb;
+            dv.RowFilter = "kodid=" + Convert.ToString(Request.Params["kodid"]);
+            row = dv[0].Row;
+
+            if (row["sComment"] != null)
+            { stb_sComment.Text = Convert.ToString(row["sComment"]); }
+
+            if (row["sQuestion"] != null)
+            { stb_sTxt.Text = Convert.ToString(row["sQuestion"]); }
+
+            if (row["sBottom"] != null)
+            { stb_sTxt_bottom.Text = Convert.ToString(row["sBottom"]); }
+
+            if (row["iabc"] != null)
+            { stb_iabc.Text = Convert.ToString(row["iabc"]); }
+
+            dv.Dispose();
+            tb.Dispose();
+        }
+    }
+
+    protected void btnSaveOnClick(object sender, EventArgs e)
+    {
+
+        survey tm = new survey();
+        tm.selectUpdateData(Convert.ToInt32(Request.Params["kodid"]), stb_sTxt.Text, stb_sTxt_bottom.Text, Request.Params["scheme"], Request.Params["tbl"], stb_sComment.Text, Convert.ToInt32(stb_iabc.Text), Request.Params["scheme1"]);
+        Session.Add(Request.Params["session"], null);
+       // Response.Redirect("default.aspx?ilanguage=" + Convert.ToString(ddlLanguage.SelectedValue) + "&iCatalog=" + Convert.ToString(ddlCategoria.SelectedValue) + "#/work/slartichook");
+
+    }
+
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        //Response.Redirect("default.aspx?admin=" + Request.Params["ilanguage"].ToString() + "&iCatalog=" + Request.Params["iCatalog"].ToString() + "#/work/slartichook");
+    }
+
+}

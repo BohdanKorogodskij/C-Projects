@@ -1,0 +1,61 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="pattern.master.cs" Inherits="resources_pattern" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+ 
+    <title>  
+<asp:ContentPlaceHolder ID="TitleCPH" runat="server" />
+    </title>
+       
+<asp:ContentPlaceHolder ID="ScriptCPH" runat="server" />
+
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+<asp:ScriptManager ID="ScriptManager1" runat="server" />
+        <br />
+
+
+        <table class="masterPage">
+            <tr>
+                <td class="masterPageleft">
+&nbsp;
+                </td>
+                <td class="masterPagecenter">
+<asp:ContentPlaceHolder ID="cphLogo" runat="server" />
+                </td>
+                <td colspan="2" class="masterPageright" >
+<asp:ContentPlaceHolder ID="SidebarCPH" runat="server" />                   
+                 </td>
+            </tr>
+        </table>
+
+        <br />
+
+        <asp:ContentPlaceHolder id="SheetCPH" runat="server">
+        
+
+        </asp:ContentPlaceHolder>
+
+<br />
+
+        <asp:ContentPlaceHolder id="cphBottom" runat="server">
+
+        </asp:ContentPlaceHolder>
+
+
+
+
+<span style="display: none;">
+ <asp:TextBox ID="tbinsert" runat="server" />
+</span>
+    </div>
+    </form>
+</body>
+</html>

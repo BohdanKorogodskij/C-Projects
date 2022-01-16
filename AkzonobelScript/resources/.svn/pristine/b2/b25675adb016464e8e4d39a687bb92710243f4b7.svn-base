@@ -1,0 +1,30 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="time_work.ascx.cs" Inherits="resources_time_work" %>
+<br /><br />
+
+Время разговора: <b><asp:TextBox id="wlbl_tm_time_work" 
+                                 runat="server" 
+                                 BorderStyle="None" 
+                                 Font-Bold="True" 
+                                 Font-Names="Tahoma" 
+                                 Font-Size="16px" 
+                                 ForeColor="Black" 
+                                 Width="97px" /></b> (секунд)
+
+<script>
+    var milisec = 0
+    var seconds = 0
+    document.getElementById('<%= wlbl_tm_time_work.ClientID %>').value = "0";
+
+    function display() {
+        if (milisec >= 9) {
+            milisec = 0
+            seconds += 1
+        }
+        else
+            milisec += 1
+        document.getElementById('<%= wlbl_tm_time_work.ClientID %>').value = seconds + "." + milisec
+        setTimeout("display()", 100)
+    }
+
+    display();
+</script>

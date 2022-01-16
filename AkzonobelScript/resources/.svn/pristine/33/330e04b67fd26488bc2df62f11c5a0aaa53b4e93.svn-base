@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using telecomExpress;
+
+
+public partial class resources_reCall : System.Web.UI.UserControl
+{
+    public string prefics;
+    public bool bValidator = false;
+    public string pathString = "ctl00_SheetCPH_reCall_calendar1_";
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        if (IsPostBack) { return; }
+
+        //if (bValidator)
+        //{ rev_RECALLNUM.ControlToValidate = "itb_RECALLNUM"; }
+
+        calendar1.GetPathString(pathString);
+
+        itb_RECALLNUM.Text = (Page.Master.FindControl("SidebarCPH").FindControl("CallID1$ANIBox") as TextBox).Text;
+
+    }
+
+
+    public void setReCallNumber(string n)
+    {
+        itb_RECALLNUM.Text = n;
+    }
+
+    public string GetReCallNumber()
+    {
+        return itb_RECALLNUM.Text;
+    }
+
+    public void setReCall(string kodid)
+    {
+        lbl_dopinfo_reCall.Text = kodid;
+    }
+
+    public bool getReCall()
+    {
+        bool b;
+        if (lbl_dopinfo_reCall.Text == "0")
+        { b = false; }
+        else
+        { b = true; }
+        return b;
+    }
+
+    public string getStringReCall()
+    {
+        string s;
+        s = lbl_dopinfo_reCall.Text;
+        return s;
+    }
+
+    public string GetReCallCONTACT_INFO()
+    {
+        string sNumber = itb_RECALLNUM.Text;
+        
+        sNumber = prefics + "8" + sNumber;
+
+        return sNumber;
+    }
+
+    public string GetReCallComment()
+    {
+        return tb_RECALLCOMMENT.Text;
+    }
+
+    public DateTime GetReCallDateTime()
+    {
+        return calendar1.SetDatetime();
+    }
+    
+    public void SetReCallNumber(string sNumber)
+    {
+        itb_RECALLNUM.Text = sNumber;
+    }
+
+    public void SetReCallDateTime(string d)
+    {
+        calendar1.SetNewDatetime(d);
+    }
+
+    public void SetReCallComment(string sComment)
+    {
+        tb_RECALLCOMMENT.Text = sComment;
+    }
+
+
+
+}

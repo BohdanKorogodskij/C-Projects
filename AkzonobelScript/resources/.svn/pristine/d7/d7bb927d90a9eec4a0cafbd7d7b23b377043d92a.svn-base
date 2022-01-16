@@ -1,0 +1,21 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="sendSMS.ascx.cs" Inherits="resources_sendSMS" %>
+
+
+<asp:UpdatePanel ID="Up_panel" runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+
+<div id="divSmsThemes" runat="server">
+    <asp:Label id="lblSms" runat="server" Text="Укажите номер для SMS" /><br />
+    <asp:TextBox id="itb_sms" runat="server" MaxLength="10" CssClass="textboxOnblur" /><br />
+<br />
+</div>
+<asp:Label id="lblBoby" runat="server" Text="Укажите текст SMS" /><br />
+<asp:TextBox id="stb_smsBoby" runat="server" MaxLength="255"  TextMode="MultiLine" CssClass="textboxOnblur" Height="60px" /><br />
+<br /><br />
+
+<asp:Button ID="btnSendSMS" runat="server" CssClass="button" Text="Отправить СМС" onclick="btnSendSMS_Click"  /><br />
+<asp:Label ID="lbl_smsStatus" runat="server" ForeColor="Red" Visible="False"></asp:Label>
+
+
+</ContentTemplate>
+</asp:UpdatePanel>

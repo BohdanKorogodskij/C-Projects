@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>
+
+    </title>
+    @Styles.Render("~/base/css")
+    @*<link href="~/resources/css/pattern.css" rel="stylesheet" type="text/css" />
+    <link href="~/resources/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Custom/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/resources/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" rel="stylesheet" type="text/css" />*@
+
+    @Scripts.Render("~/base/js")
+    @*<script src="~/resources/js/pattern.js" type="text/javascript"></script>
+    <script src="~/resources/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js" type="text/javascript"></script>*@
+
+    @Styles.Render("~/jquery/css")
+    @*<link href="~/resources/jquery/themes/base/jquery.ui.core.css" rel="stylesheet" type="text/css" />
+        <link href="~/resources/jquery/themes/base/jquery.ui.accordion.css" rel="stylesheet" type="text/css" />
+        <link href="~/resources/jquery/themes/base/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+        <link href="~/resources/jquery/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css" />*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @*<script src="~/resources/jquery/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="~/resources/jquery/ui/jquery.ui.widget.js" type="text/javascript"></script>
+        <script src="~/resources/jquery/ui/jquery.ui.core.js" type="text/javascript"></script>
+        <script src="~/resources/jquery/ui/jquery.ui.accordion.js" type="text/javascript"></script>
+        <script src="~/resources/jquery/ui/jquery.ui.datepicker.js"></script>
+        <script src="~/resources/jquery/ui/jquery.ui.datepicker-ru.js"></script>*@
+
+
+    <script language="javascript" type="text/javascript">
+
+        function visible_div(div) {
+
+            if ((document.getElementById(div).style.display == "none") || (document.getElementById(div).style.display == "")) { document.getElementById(div).style.display = "block"; }
+            else { document.getElementById(div).style.display = "none"; }
+        }
+
+        function goAccordion() {
+
+            if (document.getElementById('accordion') != null) { $('#accordion').accordion({ heightStyle: 'content', collapsible: true }); }
+            if (document.getElementById('accordion2') != null) { $('#accordion2').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion3') != null) { $('#accordion3').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion4') != null) { $('#accordion4').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion5') != null) { $('#accordion5').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion6') != null) { $('#accordion6').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion7') != null) { $('#accordion7').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion8') != null) { $('#accordion8').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion9') != null) { $('#accordion9').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+            if (document.getElementById('accordion10') != null) { $('#accordion10').accordion({ heightStyle: 'content', collapsible: true, active: false }); }
+        }
+
+    </script>
+
+</head>
+<body>
+    <form method="post" action="http://klfappiiscl01.te-ex.ru:89/resources/general/info.aspx?kodid=1&amp;session=akzonobel" id="form1">
+        <div class="aspNetHidden">
+            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTEzOTQ0NDM3Nw9kFgICAw9kFgICAQ8PFgIeBFRleHQF6gE8cD4KCTxzcGFuIHN0eWxlPSJmb250LXNpemU6MTRweDsiPjxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogdGFob21hLGdlbmV2YSxzYW5zLXNlcmlmOyI+0J/RgNC10LTRgdGC0LDQstC40YLQtdC70YzRgdGC0LLQviAmbGFxdW870JDQutC30L4g0J3QvtCx0LXQu9GMJnJhcXVvOyw8c3Ryb25nPiB7b3BlcmF0b3J9PC9zdHJvbmc+LCDQt9C00YDQsNCy0YHRgtCy0YPQudGC0LUgITwvc3Bhbj48L3NwYW4+PC9wPgpkZGQOmqjW+RT2/tzM6t8hCcVgf3IVkrVz9S6rkrAij5Cvew==" />
+        </div>
+
+        <div class="aspNetHidden">
+
+            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="AF75E9FB" />
+        </div>
+        @RenderBody()
+        <script type="text/javascript">
+            javascript: goAccordion();
+        </script>
+    </form>
+
+
+</body>
+</html>

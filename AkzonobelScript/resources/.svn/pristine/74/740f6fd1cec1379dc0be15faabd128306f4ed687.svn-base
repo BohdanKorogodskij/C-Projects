@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using telecomExpress.general;
+
+public partial class resources_calendar : System.Web.UI.UserControl
+{
+    public string sHDL;
+    public string pathString;
+    public bool timeview = true;
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Page.IsPostBack) { return; }
+
+        lbl_HDL.Text = sHDL;
+        imgDateStart.Attributes.Add("OnClick", "displayCalendar(document.getElementById('" + pathString + "dDateTime'),'dd.mm.yyyy', this, '" + new general().sGetPath(Page) + "')");
+        DateTime tDate = DateTime.Now.AddDays(1);
+        dDateTime.Text = tDate.ToString().Substring(0, 10);
+
+        ptimeview.Visible = timeview;
+    }
+
+    public DateTime SetDatetime()
+    {
+        DateTime RD = new DateTime();
+        RD = Convert.ToDateTime(dDateTime.Text);
+        RD = RD.AddHours(Convert.ToDouble(HDL.SelectedValue));
+        RD = RD.AddMinutes(Convert.ToDouble(MDL.SelectedValue));
+        return RD;
+    }
+
+    public string GetHours()
+    {
+        return HDL.SelectedValue;
+    }
+
+    public string GetMinutes()
+    {
+        return HDL.SelectedValue;
+    }
+
+    public void SetNewDatetime(string rd)
+    {
+        DateTime RD = new DateTime();
+        RD = Convert.ToDateTime(rd);
+        dDateTime.Text = RD.ToString().Substring(0, 10);
+        HDL.SelectedValue = RD.Hour.ToString();
+        MDL.SelectedValue = RD.Minute.ToString();        
+    }
+
+    public void GetPathString(string s)
+    {
+        pathString = s;
+    }
+}

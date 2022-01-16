@@ -1,0 +1,49 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="reCall.ascx.cs" Inherits="resources_reCall" %>
+<%@ Register src="~/resources/calendar.ascx" TagName="calendar" TagPrefix="aspUserControl" %>
+
+
+    <script language="javascript" type="text/javascript">
+        function copyNumber() {
+            var s = "ctl00_SidebarCPH_CallID1_ANIBox";
+            var s2 = "ctl00_SheetCPH_reCall_itb_RECALLNUM";
+            var t = document.getElementById(s);
+            var t2 = document.getElementById(s2);
+            t2.value = t.value;
+        }
+    </script>
+
+<br />
+<asp:Literal id="lbl_RECALLNUM" runat="server" Text="<%$ Resources: lbl_RECALLNUM.text %>" />
+<%--<a class="tooltip" href="#">
+<asp:Image id="imgHelpSmall" runat="server" ImageUrl="~/resources/img/help_small.png" height="16" width="16" />
+<span class="custom help"><asp:Image id="imgHelp" runat="server" ImageUrl="~/resources/img/Help.png" height="48" width="48" />
+<em><asp:Literal ID="lbl_Help" runat="server" Text="<%$ Resources: lbl_Help.text %>" /></em><asp:Literal ID="lbl_HelpTime" runat="server" Text="<%$ Resources: lbl_HelpRECALLNUM.text %>" /></span></a>--%>
+
+<br /> <asp:TextBox id="itb_RECALLNUM" CssClass="textboxOnblur" MaxLength="10" runat="server" placeholder="<%$ Resources: tb_RECALLNUM.placeholder %>" ValidationGroup="pQuestion" />
+<div style="display:none;">
+<input id="btn_copy" class="button" type="button" onclick="javascript:copyNumber();return false;" value="Скопировать номер" />
+</div>
+<br /> <div style="color: #CC0000">Формат ввода 10 цифр без 8</div>
+<br /> <asp:RegularExpressionValidator 
+     ID="rev_RECALLNUM" 
+     runat="server"
+     ErrorMessage="Номер для перезвона указан не верно"
+     ValidationExpression="\d*" 
+     ControlToValidate = "itb_RECALLNUM"
+     ForeColor="#CC0000"
+     Display="Dynamic" />
+                                
+<br /> <aspUserControl:calendar id="calendar1" runat="server" sHDL="<%$ Resources: calendar1.text %>" pathString="ctl00_SheetCPH_reCall1_calendar1_" />
+<br /><br /> <asp:Literal id="lbl_RECALLCOMMENT" runat="server" Text="<%$ Resources: lbl_RECALLCOMMENT.text %>" />
+
+<%--<a class="tooltip" href="#">
+<asp:Image id="imgHelpSmallRECALLCOMMENT" runat="server" ImageUrl="~/resources/img/help_small.png" height="16" width="16" />
+<span class="custom help"><asp:Image id="imgHelpRECALLCOMMENT" runat="server" ImageUrl="~/resources/img/Help.png" height="48" width="48" />
+<em><asp:Literal ID="lbl_Help2" runat="server" Text="<%$ Resources: lbl_Help.text %>" /></em><asp:Literal ID="lbl_HelpRECALLCOMMENT" runat="server" Text="<%$ Resources: lbl_HelpRECALLCOMMENT.text %>" /></span></a>--%>
+
+<br /> <asp:TextBox id="tb_RECALLCOMMENT" CssClass="textboxOnfocus" Height="50px" runat="server" placeholder="<%$ Resources: RECALLCOMMENT.placeholder %>" TextMode="MultiLine" />
+<br />
+
+<div id="div_dopinfo" style="display:none;">
+<asp:Label id="lbl_dopinfo_reCall" runat="server" Font-Bold="true" Text="0" />
+</div>

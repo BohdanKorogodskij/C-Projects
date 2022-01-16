@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using telecomExpress.general;
+
+public partial class resources_questionOperator : System.Web.UI.UserControl
+{
+    public bool _btnSentFlag = false;
+    public string _ToAddr = "";
+    public string _sCC = "";
+    public string _sBCC = "";
+    public string _sSubject = "";
+    public string _Oper_sProject = "";
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (IsPostBack) { return; }
+
+        lbl_operator_101.Text = new general().SearchOperator(Request.QueryString["login"], Request.ServerVariables["LOGON_USER"].ToString()) + "(" + new general().getLoginFIO(new general().SearchOperator(Request.QueryString["login"], Request.ServerVariables["LOGON_USER"].ToString()), 4) + ")";
+
+
+    }
+
+    public void setQO(string kodid)
+    {
+        lbl_dopinfo_questionOperator.Text = kodid;
+    }
+
+    public string GetQuestionOperator()
+    {
+        return lbl_dopinfo_questionOperator.Text;
+    }
+
+    public string GetBoby()
+    {
+        return stb_body.Text;
+    }
+
+    public bool getQO()
+    {
+        bool b;
+        if (lbl_dopinfo_questionOperator.Text == "0")
+        { b = false; }
+        else
+        { b = true; }
+        return b;
+    }
+
+    public void sendEmail(string ToAddr, string sCC, string sBCC)
+    {
+        if (!string.IsNullOrEmpty(stb_body.Text))
+        {
+            new general().SendMailTo(ToAddr, sCC, sBCC, lbl_question.Text, "<br />Здравствуйте!<br />Вам поступило сообщение " + lbl_question.Text + "<br />" + stb_body.Text + "<br /><br />Оператор: " + lbl_operator_101.Text + "<br />" + _Oper_sProject);
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "reloadFrame", "alert('Письмо отправлено');", true);
+        }
+
+    }
+
+    public void setOperatorMail(bool Oper_btnSentFlag, string Oper_ToAddr, string Oper_sCC, string Oper_sBCC, string Oper_sSubject = "", string Oper_sProject = "")
+    {
+        _btnSentFlag = Oper_btnSentFlag;
+        lbl_ToAddr.Text = Oper_ToAddr;
+        lbl_sCC.Text = Oper_sCC;
+        lbl_sBCC.Text = Oper_sBCC;
+        lbl_sProject.Text = _Oper_sProject;
+
+        if (!string.IsNullOrEmpty(Oper_sSubject))
+        {
+            lbl_question.Text = Oper_sSubject;
+            _sSubject = Oper_sSubject;
+        }
+
+        btnSent.Visible = _btnSentFlag;
+    }
+
+    protected void btnSent_Click(object sender, EventArgs e)
+    {
+        sendEmail(lbl_ToAddr.Text, lbl_sCC.Text, lbl_sBCC.Text);
+    }
+
+    public void setClientModule()
+    {
+        btnSent.OnClientClick = "javascript:go();";
+    }
+
+}

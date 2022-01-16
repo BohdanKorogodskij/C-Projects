@@ -1,0 +1,59 @@
+/**
+ * Use this file for the define fonts and font styles.
+ *
+ * @author Victor Smirnykh
+ */
+
+body,
+.layout-caption,
+.in-message-username, .in-message-text
+{
+    font-family : Calibri, Arial, sans-serif;
+}
+
+.layout-caption
+{
+    font-size   : 36px;
+    font-weight : bold;
+}
+
+.application-user .user-label,
+.application-user .user-name
+{
+    font-size : 12px;
+}
+
+.stream-video-control
+{
+    font-size   : 14px;
+    font-weight : bold;
+}
+
+/*
+ * Messages
+ */
+
+.in-message-username, .out-message-username
+{
+    font-style  : italic;
+}
+
+.in-message-username, .in-message-text,
+.out-message-username, .out-message-text
+{
+    font-size   : 17px;
+}
+
+/* Custom input form */
+
+.form-custom-input input
+{
+    font-size   : 20px;
+    font-family : Calibri, Arial, sans-serif;
+}
+
+.form-label, .form-text
+{
+    font-size   : 16px;
+    font-family : Calibri, Arial, sans-serif;
+}

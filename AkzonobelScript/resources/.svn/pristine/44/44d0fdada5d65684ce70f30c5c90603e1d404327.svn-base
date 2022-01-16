@@ -1,0 +1,5 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="result.ascx.cs" Inherits="resources_result" %>
+
+    <asp:Label ID="lbl_goodGreen" runat="server" meta:resourcekey="goodGreen" CssClass="goodGreen" />
+    <asp:Label ID="lbl_errorRed" runat="server" meta:resourcekey="errorRed" CssClass="errorRed" />
+    <br /><br />
